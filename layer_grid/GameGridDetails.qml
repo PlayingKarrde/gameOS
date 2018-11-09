@@ -218,7 +218,7 @@ Item {
       }
 
       text: api.currentGame.summary || api.currentGame.description
-      font.pixelSize: vpx(16)
+      font.pixelSize: vpx(22)
       font.family: "Open Sans"
       //font.weight: Font.Light
       color: "#fff"

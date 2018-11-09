@@ -117,7 +117,7 @@ Item {
         asynchronous: true
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
-        anchors.topMargin: vpx(50)
+        anchors.topMargin: vpx(80)
         opacity: 0.75
       }
 
@@ -126,11 +126,14 @@ Item {
         property var collectionList: api.collections.model
         width: parent.width
 
+        preferredHighlightBegin: vpx(160); preferredHighlightEnd: vpx(160)
+        highlightRangeMode: ListView.ApplyRange
+
         anchors {
-          top: logo.bottom; topMargin: vpx(30)
+          top: logo.bottom; topMargin: vpx(80)
           left: parent.left;
           right: parent.right
-          bottom: parent.bottom; bottomMargin: vpx(50)
+          bottom: parent.bottom; bottomMargin: vpx(80)
         }
 
         model: collectionList
@@ -146,7 +149,7 @@ Item {
         Rectangle {
           readonly property bool selected: ListView.isCurrentItem
           width: menubar.width
-          height: vpx(30)
+          height: vpx(40)
 
           color: selected ? "#FF9E12" : "transparent"
 
@@ -162,12 +165,12 @@ Item {
 
             anchors { left: parent.left; leftMargin: vpx(50)}
             color: selected ? "black" : "white"
-            font.pixelSize: vpx(20)
-            font.family: titleFont.name
-            font.capitalization: Font.AllUppercase
-            font.bold: true
+            font.pixelSize: vpx(25)
+            font.family: globalFonts.sans
+            //font.capitalization: Font.AllUppercase
+            //font.bold: true
             //width: ListView.view.width
-            height: vpx(30)
+            height: vpx(40)
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
           }
