@@ -1,4 +1,7 @@
 # gameOS v0.1
+
+![gameOS Pegasus theme](https://i.imgur.com/Q07WrSW.jpg)
+
 gameOS theme for Pegasus Frontend
 
 This is currently the beta version of the theme. Filters and game details still to come along with a few other features.
