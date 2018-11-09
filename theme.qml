@@ -41,12 +41,6 @@ FocusScope {
       anchors { top: parent.top; topMargin: vpx(32); left: parent.left; leftMargin: vpx(32) }
       visible: gamegrid.focus
 
-      MouseArea {
-          anchors.fill: menuicon
-          cursorShape: Qt.PointingHandCursor
-          hoverEnabled: true
-          onClicked: {toggleMenu()}
-      }
     }
 
     GameGridDetails {
@@ -140,6 +134,19 @@ FocusScope {
     anchors.fill: parent
     width: parent.width
     height: parent.height
+  }
+
+  // Empty area for swiping on touch
+  Item {
+    anchors { top: parent.top; left: parent.left; bottom: parent.bottom; }
+    width: vpx(75)
+    PegasusUtils.HorizontalSwipeArea {
+        anchors.fill: parent
+        visible: gamegrid.focus
+        onSwipeRight: toggleMenu()
+        //onSwipeLeft: closeRequested()
+        onClicked: toggleMenu()
+    }
   }
 
   ///////////////////

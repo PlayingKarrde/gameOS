@@ -1,6 +1,7 @@
 import QtQuick 2.11
 import QtGraphicalEffects 1.0
 import QtMultimedia 5.9
+import "qrc:/qmlutils" as PegasusUtils
 
 Item {
   id: root
@@ -94,6 +95,11 @@ Item {
     height: parent.height
     source: "../assets/images/defaultbg.jpg"
     fillMode: Image.PreserveAspectCrop
+
+    PegasusUtils.HorizontalSwipeArea {
+        anchors.fill: parent
+        onSwipeLeft: menuCloseRequested()
+    }
 
     Rectangle {
       id: menubar
