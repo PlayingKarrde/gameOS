@@ -12,6 +12,8 @@ Item {
   property var collection: api.currentCollection
   property bool steam: false
 
+  signal clicked
+
   /////////////////
   // VIDEO STUFF //
   /////////////////
@@ -317,7 +319,12 @@ Item {
       onEntered: {}
       onExited: {}
       onWheel: {}
-      onClicked: {}
+      onClicked: {
+        if (selected)
+          api.currentGame.launch()
+        else
+          root.clicked()
+      }
   }
 
 

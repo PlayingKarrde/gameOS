@@ -40,6 +40,13 @@ FocusScope {
       height: vpx(24)
       anchors { top: parent.top; topMargin: vpx(32); left: parent.left; leftMargin: vpx(32) }
       visible: gamegrid.focus
+
+      MouseArea {
+          anchors.fill: menuicon
+          cursorShape: Qt.PointingHandCursor
+          hoverEnabled: true
+          onClicked: {toggleMenu()}
+      }
     }
 
     GameGridDetails {

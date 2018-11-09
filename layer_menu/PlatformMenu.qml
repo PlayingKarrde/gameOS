@@ -147,6 +147,7 @@ Item {
         id: collectionListItemDelegate
 
         Rectangle {
+          id: menuitem
           readonly property bool selected: ListView.isCurrentItem
           width: menubar.width
           height: vpx(40)
@@ -173,7 +174,21 @@ Item {
             height: vpx(40)
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
-          }
+
+            }
+
+            MouseArea {
+                anchors.fill: menuitem
+                cursorShape: Qt.PointingHandCursor
+                hoverEnabled: true
+                onEntered: {}
+                onExited: {}
+                onWheel: {}
+                onClicked: {
+                  api.collections.index = index
+                  menuCloseRequested();
+                }
+            }
         }
     }
     LinearGradient {
@@ -194,6 +209,17 @@ Item {
           opacity: 0.2
       }
 
+  }
+
+  MouseArea {
+      anchors {
+          top: parent.top; left: menubg.right
+          bottom: parent.bottom; right: parent.right
+
+      }
+      cursorShape: Qt.PointingHandCursor
+      onClicked: {toggleMenu()}
+      visible: parent.focus
   }
 
   function intro() {
