@@ -7,7 +7,7 @@ Item {
   property var collection: api.currentCollection
 
 
-  property string bgSource: gameData ? gameData.assets.background || gameData.assets.screenshots[0] || "" : "../assets/images/defaultbg.jpg"
+  property string bgSource: gameData ? gameData.assets.background || gameData.assets.screenshots[0] || "../assets/images/defaultbg.jpg" : ""
   property string bgImage1
   property string bgImage2
   property bool firstBG: true
