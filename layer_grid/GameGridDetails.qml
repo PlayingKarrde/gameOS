@@ -45,7 +45,7 @@ Item {
 
     Image {
       id: wreath
-      source: "../assets/images/wreath.svg"
+      source: (gameData.rating > 0.89) ? "../assets/images/wreath-gold.svg" : "../assets/images/wreath.svg"
       asynchronous: true
       fillMode: Image.PreserveAspectFit
       smooth: true
@@ -64,11 +64,11 @@ Item {
         color: "#fff"
       }*/
 
-      ColorOverlay {
+      /*ColorOverlay {
           anchors.fill: wreath
           source: wreath
           color: (gameData.rating > 0.89) ? "#FFCE00" : "white"
-      }
+      }*/
 
       Text {
         id: metarating

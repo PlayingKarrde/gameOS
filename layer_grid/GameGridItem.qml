@@ -14,6 +14,7 @@ Item {
 
   signal clicked
 
+
   /////////////////
   // VIDEO STUFF //
   /////////////////
@@ -21,6 +22,7 @@ Item {
   onSelectedChanged: {
     if (selected) {
       videoDelay.restart();
+      fadeLogo.restart();
     }
     else {
       videoPreviewLoader.sourceComponent = undefined;
@@ -44,6 +46,14 @@ Item {
       if (selected && game.assets.videos.length) {
         videoPreviewLoader.sourceComponent = videoPreviewWrapper;
       }
+    }
+  }
+
+  Timer {
+    id: fadeLogo
+    interval: 2000
+    onTriggered: {
+      OpacityAnimator: { target: gamelogo; to: 0; duration: 2000 }
     }
   }
 
