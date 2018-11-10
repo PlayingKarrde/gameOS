@@ -4,8 +4,11 @@ import QtMultimedia 5.9
 FocusScope {
   id: root
 
+  // Options
+  property int numColumns: 4
+
   property alias gridWidth: grid.width
-  property int gridItemSpacing: vpx(7) // it will double this
+  property int gridItemSpacing: (numColumns == 4) ? vpx(7) : vpx(5) // it will double this
   property var platformData: api.currentCollection
   property var platformModel: api.collections.model
 
@@ -50,7 +53,6 @@ FocusScope {
 
     focus: true
 
-
     anchors {
       top: parent.top; topMargin: - gridItemSpacing
       bottom: parent.bottom
@@ -58,13 +60,13 @@ FocusScope {
 
     anchors.horizontalCenter: parent.horizontalCenter
 
-    cellWidth: grid.width/4
-    cellHeight: vpx(157)
+    cellWidth: grid.width/numColumns
+    cellHeight: (numColumns == 4) ? vpx(157) : vpx(210)
 
     //highlightFollowsCurrentItem: false
     preferredHighlightBegin: vpx(0); preferredHighlightEnd: vpx(314)
     highlightRangeMode: GridView.StrictlyEnforceRange
-
+    displayMarginBeginning: 300
     //snapMode: GridView.SnapOneItem
 
     model: platformData ? platformData.games.model : []
@@ -116,6 +118,11 @@ FocusScope {
 
       onClicked: GridView.view.currentIndex = index
 
+    }
+
+    // Removal animation
+    remove: Transition {
+      NumberAnimation { property: "opacity"; to: 0; duration: 100 }
     }
   }
 }
