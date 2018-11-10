@@ -314,7 +314,6 @@ Item {
 
   MouseArea {
       anchors.fill: itemcontainer
-      cursorShape: Qt.PointingHandCursor
       hoverEnabled: true
       onEntered: {}
       onExited: {}
