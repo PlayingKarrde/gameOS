@@ -127,6 +127,24 @@ Item {
         opacity: 0.75
       }
 
+      // Highlight
+      Component {
+        id: highlight
+        Rectangle {
+          width: gameList.cellWidth; height: gameList.cellHeight
+          color: "#FF9E12"
+          x: gameList.currentItem.x
+          y: gameList.currentItem.y
+          Behavior on y { NumberAnimation {
+            duration: 300;
+            easing.type: Easing.OutQuart;
+            easing.amplitude: 2.0;
+            easing.period: 1.5}
+          }
+        }
+      }
+
+      // Menu
       ListView {
         id: gameList
         property var collectionList: api.collections.model
@@ -147,18 +165,20 @@ Item {
         delegate: collectionListItemDelegate
         currentIndex: api.collections.index
         onCurrentIndexChanged: navSound.play()
+        highlight: highlight
+        highlightFollowsCurrentItem: true
+        focus: true
       }
 
+      // Menu item
       Component {
         id: collectionListItemDelegate
 
-        Rectangle {
+        Item {
           id: menuitem
           readonly property bool selected: ListView.isCurrentItem
           width: menubar.width
           height: vpx(40)
-
-          color: selected ? "#FF9E12" : "transparent"
 
           Text {
             text: {
@@ -172,6 +192,14 @@ Item {
 
             anchors { left: parent.left; leftMargin: vpx(50)}
             color: selected ? "black" : "white"
+            Behavior on color {
+              ColorAnimation {
+                duration: 400;
+                easing.type: Easing.OutQuart;
+                easing.amplitude: 2.0;
+                easing.period: 1.5
+              }
+            }
             font.pixelSize: vpx(25)
             font.family: globalFonts.sans
             //font.capitalization: Font.AllUppercase
@@ -180,21 +208,19 @@ Item {
             height: vpx(40)
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
+          }
 
+          MouseArea {
+            anchors.fill: menuitem
+            hoverEnabled: true
+            onEntered: {}
+            onExited: {}
+            onWheel: {}
+            onClicked: {
+              api.collections.index = index
+              menuCloseRequested();
             }
-
-            MouseArea {
-                anchors.fill: menuitem
-                cursorShape: Qt.PointingHandCursor
-                hoverEnabled: true
-                onEntered: {}
-                onExited: {}
-                onWheel: {}
-                onClicked: {
-                  api.collections.index = index
-                  menuCloseRequested();
-                }
-            }
+          }
         }
     }
     LinearGradient {
@@ -223,7 +249,6 @@ Item {
           bottom: parent.bottom; right: parent.right
 
       }
-      cursorShape: Qt.PointingHandCursor
       onClicked: {toggleMenu()}
       visible: parent.focus
   }
