@@ -310,7 +310,7 @@ Item {
     anchors.centerIn: parent
 
     visible: screenshot.status === Image.Loading
-    source: "../assets/images/loading.svg"
+    source: "../assets/images/loading.png"
     width: vpx(50)
     height: vpx(50)
     smooth: true
