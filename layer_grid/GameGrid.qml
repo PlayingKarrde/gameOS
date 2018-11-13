@@ -1,4 +1,4 @@
-import QtQuick 2.11
+import QtQuick 2.8
 import QtMultimedia 5.9
 
 FocusScope {

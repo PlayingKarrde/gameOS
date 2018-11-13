@@ -1,4 +1,4 @@
-import QtQuick 2.11
+import QtQuick 2.8
 import QtGraphicalEffects 1.0
 import QtMultimedia 5.9
 
@@ -28,5 +28,5 @@ Item {
           return;
       }
     }
-    
+
 }
