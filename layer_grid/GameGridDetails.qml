@@ -152,7 +152,7 @@ Item {
           samples: 17
           color: "#80000000"
           transparentBorder: true
-          visible: (gameData.rating != "") ? true : false
+          
       }
     }
 
