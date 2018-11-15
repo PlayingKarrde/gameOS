@@ -191,6 +191,7 @@ Item {
 
     // Dim overlay
     Rectangle {
+      id: dimoverlay
       width: root.gridItemWidth
       height: root.gridItemHeight
       anchors {
@@ -198,9 +199,9 @@ Item {
         margins: vpx(3)
       }
       color: "black"
-      opacity: 0.4
+      opacity: 0.6
       visible: !steam || ""
-      z:4
+      z: (selected) ? 4 : 6
       radius: cornerradius
     }
 
@@ -217,7 +218,7 @@ Item {
 
       asynchronous: true
 
-      opacity: 0
+      //opacity: 0
       source: (!steam) ? game.assets.logo : ""
       sourceSize { width: 256; height: 256 }
       fillMode: Image.PreserveAspectFit
@@ -242,6 +243,7 @@ Item {
       source: "../assets/images/favebg.svg"
       width: vpx(32)
       height: vpx(32)
+      sourceSize { width: vpx(32); height: vpx(32)}
       anchors { top: screenshot.top; topMargin: vpx(0); right: screenshot.right; rightMargin: vpx(0) }
       visible: false
 
@@ -259,6 +261,7 @@ Item {
       source: "../assets/images/star.svg"
       width: vpx(13)
       height: vpx(13)
+      sourceSize { width: vpx(32); height: vpx(32)}
       anchors { top: screenshot.top; topMargin: vpx(3); right: screenshot.right; rightMargin: vpx(3) }
       smooth: true
       visible: game.favorite
@@ -275,8 +278,7 @@ Item {
         PropertyChanges { target: itemcontainer; color: "#FF9E12"}
         PropertyChanges { target: rectAnim; opacity: 1 }
         PropertyChanges { target: screenshot; opacity: 1 }
-        PropertyChanges { target: gamelogo; opacity: 1 }
-        PropertyChanges { target: logoshadow; opacity: 1 }
+        PropertyChanges { target: dimoverlay; opacity: 0.4 }
       },
       State {
         name: "UNSELECTED"
@@ -284,8 +286,7 @@ Item {
         PropertyChanges { target: itemcontainer; color: "transparent"}
         PropertyChanges { target: rectAnim; opacity: 0 }
         PropertyChanges { target: screenshot; opacity: 0.5 }
-        PropertyChanges { target: gamelogo; opacity: 0.4 }
-        PropertyChanges { target: logoshadow; opacity: 0.1 }
+        PropertyChanges { target: dimoverlay; opacity: 0.6 }
       }
     ]
 
@@ -297,8 +298,7 @@ Item {
         ColorAnimation { target: itemcontainer; duration: 100 }
         PropertyAnimation { target: rectAnim; duration: 100 }
         PropertyAnimation { target: screenshot; duration: 100 }
-        PropertyAnimation { target: gamelogo; duration: 100 }
-        PropertyAnimation { target: logoshadow; duration: 100 }
+        PropertyAnimation { target: dimoverlay; duration: 100 }
       },
       Transition {
         from: "UNSELECTED"
@@ -307,8 +307,7 @@ Item {
         ColorAnimation { target: itemcontainer; duration: 100 }
         PropertyAnimation { target: rectAnim; duration: 1000 }
         PropertyAnimation { target: screenshot; duration: 100 }
-        PropertyAnimation { target: gamelogo; duration: 100 }
-        PropertyAnimation { target: logoshadow; duration: 100 }
+        PropertyAnimation { target: dimoverlay; duration: 100 }
       }
     ]
   }
