@@ -22,10 +22,10 @@ Item {
   onSelectedChanged: {
     if (selected) {
       videoDelay.restart();
-      fadeLogo.restart();
     }
     else {
       videoPreviewLoader.sourceComponent = undefined;
+      fadescreenshot.stop();
     }
 
   }
@@ -41,19 +41,20 @@ Item {
 
   Timer {
     id: videoDelay
-    interval: 300
+    interval: 100
     onTriggered: {
       if (selected && game.assets.videos.length) {
         videoPreviewLoader.sourceComponent = videoPreviewWrapper;
+        fadescreenshot.restart();
       }
     }
   }
 
   Timer {
-    id: fadeLogo
-    interval: 2000
+    id: fadescreenshot
+    interval: 3500
     onTriggered: {
-      OpacityAnimator: { target: gamelogo; to: 0; duration: 2000 }
+      screenshot.opacity = 0;
     }
   }
 
@@ -121,40 +122,13 @@ Item {
       radius: cornerradius
     }
 
-    // Video preview
-    Component {
-      id: videoPreviewWrapper
-      Video {
-        source: game.assets.videos.length ? game.assets.videos[0] : ""
-        anchors.fill: parent
-        fillMode: VideoOutput.PreserveAspectCrop
-        muted: true
-        loops: MediaPlayer.Infinite
-        autoPlay: true
-
-
-      }
-
-    }
-
-    Loader {
-      id: videoPreviewLoader
-      asynchronous: true
-      anchors {
-        fill: parent
-        margins: vpx(4)
-      }
-      z: 3
-    }
-
-
-
     // Actual art
     Image {
       id: screenshot
 
       width: root.gridItemWidth
       height: root.gridItemHeight
+      z: 3
       anchors {
         fill: parent
         margins: vpx(4)
@@ -172,6 +146,8 @@ Item {
       property bool rounded: true
       property bool adapt: true
 
+      Behavior on opacity { PropertyAnimation { duration: 1000; easing.type: Easing.OutQuart; easing.amplitude: 2.0; } }
+
       layer.enabled: rounded
       layer.effect: OpacityMask {
           maskSource: Item {
@@ -185,6 +161,32 @@ Item {
               }
           }
       }
+    }
+
+
+
+    // Video preview
+    Component {
+      id: videoPreviewWrapper
+      Video {
+        source: game.assets.videos.length ? game.assets.videos[0] : ""
+        anchors.fill: parent
+        fillMode: VideoOutput.PreserveAspectCrop
+        muted: true
+        loops: MediaPlayer.Infinite
+        autoPlay: true
+      }
+
+    }
+
+    Loader {
+      id: videoPreviewLoader
+      asynchronous: true
+      anchors {
+        fill: parent
+        margins: vpx(4)
+      }
+      //z: 3
     }
 
     // Dim overlay
@@ -225,13 +227,14 @@ Item {
     }
 
     DropShadow {
-        anchors.fill: gamelogo
-        horizontalOffset: 0
-        verticalOffset: 0
-        radius: 8.0
-        samples: 17
-        color: "#80000000"
-        source: gamelogo
+      id: logoshadow
+      anchors.fill: gamelogo
+      horizontalOffset: 0
+      verticalOffset: 0
+      radius: 8.0
+      samples: 17
+      color: "#80000000"
+      source: gamelogo
     }
 
     Image {
@@ -273,6 +276,7 @@ Item {
         PropertyChanges { target: rectAnim; opacity: 1 }
         PropertyChanges { target: screenshot; opacity: 1 }
         PropertyChanges { target: gamelogo; opacity: 1 }
+        PropertyChanges { target: logoshadow; opacity: 1 }
       },
       State {
         name: "UNSELECTED"
@@ -280,7 +284,8 @@ Item {
         PropertyChanges { target: itemcontainer; color: "transparent"}
         PropertyChanges { target: rectAnim; opacity: 0 }
         PropertyChanges { target: screenshot; opacity: 0.5 }
-        PropertyChanges { target: gamelogo; opacity: 0.5 }
+        PropertyChanges { target: gamelogo; opacity: 0.4 }
+        PropertyChanges { target: logoshadow; opacity: 0.1 }
       }
     ]
 
@@ -293,6 +298,7 @@ Item {
         PropertyAnimation { target: rectAnim; duration: 100 }
         PropertyAnimation { target: screenshot; duration: 100 }
         PropertyAnimation { target: gamelogo; duration: 100 }
+        PropertyAnimation { target: logoshadow; duration: 100 }
       },
       Transition {
         from: "UNSELECTED"
@@ -302,6 +308,7 @@ Item {
         PropertyAnimation { target: rectAnim; duration: 1000 }
         PropertyAnimation { target: screenshot; duration: 100 }
         PropertyAnimation { target: gamelogo; duration: 100 }
+        PropertyAnimation { target: logoshadow; duration: 100 }
       }
     ]
   }
