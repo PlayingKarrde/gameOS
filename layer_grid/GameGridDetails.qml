@@ -7,8 +7,8 @@ Item {
   id: root
 
   property var gameData: api.currentGame
-  anchors.horizontalCenter: parent.horizontalCenter
   property bool issteam: false
+  anchors.horizontalCenter: parent.horizontalCenter
   clip: true
 
   Text {
@@ -127,8 +127,8 @@ Item {
       opacity: (gameData.rating != "") ? 1 : 0.3
       //visible: (gameData.rating != "") ? 1 : 0
       Layout.alignment: Qt.AlignCenter
-      sourceSize.width: 128
-      sourceSize.height: 128
+      sourceSize.width: vpx(128)
+      sourceSize.height: vpx(128)
 
       Text {
         id: metarating
@@ -152,7 +152,7 @@ Item {
           samples: 17
           color: "#80000000"
           transparentBorder: true
-          visible: (gameData.rating != "") ? true : false
+
       }
     }
 

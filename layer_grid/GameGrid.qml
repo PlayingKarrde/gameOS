@@ -14,6 +14,7 @@ FocusScope {
 
   signal launchRequested
   signal menuRequested
+  signal detailsRequested
   //signal filtersRequested
   signal nextCollection
   signal prevCollection
@@ -85,7 +86,7 @@ FocusScope {
         if (api.keys.isPageUp(event.key) || api.keys.isPageDown(event.key)) {
             event.accepted = true;
             var rows_to_skip = Math.max(1, Math.round(grid.height / cellHeight));
-            var games_to_skip = rows_to_skip * columnCount;
+            var games_to_skip = rows_to_skip * numColumns;
             if (api.keys.isPageUp(event.key))
                 currentIndex = Math.max(currentIndex - games_to_skip, 0);
             else
