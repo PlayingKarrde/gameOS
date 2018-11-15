@@ -8,12 +8,54 @@ Item {
 
   property var gameData: api.currentGame
   anchors.horizontalCenter: parent.horizontalCenter
+  property bool issteam: false
   clip: true
+
+  // Logo
+  Image {
+    id: detailslogo
+
+    //width: vpx(250)
+    //height: vpx(200)
+    /*anchors {
+      fill: parent
+      margins: vpx(20)
+    }*/
+    anchors {
+      //top: parent.top;  topMargin: vpx(60);
+      verticalCenter: parent.verticalCenter
+      left: parent.left
+    }
+
+    asynchronous: true
+
+    opacity: 0
+    source: (!issteam) ? gameData.assets.logo : ""
+    sourceSize { width: vpx(300); }
+    fillMode: Image.PreserveAspectFit
+    smooth: true
+    visible: gameData.assets.logo || ""
+    z:5
+  }
+
+  DropShadow {
+      anchors.fill: detailslogo
+      horizontalOffset: 0
+      verticalOffset: 0
+      radius: 8.0
+      samples: 17
+      color: "#80000000"
+      source: detailslogo
+      visible: gameData.assets.logo
+  }
 
   Text {
     id: gameTitle
 
-    anchors { top: parent.top; topMargin: vpx(60)}
+    anchors {
+      //top: parent.top; topMargin: vpx(60)
+      verticalCenter: parent.verticalCenter
+    }
     width: vpx(850)
     text: api.currentGame.title
     color: "white"
@@ -22,6 +64,7 @@ Item {
     font.bold: true
     font.capitalization: Font.AllUppercase
     elide: Text.ElideRight
+    visible: (gameData.assets.logo == "") ? true : false
     //style: Text.Outline; styleColor: "#cc000000"
   }
 
@@ -33,11 +76,16 @@ Item {
       samples: 17
       color: "#80000000"
       source: gameTitle
+      visible: (gameData.assets.logo == "") ? true : false
   }
 
   ColumnLayout {
     id: playinfo
-    anchors { top: gameTitle.top; topMargin: vpx(30); right: parent.right; rightMargin: vpx(60)}
+    anchors {
+      //top: gameTitle.top; topMargin: vpx(30);
+      right: parent.right; rightMargin: vpx(60)
+      verticalCenter: parent.verticalCenter
+    }
 
     width: vpx(150)
     spacing: vpx(4)
@@ -99,21 +147,21 @@ Item {
       }
     }
 
-    Item {
+    /*Item {
       id: spacerhack
       Layout.preferredHeight: vpx(15)
-    }
+    }*/
 
     /*GameGridMetaBox {
       metatext: gameData.developerList[0]
     }*/
 
-    GameGridMetaBox {
+    /*GameGridMetaBox {
       metatext: if (gameData.players > 1)
         gameData.players + " players"
       else
         gameData.players + " player"
-    }
+    }*/
 
 
 
@@ -148,9 +196,12 @@ Item {
 
   RowLayout {
     id: metadata
-    anchors { top: gameTitle.bottom; topMargin: vpx(-5);  }
+    anchors {
+      top: (gameData.assets.logo == "") ? gameTitle.bottom : detailslogo.bottom;
+      topMargin: (gameData.assets.logo == "") ? vpx(-5) : vpx(10);
+    }
     height: vpx(1)
-    spacing: 6
+    spacing: vpx(6)
 
     // Platform name
     /*GameGridMetaBox {
@@ -167,12 +218,12 @@ Item {
       metatext: (gameData.release != "") ? gameData.year : ""
     }
 
-    /*GameGridMetaBox {
+    GameGridMetaBox {
       metatext: if (gameData.players > 1)
         gameData.players + " players"
       else
         gameData.players + " player"
-    }*/
+    }
 
     /*GameGridMetaBox {
       metatext: gameData.genreList[0]
@@ -207,7 +258,7 @@ Item {
     }
   }
 
-  Text {
+  /*Text {
       id: gameDescription
 
       width: vpx(800)
@@ -234,5 +285,5 @@ Item {
         samples: 17
         color: "#80000000"
         source: gameDescription
-    }
+    }*/
 }

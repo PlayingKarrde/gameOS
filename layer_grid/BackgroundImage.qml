@@ -95,10 +95,9 @@ Item {
         start: Qt.point(0, 0)
         end: Qt.point(0, height)
         gradient: Gradient {
-            GradientStop { position: 0.0; color: "#88000000" }
-            GradientStop { position: 0.6; color: "#ff000000" }
+            GradientStop { position: 0.0; color: "#00000000" }
+            GradientStop { position: 0.7; color: "#ff000000" }
         }
     }
-    opacity:0.9
 
 }
