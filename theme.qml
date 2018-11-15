@@ -86,6 +86,7 @@ FocusScope {
         onNextCollection: api.collections.incrementIndex()
         onPrevCollection: api.collections.decrementIndex()
         onMenuRequested: toggleMenu()
+        onDetailsRequested: toggleDetails()
       }
     }
 
@@ -93,12 +94,15 @@ FocusScope {
 
   GameDetails {
     id: gamedetails
+    visible: false
     anchors {
       left: parent.left; right: parent.right
       top: parent.top; bottom: parent.bottom
     }
     width: parent.width
     height: parent.height
+
+    onDetailsCloseRequested: toggleDetails()
 
   }
 
@@ -128,6 +132,22 @@ FocusScope {
       content.opacity = 0
     }
 
+  }
+
+  function toggleDetails() {
+    if (gamedetails.focus) {
+      // Close the details
+      gamegrid.focus = true
+      gamegrid.visible = true
+      gamedetails.visible = false
+      content.visible = true
+    } else {
+      // Open details panel
+      gamedetails.focus = true
+      gamedetails.visible = true
+      gamegrid.visible = false
+      content.visible = false
+    }
   }
 
   // Switch collection overlay
