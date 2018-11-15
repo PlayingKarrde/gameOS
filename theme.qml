@@ -40,14 +40,15 @@ FocusScope {
       height: vpx(24)
       anchors { top: parent.top; topMargin: vpx(32); left: parent.left; leftMargin: vpx(32) }
       visible: gamegrid.focus
-
     }
 
+    // Game details
     GameGridDetails {
       id: content
 
-      height: vpx(280)
+      height: vpx(350)//vpx(280)
       width: parent.width - vpx(182)
+      anchors { top: parent.top; }
 
       // Text doesn't look so good blurred so fade it out when blurring
       opacity: 1
@@ -59,10 +60,11 @@ FocusScope {
       clip: true
 
       width: parent.width
-      height: parent.height * 0.65
+      //height: parent.height * 0.1
 
       anchors {
-        top: content.bottom; bottom: parent.bottom
+        top: content.bottom; //topMargin: vpx(75)
+        bottom: parent.bottom;
         left: parent.left; right: parent.right
       }
 

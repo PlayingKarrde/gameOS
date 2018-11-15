@@ -8,7 +8,7 @@ Item {
 
   property bool selected: false
   property var game
-  property int cornerradius: 0
+  property int cornerradius: vpx(3)
   property var collection: api.currentCollection
   property bool steam: false
 
@@ -22,10 +22,10 @@ Item {
   onSelectedChanged: {
     if (selected) {
       videoDelay.restart();
-      fadeLogo.restart();
     }
     else {
       videoPreviewLoader.sourceComponent = undefined;
+      fadescreenshot.stop();
     }
 
   }
@@ -41,19 +41,20 @@ Item {
 
   Timer {
     id: videoDelay
-    interval: 300
+    interval: 100
     onTriggered: {
       if (selected && game.assets.videos.length) {
         videoPreviewLoader.sourceComponent = videoPreviewWrapper;
+        fadescreenshot.restart();
       }
     }
   }
 
   Timer {
-    id: fadeLogo
-    interval: 2000
+    id: fadescreenshot
+    interval: 3500
     onTriggered: {
-      OpacityAnimator: { target: gamelogo; to: 0; duration: 2000 }
+      screenshot.opacity = 0;
     }
   }
 
@@ -73,9 +74,9 @@ Item {
       margins: gridItemSpacing
     }
 
-    radius: cornerradius
+    radius: cornerradius + vpx(3)
 
-    scale: selected ? 1.15 : 1.0
+    scale: selected ? 1.14 : 1.0
     Behavior on scale { PropertyAnimation { duration: 200; easing.type: Easing.OutQuart; easing.amplitude: 2.0; } }
 
     // DropShadow
@@ -96,7 +97,7 @@ Item {
       height: parent.height
       visible: selected
       color: "white"
-      radius: cornerradius
+      radius: cornerradius + vpx(3)
 
       // Looping colour animation
       SequentialAnimation on opacity {
@@ -109,6 +110,7 @@ Item {
       }
     }
 
+    
     // Background for transparent images (to hide the border transition)
     Rectangle {
       width: root.gridItemWidth
@@ -121,40 +123,13 @@ Item {
       radius: cornerradius
     }
 
-    // Video preview
-    Component {
-      id: videoPreviewWrapper
-      Video {
-        source: game.assets.videos.length ? game.assets.videos[0] : ""
-        anchors.fill: parent
-        fillMode: VideoOutput.PreserveAspectCrop
-        muted: true
-        loops: MediaPlayer.Infinite
-        autoPlay: true
-
-
-      }
-
-    }
-
-    Loader {
-      id: videoPreviewLoader
-      asynchronous: true
-      anchors {
-        fill: parent
-        margins: vpx(4)
-      }
-      z: 3
-    }
-
-
-
     // Actual art
     Image {
       id: screenshot
 
       width: root.gridItemWidth
       height: root.gridItemHeight
+      z: 3
       anchors {
         fill: parent
         margins: vpx(4)
@@ -172,6 +147,8 @@ Item {
       property bool rounded: true
       property bool adapt: true
 
+      Behavior on opacity { PropertyAnimation { duration: 1000; easing.type: Easing.OutQuart; easing.amplitude: 2.0; } }
+
       layer.enabled: rounded
       layer.effect: OpacityMask {
           maskSource: Item {
@@ -181,14 +158,54 @@ Item {
                   anchors.centerIn: parent
                   width: screenshot.width
                   height: screenshot.height
-                  radius: cornerradius
+                  radius: cornerradius - vpx(1)
               }
           }
       }
     }
 
+
+
+    // Video preview
+    Component {
+      id: videoPreviewWrapper
+      Video {
+        source: game.assets.videos.length ? game.assets.videos[0] : ""
+        anchors.fill: parent
+        fillMode: VideoOutput.PreserveAspectCrop
+        muted: true
+        loops: MediaPlayer.Infinite
+        autoPlay: true
+      }
+
+    }
+
+    Loader {
+      id: videoPreviewLoader
+      asynchronous: true
+      anchors {
+        fill: parent
+        margins: vpx(4)
+      }
+      layer.enabled: true
+      layer.effect: OpacityMask {
+          maskSource: Item {
+              width: videoPreviewLoader.width
+              height: videoPreviewLoader.height
+              Rectangle {
+                  anchors.centerIn: parent
+                  width: videoPreviewLoader.width
+                  height: videoPreviewLoader.height
+                  radius: cornerradius - vpx(1)
+              }
+          }
+      }
+      //z: 3
+    }
+
     // Dim overlay
     Rectangle {
+      id: dimoverlay
       width: root.gridItemWidth
       height: root.gridItemHeight
       anchors {
@@ -196,9 +213,9 @@ Item {
         margins: vpx(3)
       }
       color: "black"
-      opacity: 0.4
+      opacity: 0.6
       visible: !steam || ""
-      z:4
+      z: (selected) ? 4 : 6
       radius: cornerradius
     }
 
@@ -215,7 +232,7 @@ Item {
 
       asynchronous: true
 
-      opacity: 0
+      //opacity: 0
       source: (!steam) ? game.assets.logo : ""
       sourceSize { width: 256; height: 256 }
       fillMode: Image.PreserveAspectFit
@@ -225,13 +242,14 @@ Item {
     }
 
     DropShadow {
-        anchors.fill: gamelogo
-        horizontalOffset: 0
-        verticalOffset: 0
-        radius: 8.0
-        samples: 17
-        color: "#80000000"
-        source: gamelogo
+      id: logoshadow
+      anchors.fill: gamelogo
+      horizontalOffset: 0
+      verticalOffset: 0
+      radius: 8.0
+      samples: 17
+      color: "#80000000"
+      source: gamelogo
     }
 
     Image {
@@ -239,6 +257,7 @@ Item {
       source: "../assets/images/favebg.svg"
       width: vpx(32)
       height: vpx(32)
+      sourceSize { width: vpx(32); height: vpx(32)}
       anchors { top: screenshot.top; topMargin: vpx(0); right: screenshot.right; rightMargin: vpx(0) }
       visible: false
 
@@ -256,6 +275,7 @@ Item {
       source: "../assets/images/star.svg"
       width: vpx(13)
       height: vpx(13)
+      sourceSize { width: vpx(32); height: vpx(32)}
       anchors { top: screenshot.top; topMargin: vpx(3); right: screenshot.right; rightMargin: vpx(3) }
       smooth: true
       visible: game.favorite
@@ -272,7 +292,7 @@ Item {
         PropertyChanges { target: itemcontainer; color: "#FF9E12"}
         PropertyChanges { target: rectAnim; opacity: 1 }
         PropertyChanges { target: screenshot; opacity: 1 }
-        PropertyChanges { target: gamelogo; opacity: 1 }
+        PropertyChanges { target: dimoverlay; opacity: 0.4 }
       },
       State {
         name: "UNSELECTED"
@@ -280,7 +300,7 @@ Item {
         PropertyChanges { target: itemcontainer; color: "transparent"}
         PropertyChanges { target: rectAnim; opacity: 0 }
         PropertyChanges { target: screenshot; opacity: 0.5 }
-        PropertyChanges { target: gamelogo; opacity: 0.5 }
+        PropertyChanges { target: dimoverlay; opacity: 0.6 }
       }
     ]
 
@@ -292,7 +312,7 @@ Item {
         ColorAnimation { target: itemcontainer; duration: 100 }
         PropertyAnimation { target: rectAnim; duration: 100 }
         PropertyAnimation { target: screenshot; duration: 100 }
-        PropertyAnimation { target: gamelogo; duration: 100 }
+        PropertyAnimation { target: dimoverlay; duration: 100 }
       },
       Transition {
         from: "UNSELECTED"
@@ -301,7 +321,7 @@ Item {
         ColorAnimation { target: itemcontainer; duration: 100 }
         PropertyAnimation { target: rectAnim; duration: 1000 }
         PropertyAnimation { target: screenshot; duration: 100 }
-        PropertyAnimation { target: gamelogo; duration: 100 }
+        PropertyAnimation { target: dimoverlay; duration: 100 }
       }
     ]
   }

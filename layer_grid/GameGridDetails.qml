@@ -8,20 +8,87 @@ Item {
 
   property var gameData: api.currentGame
   anchors.horizontalCenter: parent.horizontalCenter
+  property bool issteam: false
   clip: true
+
+  Text {
+    id: collectiontitle
+
+    anchors {
+      top: parent.top; topMargin: vpx(35);
+      left: parent.left
+    }
+    width: parent.width
+    text: api.currentCollection.name
+    color: "white"
+    font.pixelSize: vpx(16)
+    font.family: globalFonts.sans
+    //font.capitalization: Font.AllUppercase
+    elide: Text.ElideRight
+    //opacity: 0.5
+  }
+
+  DropShadow {
+      anchors.fill: collectiontitle
+      horizontalOffset: 0
+      verticalOffset: 0
+      radius: 8.0
+      samples: 17
+      color: "#80000000"
+      source: collectiontitle
+      //opacity: 0.5
+  }
+
+  /*// Logo
+  // NOTE: Tried it but doubling up with the grid logo doesn't make sense.
+  // Maybe if using boxart for grid it could work
+  Image {
+    id: detailslogo
+
+    anchors {
+      //top: parent.top;  topMargin: vpx(60);
+      verticalCenter: parent.verticalCenter
+      left: parent.left
+    }
+
+    asynchronous: true
+
+    opacity: 0
+    source: (!issteam) ? gameData.assets.logo : ""
+    sourceSize { width: vpx(350); }
+    fillMode: Image.PreserveAspectFit
+    smooth: true
+    visible: gameData.assets.logo || ""
+    z:5
+  }
+
+  DropShadow {
+      anchors.fill: detailslogo
+      horizontalOffset: 0
+      verticalOffset: 0
+      radius: 8.0
+      samples: 17
+      color: "#80000000"
+      source: detailslogo
+      visible: gameData.assets.logo
+  }*/
 
   Text {
     id: gameTitle
 
-    anchors { top: parent.top; topMargin: vpx(60)}
+    anchors {
+      //top: parent.top; topMargin: vpx(60)
+      verticalCenter: parent.verticalCenter
+    }
     width: vpx(850)
     text: api.currentGame.title
     color: "white"
-    font.pixelSize: vpx(60)
+    font.pixelSize: vpx(70)
     font.family: titleFont.name
     font.bold: true
-    font.capitalization: Font.AllUppercase
+    //font.capitalization: Font.AllUppercase
     elide: Text.ElideRight
+    //visible: (gameData.assets.logo == "") ? true : false
     //style: Text.Outline; styleColor: "#cc000000"
   }
 
@@ -31,13 +98,18 @@ Item {
       verticalOffset: 0
       radius: 8.0
       samples: 17
-      color: "#80000000"
+      color: "#ff000000"
       source: gameTitle
+      //visible: (gameData.assets.logo == "") ? true : false
   }
 
   ColumnLayout {
     id: playinfo
-    anchors { top: gameTitle.top; topMargin: vpx(30); right: parent.right; rightMargin: vpx(60)}
+    anchors {
+      //top: gameTitle.top; topMargin: vpx(30);
+      right: parent.right; rightMargin: vpx(60)
+      verticalCenter: parent.verticalCenter
+    }
 
     width: vpx(150)
     spacing: vpx(4)
@@ -58,23 +130,10 @@ Item {
       sourceSize.width: 128
       sourceSize.height: 128
 
-      /*Rectangle {
-        width: parent.width
-        height: parent.height
-        color: "#fff"
-      }*/
-
-      /*ColorOverlay {
-          anchors.fill: wreath
-          source: wreath
-          color: (gameData.rating > 0.89) ? "#FFCE00" : "white"
-      }*/
-
       Text {
         id: metarating
         text: (gameData.rating == "") ? "NA" : Math.round(gameData.rating * 100)
         color: (gameData.rating > 0.89) ? "#FFCE00" : "white"
-        opacity: 0.90
         font.pixelSize: vpx(45)
         font.family: globalFonts.condensed
         font.bold: true
@@ -84,24 +143,37 @@ Item {
         font.capitalization: Font.AllUppercase
       }
 
-      Text {
-        id: ratingtext
-        text: (gameData.rating == "") ? "No Rating" : "Rating"
-        color: "white"
-        opacity: 0.9
-        font.pixelSize: vpx(16)
-        font.family: globalFonts.condensed
-        font.bold: true
-        horizontalAlignment: Text.AlignHCenter
-        anchors { top: parent.bottom; topMargin: vpx(-4) }
-        width: parent.width
-        font.capitalization: Font.AllUppercase
+      // DropShadow
+      layer.enabled: true
+      layer.effect: DropShadow {
+          horizontalOffset: 0
+          verticalOffset: 0
+          radius: 10.0
+          samples: 17
+          color: "#80000000"
+          transparentBorder: true
+          visible: (gameData.rating != "") ? true : false
       }
     }
 
+
+    Text {
+      id: ratingtext
+      text: (gameData.rating == "") ? "No Rating" : "Rating"
+      color: "white"
+      font.pixelSize: vpx(16)
+      font.family: globalFonts.condensed
+      font.bold: true
+      horizontalAlignment: Text.AlignHCenter
+      Layout.topMargin: vpx(-12)
+      Layout.preferredWidth: parent.width
+      font.capitalization: Font.AllUppercase
+    }
+
+
     Item {
       id: spacerhack
-      Layout.preferredHeight: vpx(15)
+      Layout.preferredHeight: vpx(5)
     }
 
     /*GameGridMetaBox {
@@ -148,14 +220,13 @@ Item {
 
   RowLayout {
     id: metadata
-    anchors { top: gameTitle.bottom; topMargin: vpx(-5);  }
+    anchors {
+      //top: (gameData.assets.logo == "") ? gameTitle.bottom : detailslogo.bottom;
+      //topMargin: (gameData.assets.logo == "") ? vpx(-5) : vpx(10);
+      top: gameTitle.bottom; topMargin: vpx(-5)
+    }
     height: vpx(1)
-    spacing: 6
-
-    // Platform name
-    /*GameGridMetaBox {
-      metatext: api.currentCollection.name
-    }*/
+    spacing: vpx(6)
 
     // Developer
     GameGridMetaBox {
@@ -164,19 +235,15 @@ Item {
 
     // Release year
     GameGridMetaBox {
-      metatext: (gameData.release != "") ? gameData.year : ""
+      metatext: (gameData.release != "" ) ? gameData.year : ""
     }
 
-    /*GameGridMetaBox {
+    /*// Number of supported players
+    GameGridMetaBox {
       metatext: if (gameData.players > 1)
         gameData.players + " players"
       else
         gameData.players + " player"
-    }*/
-
-    /*GameGridMetaBox {
-      metatext: gameData.genreList[0]
-      visible: (gameData.genreList[0] != undefined)
     }*/
 
     // Spacer
@@ -207,7 +274,7 @@ Item {
     }
   }
 
-  Text {
+  /*Text {
       id: gameDescription
 
       width: vpx(800)
@@ -234,5 +301,5 @@ Item {
         samples: 17
         color: "#80000000"
         source: gameDescription
-    }
+    }*/
 }
