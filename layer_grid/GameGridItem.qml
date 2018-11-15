@@ -8,7 +8,7 @@ Item {
 
   property bool selected: false
   property var game
-  property int cornerradius: 0
+  property int cornerradius: vpx(3)
   property var collection: api.currentCollection
   property bool steam: false
 
@@ -74,9 +74,9 @@ Item {
       margins: gridItemSpacing
     }
 
-    radius: cornerradius
+    radius: cornerradius + vpx(3)
 
-    scale: selected ? 1.15 : 1.0
+    scale: selected ? 1.14 : 1.0
     Behavior on scale { PropertyAnimation { duration: 200; easing.type: Easing.OutQuart; easing.amplitude: 2.0; } }
 
     // DropShadow
@@ -97,7 +97,7 @@ Item {
       height: parent.height
       visible: selected
       color: "white"
-      radius: cornerradius
+      radius: cornerradius + vpx(3)
 
       // Looping colour animation
       SequentialAnimation on opacity {
@@ -110,6 +110,7 @@ Item {
       }
     }
 
+    
     // Background for transparent images (to hide the border transition)
     Rectangle {
       width: root.gridItemWidth
@@ -157,7 +158,7 @@ Item {
                   anchors.centerIn: parent
                   width: screenshot.width
                   height: screenshot.height
-                  radius: cornerradius
+                  radius: cornerradius - vpx(1)
               }
           }
       }
@@ -185,6 +186,19 @@ Item {
       anchors {
         fill: parent
         margins: vpx(4)
+      }
+      layer.enabled: true
+      layer.effect: OpacityMask {
+          maskSource: Item {
+              width: videoPreviewLoader.width
+              height: videoPreviewLoader.height
+              Rectangle {
+                  anchors.centerIn: parent
+                  width: videoPreviewLoader.width
+                  height: videoPreviewLoader.height
+                  radius: cornerradius - vpx(1)
+              }
+          }
       }
       //z: 3
     }

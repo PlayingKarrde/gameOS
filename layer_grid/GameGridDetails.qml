@@ -40,6 +40,8 @@ Item {
   }
 
   /*// Logo
+  // NOTE: Tried it but doubling up with the grid logo doesn't make sense.
+  // Maybe if using boxart for grid it could work
   Image {
     id: detailslogo
 
@@ -81,10 +83,10 @@ Item {
     width: vpx(850)
     text: api.currentGame.title
     color: "white"
-    font.pixelSize: vpx(60)
+    font.pixelSize: vpx(70)
     font.family: titleFont.name
     font.bold: true
-    font.capitalization: Font.AllUppercase
+    //font.capitalization: Font.AllUppercase
     elide: Text.ElideRight
     //visible: (gameData.assets.logo == "") ? true : false
     //style: Text.Outline; styleColor: "#cc000000"
@@ -141,34 +143,37 @@ Item {
         font.capitalization: Font.AllUppercase
       }
 
-      Text {
-        id: ratingtext
-        text: (gameData.rating == "") ? "No Rating" : "Rating"
-        color: "white"
-        font.pixelSize: vpx(16)
-        font.family: globalFonts.condensed
-        font.bold: true
-        horizontalAlignment: Text.AlignHCenter
-        anchors { top: parent.bottom; topMargin: vpx(-4) }
-        width: parent.width
-        font.capitalization: Font.AllUppercase
+      // DropShadow
+      layer.enabled: true
+      layer.effect: DropShadow {
+          horizontalOffset: 0
+          verticalOffset: 0
+          radius: 10.0
+          samples: 17
+          color: "#80000000"
+          transparentBorder: true
+          visible: (gameData.rating != "") ? true : false
       }
     }
 
-    DropShadow {
-        anchors.fill: wreath
-        horizontalOffset: 0
-        verticalOffset: 0
-        radius: 8.0
-        samples: 17
-        color: "#80000000"
-        source: wreath
-        visible: (gameData.rating != "") ? true : false
+
+    Text {
+      id: ratingtext
+      text: (gameData.rating == "") ? "No Rating" : "Rating"
+      color: "white"
+      font.pixelSize: vpx(16)
+      font.family: globalFonts.condensed
+      font.bold: true
+      horizontalAlignment: Text.AlignHCenter
+      Layout.topMargin: vpx(-12)
+      Layout.preferredWidth: parent.width
+      font.capitalization: Font.AllUppercase
     }
+
 
     Item {
       id: spacerhack
-      Layout.preferredHeight: vpx(15)
+      Layout.preferredHeight: vpx(5)
     }
 
     /*GameGridMetaBox {
