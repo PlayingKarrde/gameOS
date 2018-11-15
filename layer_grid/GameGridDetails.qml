@@ -39,16 +39,10 @@ Item {
       //opacity: 0.5
   }
 
-  // Logo
+  /*// Logo
   Image {
     id: detailslogo
 
-    //width: vpx(250)
-    //height: vpx(200)
-    /*anchors {
-      fill: parent
-      margins: vpx(20)
-    }*/
     anchors {
       //top: parent.top;  topMargin: vpx(60);
       verticalCenter: parent.verticalCenter
@@ -75,7 +69,7 @@ Item {
       color: "#80000000"
       source: detailslogo
       visible: gameData.assets.logo
-  }
+  }*/
 
   Text {
     id: gameTitle
@@ -92,7 +86,7 @@ Item {
     font.bold: true
     font.capitalization: Font.AllUppercase
     elide: Text.ElideRight
-    visible: (gameData.assets.logo == "") ? true : false
+    //visible: (gameData.assets.logo == "") ? true : false
     //style: Text.Outline; styleColor: "#cc000000"
   }
 
@@ -102,9 +96,9 @@ Item {
       verticalOffset: 0
       radius: 8.0
       samples: 17
-      color: "#80000000"
+      color: "#ff000000"
       source: gameTitle
-      visible: (gameData.assets.logo == "") ? true : false
+      //visible: (gameData.assets.logo == "") ? true : false
   }
 
   ColumnLayout {
@@ -134,23 +128,10 @@ Item {
       sourceSize.width: 128
       sourceSize.height: 128
 
-      /*Rectangle {
-        width: parent.width
-        height: parent.height
-        color: "#fff"
-      }*/
-
-      /*ColorOverlay {
-          anchors.fill: wreath
-          source: wreath
-          color: (gameData.rating > 0.89) ? "#FFCE00" : "white"
-      }*/
-
       Text {
         id: metarating
         text: (gameData.rating == "") ? "NA" : Math.round(gameData.rating * 100)
         color: (gameData.rating > 0.89) ? "#FFCE00" : "white"
-        opacity: 0.90
         font.pixelSize: vpx(45)
         font.family: globalFonts.condensed
         font.bold: true
@@ -164,7 +145,6 @@ Item {
         id: ratingtext
         text: (gameData.rating == "") ? "No Rating" : "Rating"
         color: "white"
-        opacity: 0.9
         font.pixelSize: vpx(16)
         font.family: globalFonts.condensed
         font.bold: true
@@ -173,6 +153,17 @@ Item {
         width: parent.width
         font.capitalization: Font.AllUppercase
       }
+    }
+
+    DropShadow {
+        anchors.fill: wreath
+        horizontalOffset: 0
+        verticalOffset: 0
+        radius: 8.0
+        samples: 17
+        color: "#80000000"
+        source: wreath
+        visible: (gameData.rating != "") ? true : false
     }
 
     Item {
@@ -222,13 +213,12 @@ Item {
 
   }
 
-  /*// NOTE: Removing the meta details for the grid page.
-  // Placing on details page for cleaner look
   RowLayout {
     id: metadata
     anchors {
-      top: (gameData.assets.logo == "") ? gameTitle.bottom : detailslogo.bottom;
-      topMargin: (gameData.assets.logo == "") ? vpx(-5) : vpx(10);
+      //top: (gameData.assets.logo == "") ? gameTitle.bottom : detailslogo.bottom;
+      //topMargin: (gameData.assets.logo == "") ? vpx(-5) : vpx(10);
+      top: gameTitle.bottom; topMargin: vpx(-5)
     }
     height: vpx(1)
     spacing: vpx(6)
@@ -240,15 +230,16 @@ Item {
 
     // Release year
     GameGridMetaBox {
-      metatext: (gameData.release != "") ? gameData.year : ""
+      metatext: (gameData.release != "" ) ? gameData.year : ""
     }
 
+    /*// Number of supported players
     GameGridMetaBox {
       metatext: if (gameData.players > 1)
         gameData.players + " players"
       else
         gameData.players + " player"
-    }
+    }*/
 
     // Spacer
     Item {
@@ -276,7 +267,7 @@ Item {
       icon: "../assets/images/clock.svg"
       visible: (gameData.playTime > 0)
     }
-  }*/
+  }
 
   /*Text {
       id: gameDescription
