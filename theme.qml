@@ -42,30 +42,6 @@ FocusScope {
       visible: gamegrid.focus
     }
 
-    Text {
-      id: collectiontitle
-
-      anchors { top: parent.top; topMargin: vpx(26); left: menuicon.right; leftMargin: vpx(38)}
-      width: parent.width
-      text: api.currentCollection.name
-      color: "white"
-      font.pixelSize: vpx(30)
-      font.family: titleFont.name
-      font.bold: true
-      font.capitalization: Font.AllUppercase
-      elide: Text.ElideRight
-    }
-
-    DropShadow {
-        anchors.fill: collectiontitle
-        horizontalOffset: 0
-        verticalOffset: 0
-        radius: 8.0
-        samples: 17
-        color: "#80000000"
-        source: collectiontitle
-    }
-
     // Game details
     GameGridDetails {
       id: content

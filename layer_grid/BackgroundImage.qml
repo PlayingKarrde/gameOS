@@ -88,7 +88,7 @@ Item {
         width: parent.width
         height: parent.height
         anchors {
-            top: parent.top
+            top: parent.top; topMargin: vpx(200)
             right: parent.right
             bottom: parent.bottom
         }

@@ -11,6 +11,34 @@ Item {
   property bool issteam: false
   clip: true
 
+  Text {
+    id: collectiontitle
+
+    anchors {
+      top: parent.top; topMargin: vpx(35);
+      left: parent.left
+    }
+    width: parent.width
+    text: api.currentCollection.name
+    color: "white"
+    font.pixelSize: vpx(16)
+    font.family: globalFonts.sans
+    //font.capitalization: Font.AllUppercase
+    elide: Text.ElideRight
+    //opacity: 0.5
+  }
+
+  DropShadow {
+      anchors.fill: collectiontitle
+      horizontalOffset: 0
+      verticalOffset: 0
+      radius: 8.0
+      samples: 17
+      color: "#80000000"
+      source: collectiontitle
+      //opacity: 0.5
+  }
+
   // Logo
   Image {
     id: detailslogo
@@ -31,7 +59,7 @@ Item {
 
     opacity: 0
     source: (!issteam) ? gameData.assets.logo : ""
-    sourceSize { width: vpx(300); }
+    sourceSize { width: vpx(350); }
     fillMode: Image.PreserveAspectFit
     smooth: true
     visible: gameData.assets.logo || ""
@@ -147,21 +175,21 @@ Item {
       }
     }
 
-    /*Item {
+    Item {
       id: spacerhack
       Layout.preferredHeight: vpx(15)
-    }*/
+    }
 
     /*GameGridMetaBox {
       metatext: gameData.developerList[0]
     }*/
 
-    /*GameGridMetaBox {
+    GameGridMetaBox {
       metatext: if (gameData.players > 1)
         gameData.players + " players"
       else
         gameData.players + " player"
-    }*/
+    }
 
 
 
@@ -194,6 +222,8 @@ Item {
 
   }
 
+  /*// NOTE: Removing the meta details for the grid page.
+  // Placing on details page for cleaner look
   RowLayout {
     id: metadata
     anchors {
@@ -202,11 +232,6 @@ Item {
     }
     height: vpx(1)
     spacing: vpx(6)
-
-    // Platform name
-    /*GameGridMetaBox {
-      metatext: api.currentCollection.name
-    }*/
 
     // Developer
     GameGridMetaBox {
@@ -224,11 +249,6 @@ Item {
       else
         gameData.players + " player"
     }
-
-    /*GameGridMetaBox {
-      metatext: gameData.genreList[0]
-      visible: (gameData.genreList[0] != undefined)
-    }*/
 
     // Spacer
     Item {
@@ -256,7 +276,7 @@ Item {
       icon: "../assets/images/clock.svg"
       visible: (gameData.playTime > 0)
     }
-  }
+  }*/
 
   /*Text {
       id: gameDescription
