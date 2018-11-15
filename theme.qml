@@ -46,7 +46,7 @@ FocusScope {
     GameGridDetails {
       id: content
 
-      height: vpx(350)//vpx(280)
+      height: vpx(225)//vpx(280)
       width: parent.width - vpx(182)
       anchors { top: parent.top; }
 
