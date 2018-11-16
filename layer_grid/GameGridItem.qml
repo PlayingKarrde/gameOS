@@ -110,7 +110,7 @@ Item {
       }
     }
 
-    
+
     // Background for transparent images (to hide the border transition)
     Rectangle {
       width: root.gridItemWidth
@@ -252,35 +252,59 @@ Item {
       source: gamelogo
     }
 
-    Image {
-      id: favebg
-      source: "../assets/images/favebg.svg"
-      width: vpx(32)
-      height: vpx(32)
-      sourceSize { width: vpx(32); height: vpx(32)}
-      anchors { top: screenshot.top; topMargin: vpx(0); right: screenshot.right; rightMargin: vpx(0) }
-      visible: false
+    // Favourite tag
+    Item {
+      id: favetag
+      anchors { fill: parent; margins: vpx(4) }
+      //width: parent.width
+      //height: parent.height
 
-    }
-    ColorOverlay {
-        anchors.fill: favebg
-        source: favebg
-        color: "#FF9E12"
+      Image {
+        id: favebg
+        source: "../assets/images/favebg.svg"
+        width: vpx(32)
+        height: vpx(32)
+        sourceSize { width: vpx(32); height: vpx(32)}
+        anchors { top: parent.top; topMargin: vpx(0); right: parent.right; rightMargin: vpx(0) }
+        visible: false
+
+      }
+      ColorOverlay {
+          anchors.fill: favebg
+          source: favebg
+          color: "#FF9E12"
+          visible: game.favorite
+          z: 10
+      }
+
+      Image {
+        id: star
+        source: "../assets/images/star.svg"
+        width: vpx(13)
+        height: vpx(13)
+        sourceSize { width: vpx(32); height: vpx(32)}
+        anchors { top: parent.top; topMargin: vpx(3); right: parent.right; rightMargin: vpx(3) }
+        smooth: true
         visible: game.favorite
-        z: 10
+        z: 11
+      }
+      z: 12
+
+      layer.enabled: true
+      layer.effect: OpacityMask {
+        maskSource: Item {
+          width: favetag.width
+          height: favetag.height
+          Rectangle {
+            anchors.centerIn: parent
+            width: favetag.width
+            height: favetag.height
+            radius: cornerradius - vpx(1)
+          }
+        }
+      }
     }
 
-    Image {
-      id: star
-      source: "../assets/images/star.svg"
-      width: vpx(13)
-      height: vpx(13)
-      sourceSize { width: vpx(32); height: vpx(32)}
-      anchors { top: screenshot.top; topMargin: vpx(3); right: screenshot.right; rightMargin: vpx(3) }
-      smooth: true
-      visible: game.favorite
-      z: 11
-    }
 
     //////////////////////////
     // States for animation //

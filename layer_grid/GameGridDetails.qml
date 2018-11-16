@@ -79,6 +79,7 @@ Item {
         anchors { top: parent.top; topMargin: vpx(20) }
         width: parent.width
         font.capitalization: Font.AllUppercase
+
       }
 
       // DropShadow

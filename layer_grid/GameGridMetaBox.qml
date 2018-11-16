@@ -52,9 +52,9 @@ BorderImage {
     layer.effect: DropShadow {
         horizontalOffset: 0
         verticalOffset: 0
-        radius: 7.0
-        samples: 20
-        color: "#ff000000"
+        radius: 5.0
+        samples: 10
+        color: "#88000000"
         transparentBorder: true
     }
   }
