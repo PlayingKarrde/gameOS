@@ -11,7 +11,7 @@ Item {
 
   property var gameData: api.currentGame
   property bool isSteam: false
-  property int padding: vpx(30)
+  property int padding: vpx(50)
   property int cornerradius: vpx(8)
 
   signal launchRequested
@@ -53,9 +53,13 @@ Item {
       }
       width: parent.width - vpx(182)
       height: boxart.height + (padding*2) + navigationbox.height
-      color: "#1a1a1a"
+      color: "#ee1a1a1a"
       radius: cornerradius
+      opacity: 0
+      Behavior on opacity { NumberAnimation { duration: 100 } }
 
+      scale: 1.03
+      Behavior on scale { NumberAnimation { duration: 100 } }
       // DropShadow
       layer.enabled: true
       layer.effect: DropShadow {
@@ -79,13 +83,50 @@ Item {
         // NOTE: Boxart
         Image {
           id: boxart
-          width: vpx(250)
+          width: vpx(300)
           source: gameData.assets.boxFront
-          sourceSize { width: vpx(256); height: vpx(256) }
+          sourceSize { width: vpx(512); height: vpx(512) }
           fillMode: Image.PreserveAspectFit
           asynchronous: true
           visible: gameData.assets.boxFront || ""
           smooth: true
+
+          // Favourite tag
+          Item {
+            id: favetag
+            anchors { fill: parent; }
+            opacity: gameData.favorite ? 1 : 0
+            Behavior on opacity { NumberAnimation { duration: 100 } }
+
+            Image {
+              id: favebg
+              source: "../assets/images/favebg.svg"
+              width: vpx(32)
+              height: vpx(32)
+              sourceSize { width: vpx(32); height: vpx(32)}
+              anchors { top: parent.top; topMargin: vpx(0); right: parent.right; rightMargin: vpx(0) }
+              visible: false
+
+            }
+            ColorOverlay {
+                anchors.fill: favebg
+                source: favebg
+                color: "#FF9E12"
+                z: 10
+            }
+
+            Image {
+              id: star
+              source: "../assets/images/star.svg"
+              width: vpx(13)
+              height: vpx(13)
+              sourceSize { width: vpx(32); height: vpx(32)}
+              anchors { top: parent.top; topMargin: vpx(3); right: parent.right; rightMargin: vpx(3) }
+              smooth: true
+              z: 11
+            }
+            z: 12
+          }
 
           // Round the corners
           layer.enabled: true
@@ -110,7 +151,7 @@ Item {
           id: details
           anchors {
             top: parent.top; topMargin: vpx(0)
-            left: boxart.right; leftMargin: vpx(20)
+            left: boxart.right; leftMargin: vpx(30)
             bottom: parent.bottom; right: parent.right
           }
 
@@ -219,9 +260,9 @@ Item {
             width: parent.width
             height: boxart.height - y//parent.height - navigationbox.height
             anchors {
-              top: metadata.bottom; topMargin: vpx(35);
+              top: metadata.bottom; topMargin: vpx(60);
             }
-            //horizontalAlignment: Text.AlignJustify
+            horizontalAlignment: Text.AlignJustify
             text: api.currentGame.summary || api.currentGame.description
             font.pixelSize: vpx(22)
             font.family: "Open Sans"
@@ -258,14 +299,13 @@ Item {
             width: parent.width
             height: parent.height
             anchors.fill: parent
-            
+
             // Launch button
             GamePanelButton {
               id: launchBtn
               text: "Launch"
               width: parent.width/3
               height: parent.height
-              focus: true
 
               KeyNavigation.left: backBtn
               KeyNavigation.right: faveBtn
@@ -279,6 +319,18 @@ Item {
                 focus = true;
                 api.currentGame.launch();
               }
+
+              /*Image {
+                height: vpx(20)
+                sourceSize { height: vpx(20) }
+                source: "../assets/images/gamepad.svg"
+                anchors.centerIn: parent
+                fillMode: Image.PreserveAspectFit
+                opacity: parent.focus ? 1 : 0.5
+                Behavior on opacity { NumberAnimation { duration: 100 } }
+                scale: parent.focus ? 1.2 : 1
+                Behavior on scale { NumberAnimation { duration: 100 } }
+              }*/
             }
 
             Rectangle {
@@ -298,6 +350,8 @@ Item {
               function toggleFav() {
                   if (api.currentGame)
                       api.currentGame.favorite = !api.currentGame.favorite;
+
+                  toggleSound.play()
               }
 
               KeyNavigation.left: launchBtn
@@ -313,6 +367,17 @@ Item {
                   focus = true;
                   toggleFav();
               }
+
+              /*Image {
+                width: vpx(24); height: vpx(24)
+                sourceSize { width: vpx(24); height: vpx(24) }
+                source: "../assets/images/star.svg"
+                anchors.centerIn: parent
+                opacity: parent.focus ? 1 : 0.5
+                Behavior on opacity { NumberAnimation { duration: 100 } }
+                scale: parent.focus ? 1.2 : 1
+                Behavior on scale { NumberAnimation { duration: 100 } }
+              }*/
             }
 
             Rectangle {
@@ -338,7 +403,7 @@ Item {
               }
               onClicked: {
                 focus = true;
-                root.detailsCloseRequested();
+                detailsCloseRequested();
               }
             }
 
@@ -363,4 +428,15 @@ Item {
 
     }
 
+    function intro() {
+        backgroundbox.opacity = 1;
+        backgroundbox.scale = 1;
+        menuIntroSound.play()
+    }
+
+    function outro() {
+        backgroundbox.opacity = 0;
+        backgroundbox.scale = 1.03;
+        menuIntroSound.play()
+    }
 }

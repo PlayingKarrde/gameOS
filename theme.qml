@@ -31,6 +31,7 @@ FocusScope {
         left: parent.left; right: parent.right
         top: parent.top; bottom: parent.bottom
       }
+
     }
 
     Image {
@@ -72,7 +73,7 @@ FocusScope {
         id: gamegrid
 
         focus: true
-
+        Behavior on opacity { OpacityAnimator { duration: 100 } }
         gridWidth: parent.width - vpx(164)
         height: parent.height
 
@@ -94,7 +95,6 @@ FocusScope {
 
   GameDetails {
     id: gamedetails
-    visible: false
     anchors {
       left: parent.left; right: parent.right
       top: parent.top; bottom: parent.bottom
@@ -139,14 +139,16 @@ FocusScope {
       // Close the details
       gamegrid.focus = true
       gamegrid.visible = true
-      gamedetails.visible = false
-      content.visible = true
+      content.opacity = 1
+      backgroundimage.dimopacity = 0.97
+      gamedetails.outro()
     } else {
       // Open details panel
       gamedetails.focus = true
-      gamedetails.visible = true
       gamegrid.visible = false
-      content.visible = false
+      content.opacity = 0
+      backgroundimage.dimopacity = 0
+      gamedetails.intro()
     }
   }
 
@@ -183,6 +185,12 @@ FocusScope {
   SoundEffect {
       id: menuIntroSound
       source: "assets/audio/slide-scissors.wav"
+      volume: 0.2
+  }
+
+  SoundEffect {
+      id: toggleSound
+      source: "assets/audio/tap-sizzle.wav"
       volume: 0.2
   }
 
