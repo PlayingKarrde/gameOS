@@ -2,6 +2,7 @@ import QtQuick 2.8
 import QtGraphicalEffects 1.0
 import QtMultimedia 5.9
 import QtQuick.Layouts 1.11
+import "qrc:/qmlutils" as PegasusUtils
 import "../layer_grid"
 import "../utils.js" as Utils
 
@@ -11,37 +12,38 @@ Item {
   property var gameData: api.currentGame
   property bool isSteam: false
   property int padding: vpx(30)
+  property int cornerradius: vpx(8)
 
   signal launchRequested
   signal detailsCloseRequested
   signal filtersRequested
 
   Keys.onPressed: {
-      if (event.isAutoRepeat)
-          return;
+    if (event.isAutoRepeat)
+        return;
 
-      if (api.keys.isAccept(event.key)) {
-          event.accepted = true;
-          api.collections.index = gameList.currentIndex
-          root.launchRequested()
-          return;
-      }
-      if (api.keys.isDetails(event.key)) {
+    if (api.keys.isAccept(event.key)) {
+        event.accepted = true;
+        api.collections.index = gameList.currentIndex
+        root.launchRequested()
+        return;
+    }
+    if (api.keys.isDetails(event.key)) {
+        event.accepted = true;
+        detailsCloseRequested();
+        return;
+    }
+    if (api.keys.isCancel(event.key)) {
           event.accepted = true;
           detailsCloseRequested();
           return;
       }
-      if (api.keys.isCancel(event.key)) {
-            event.accepted = true;
-            detailsCloseRequested();
-            return;
-        }
-      if (api.keys.isFilters(event.key)) {
-          event.accepted = true;
-          filtersRequested();
-          return;
-      }
+    if (api.keys.isFilters(event.key)) {
+        event.accepted = true;
+        filtersRequested();
+        return;
     }
+  }
 
     Rectangle {
       id: backgroundbox
@@ -49,10 +51,10 @@ Item {
         horizontalCenter: parent.horizontalCenter
         verticalCenter: parent.verticalCenter
       }
-      width: vpx(1000)
-      height: boxart.height + (padding*2)
+      width: parent.width - vpx(182)
+      height: boxart.height + (padding*2) + navigationbox.height
       color: "#1a1a1a"
-      radius: vpx(8)
+      radius: cornerradius
 
       // DropShadow
       layer.enabled: true
@@ -80,7 +82,7 @@ Item {
           width: vpx(250)
           source: gameData.assets.boxFront
           sourceSize { width: vpx(256); height: vpx(256) }
-          fillMode: Image.PreserveAspectCrop
+          fillMode: Image.PreserveAspectFit
           asynchronous: true
           visible: gameData.assets.boxFront || ""
           smooth: true
@@ -107,16 +109,15 @@ Item {
         Item {
           id: details
           anchors {
-            top: parent.top; left: boxart.right; leftMargin: vpx(15)
+            top: parent.top; topMargin: vpx(0)
+            left: boxart.right; leftMargin: vpx(20)
             bottom: parent.bottom; right: parent.right
           }
 
           Text {
             id: gameTitle
 
-            anchors {
-              top: parent.top;
-            }
+            anchors { top: parent.top; }
 
             width: parent.width - wreath.width
             text: api.currentGame.title
@@ -130,9 +131,7 @@ Item {
 
           RowLayout {
             id: metadata
-            anchors {
-              top: gameTitle.bottom; topMargin: vpx(-5)
-            }
+            anchors { top: gameTitle.bottom; topMargin: vpx(0) }
             height: vpx(1)
             spacing: vpx(6)
 
@@ -150,12 +149,14 @@ Item {
             Item {
               Layout.preferredWidth: vpx(5)
             }
+
             Rectangle {
               id: spacer
               Layout.preferredWidth: vpx(2)
               Layout.fillHeight: true
               opacity: 0.5
             }
+
             Item {
               Layout.preferredWidth: vpx(5)
             }
@@ -177,10 +178,8 @@ Item {
           Image {
             id: wreath
             source: (gameData.rating > 0.89) ? "../assets/images/wreath-gold.svg" : "../assets/images/wreath.svg"
-            anchors {
-              top: parent.top; right: parent.right
-            }
-            asynchronous: true
+            anchors { top: parent.top; right: parent.right; rightMargin: vpx(0) }
+            asynchronous: false
             fillMode: Image.PreserveAspectFit
             smooth: true
             width: vpx(75)
@@ -217,18 +216,16 @@ Item {
           // description
           Text {
             id: gameDescription
-
             width: parent.width
-            height: vpx(200)
+            height: boxart.height - y//parent.height - navigationbox.height
             anchors {
-              top: metadata.bottom; topMargin: vpx(30)
-              left: parent.left
+              top: metadata.bottom; topMargin: vpx(35);
             }
-
+            //horizontalAlignment: Text.AlignJustify
             text: api.currentGame.summary || api.currentGame.description
             font.pixelSize: vpx(22)
             font.family: "Open Sans"
-            //font.weight: Font.Light
+            //textFormat: Text.RichText
             color: "#fff"
             elide: Text.ElideRight
             wrapMode: Text.WordWrap
@@ -236,6 +233,130 @@ Item {
 
         }
 
+      }
+
+      // Navigation
+      Item {
+        id: navigation
+        anchors.fill: parent
+        width: parent.width
+        height: parent.height
+
+        Rectangle {
+          id: navigationbox
+          anchors {
+            bottom: parent.bottom;
+            left: parent.left; right: parent.right;
+          }
+          color: "#16ffffff"
+          width: parent.width
+          height: vpx(60)
+
+          // Buttons
+          Row {
+            id: panelbuttons
+            width: parent.width
+            height: parent.height
+            anchors.fill: parent
+
+            // Launch button
+            GamePanelButton {
+              id: launchBtn
+              text: "Launch"
+              width: parent.width/3
+              height: parent.height
+              focus: true
+
+              KeyNavigation.left: backBtn
+              KeyNavigation.right: faveBtn
+              Keys.onPressed: {
+                if (api.keys.isAccept(event.key) && !event.isAutoRepeat) {
+                  event.accepted = true;
+                  api.currentGame.launch();
+                }
+              }
+              onClicked: {
+                focus = true;
+                api.currentGame.launch();
+              }
+            }
+
+            Item {
+              width: vpx(2)
+              height: parent.height
+            }
+
+            // Favourite button
+            GamePanelButton {
+              id: faveBtn
+              text: "Favourite"
+              width: parent.width/3
+              height: parent.height
+              property bool isFavorite: (gameData && gameData.favorite) || false
+
+              function toggleFav() {
+                  if (api.currentGame)
+                      api.currentGame.favorite = !api.currentGame.favorite;
+              }
+
+              KeyNavigation.left: launchBtn
+              KeyNavigation.right: backBtn
+              Keys.onPressed: {
+                  if (api.keys.isAccept(event.key) && !event.isAutoRepeat) {
+                      event.accepted = true;
+                      toggleFav();
+                  }
+              }
+
+              onClicked: {
+                  focus = true;
+                  toggleFav();
+              }
+            }
+
+            Item {
+              width: vpx(2)
+              height: parent.height
+            }
+
+            // Back button
+            GamePanelButton {
+              id: backBtn
+              text: "Close"
+              width: parent.width/3
+              height: parent.height
+
+              KeyNavigation.left: faveBtn
+              KeyNavigation.right: launchBtn
+              Keys.onPressed: {
+                if (api.keys.isAccept(event.key) && !event.isAutoRepeat) {
+                  event.accepted = true;
+                  detailsCloseRequested();
+                }
+              }
+              onClicked: {
+                focus = true;
+                detailsCloseRequested();
+              }
+            }
+
+          }
+        }
+
+        // Round those corners!
+        layer.enabled: true
+        layer.effect: OpacityMask {
+          maskSource: Item {
+            width: navigation.width
+            height: navigation.height
+            Rectangle {
+              anchors.centerIn: parent
+              width: navigation.width
+              height: navigation.height
+              radius: cornerradius
+            }
+          }
+        }
       }
 
     }
