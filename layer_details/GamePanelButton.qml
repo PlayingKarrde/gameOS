@@ -8,7 +8,7 @@ Rectangle {
 
     property alias text: label.text
 
-    color: focus ? "#4ae" : (mouseArea.containsMouse ? "#999" : "transparent")
+    color: focus ? "#FF9E12" : (mouseArea.containsMouse ? "#FF9E12" : "transparent")
     width: parent.width
     //border.width: vpx(1)
 
@@ -21,9 +21,9 @@ Rectangle {
 
     Text {
         id: label
-        color: root.focus ? "#eee" : "#666"
+        color: (root.focus || mouseArea.containsMouse) ? "#fff" : "#666"
         font {
-            pixelSize: vpx(18)
+            pixelSize: vpx(25)
             family: globalFonts.sans
             bold: true
         }

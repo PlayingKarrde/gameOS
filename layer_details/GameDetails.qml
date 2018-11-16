@@ -22,12 +22,12 @@ Item {
     if (event.isAutoRepeat)
         return;
 
-    if (api.keys.isAccept(event.key)) {
+    /*if (api.keys.isAccept(event.key)) {
         event.accepted = true;
         api.collections.index = gameList.currentIndex
         root.launchRequested()
         return;
-    }
+    }*/
     if (api.keys.isDetails(event.key)) {
         event.accepted = true;
         detailsCloseRequested();
@@ -38,11 +38,11 @@ Item {
           detailsCloseRequested();
           return;
       }
-    if (api.keys.isFilters(event.key)) {
+    /*if (api.keys.isFilters(event.key)) {
         event.accepted = true;
         filtersRequested();
         return;
-    }
+    }*/
   }
 
     Rectangle {
@@ -258,7 +258,7 @@ Item {
             width: parent.width
             height: parent.height
             anchors.fill: parent
-
+            
             // Launch button
             GamePanelButton {
               id: launchBtn
@@ -281,9 +281,10 @@ Item {
               }
             }
 
-            Item {
-              width: vpx(2)
+            Rectangle {
+              width: vpx(1)
               height: parent.height
+              color: "#1a1a1a"
             }
 
             // Favourite button
@@ -314,9 +315,10 @@ Item {
               }
             }
 
-            Item {
-              width: vpx(2)
+            Rectangle {
+              width: vpx(1)
               height: parent.height
+              color: "#1a1a1a"
             }
 
             // Back button
@@ -336,7 +338,7 @@ Item {
               }
               onClicked: {
                 focus = true;
-                detailsCloseRequested();
+                root.detailsCloseRequested();
               }
             }
 
