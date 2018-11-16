@@ -53,7 +53,7 @@ Item {
       }
       width: parent.width - vpx(182)
       height: boxart.height + (padding*2) + navigationbox.height
-      color: "#ee1a1a1a"
+      color: "#1a1a1a"//"#ee1a1a1a"
       radius: cornerradius
       opacity: 0
       Behavior on opacity { NumberAnimation { duration: 100 } }
@@ -69,6 +69,59 @@ Item {
           samples: 17
           color: "#80000000"
           transparentBorder: true
+      }
+
+      // Background art
+      Item {
+        id: bgart
+        width: vpx(500)
+        height: parent.height - navigationbox.height
+
+        Image {
+          id: screenshot
+          width: parent.width
+          height: parent.height
+          source: gameData.assets.screenshots[0] || ""
+          fillMode: Image.PreserveAspectCrop
+          anchors {
+            top: parent.top;
+            verticalCenter: parent.verticalCenter
+          }
+        }
+
+        // Fade off
+        LinearGradient {
+          z: parent.z + 1
+          width: parent.width
+          height: parent.height
+          anchors {
+            top: parent.top;// topMargin: vpx(200)
+            left: parent.left;// leftMargin: vpx(200)
+            right: parent.right
+            bottom: parent.bottom
+          }
+          start: Qt.point(0, 0)
+          end: Qt.point(width, 0)
+          gradient: Gradient {
+            GradientStop { position: 0.0; color: "#ee1a1a1a" }
+            GradientStop { position: 0.7; color: "#ff1a1a1a" }
+          }
+        }
+
+        // Round those corners!
+        layer.enabled: true
+        layer.effect: OpacityMask {
+          maskSource: Item {
+            width: backgroundbox.width
+            height: backgroundbox.height
+            Rectangle {
+              anchors.centerIn: backgroundbox
+              width: backgroundbox.width
+              height: backgroundbox.height
+              radius: cornerradius
+            }
+          }
+        }
       }
 
       Item {
@@ -409,6 +462,8 @@ Item {
 
           }
         }
+
+
 
         // Round those corners!
         layer.enabled: true
