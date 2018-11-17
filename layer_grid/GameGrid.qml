@@ -117,6 +117,7 @@ FocusScope {
       game: modelData
       z: (selected) ? 100 : 1
 
+      onDetails: detailsRequested();
       onClicked: GridView.view.currentIndex = index
 
     }
