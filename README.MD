@@ -1,6 +1,6 @@
 # gameOS v0.2
 
-![gameOS Pegasus theme](https://i.imgur.com/LhioEpO.png)
+![gameOS Pegasus theme](https://i.imgur.com/8QORO2z.png)
 
 ![gameOS Pegasus theme image 2](https://i.imgur.com/hIo4wzK.png)
 
