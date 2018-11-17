@@ -12,6 +12,7 @@ Item {
   property var collection: api.currentCollection
   property bool steam: false
 
+  signal details
   signal clicked
 
 
@@ -374,7 +375,7 @@ Item {
       onWheel: {}
       onClicked: {
         if (selected)
-          api.currentGame.launch()
+          root.details()
         else
           root.clicked()
       }
