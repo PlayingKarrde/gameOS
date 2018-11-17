@@ -10,10 +10,10 @@ An exe has been provided to allow easy sorting of Skraper.net meta files. Simply
 
 
 v0.2
+- Details page
+- Streamlined interface
 - Various bug fixes
 - Various QOL improvements
-- Set up for new pages (details for example)
-- Streamlined interface
 
 v0.1
 - Initial release
