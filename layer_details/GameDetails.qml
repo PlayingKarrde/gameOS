@@ -400,7 +400,7 @@ Item {
             // Favourite button
             GamePanelButton {
               id: faveBtn
-              text: "Favourite"
+              text: api.currentGame.favorite ? "Unfavorite" : "Favorite"
               width: parent.width/3
               height: parent.height
               property bool isFavorite: (gameData && gameData.favorite) || false
