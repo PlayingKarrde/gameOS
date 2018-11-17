@@ -5,7 +5,7 @@ Item {
   id: root
   property var gameData: api.currentGame
   property var collection: api.currentCollection
-  property real dimopacity: 0.97
+  property real dimopacity: 0.96
 
 
   property string bgSource: gameData ? gameData.assets.background || gameData.assets.screenshots[0] || "../assets/images/defaultbg.jpg" : ""
