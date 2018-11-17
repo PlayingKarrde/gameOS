@@ -81,7 +81,7 @@ FocusScope {
     Keys.onPressed: {
         if (api.keys.isAccept(event.key) && !event.isAutoRepeat) {
             event.accepted = true;
-            root.launchRequested()
+            root.detailsRequested()
         }
         if (api.keys.isPageUp(event.key) || api.keys.isPageDown(event.key)) {
             event.accepted = true;

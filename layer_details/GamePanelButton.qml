@@ -7,6 +7,7 @@ Rectangle {
     signal clicked()
 
     property alias text: label.text
+    //property bool activated: false
 
     color: focus ? "#FF9E12" : (mouseArea.containsMouse ? "#FF9E12" : "transparent")
     width: parent.width
