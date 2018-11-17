@@ -1,8 +1,8 @@
 # gameOS v0.2
 
-![gameOS Pegasus theme](https://i.imgur.com/undefined.png)
+![gameOS Pegasus theme](https://i.imgur.com/BdCGuB8.png)
 
-![gameOS Pegasus theme](https://i.imgur.com/ubTiOAr.png)
+![gameOS Pegasus theme image 2](https://i.imgur.com/ubTiOAr.png)
 
 gameOS theme for Pegasus Frontend
 
