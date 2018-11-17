@@ -95,6 +95,9 @@ FocusScope {
 
   GameDetails {
     id: gamedetails
+
+    property bool active : false
+
     anchors {
       left: parent.left; right: parent.right
       top: parent.top; bottom: parent.bottom
@@ -135,16 +138,18 @@ FocusScope {
   }
 
   function toggleDetails() {
-    if (gamedetails.focus) {
+    if (gamedetails.active) {
       // Close the details
       gamegrid.focus = true
       gamegrid.visible = true
       content.opacity = 1
       backgroundimage.dimopacity = 0.97
+      gamedetails.active = false
       gamedetails.outro()
     } else {
       // Open details panel
       gamedetails.focus = true
+      gamedetails.active = true
       gamegrid.visible = false
       content.opacity = 0
       backgroundimage.dimopacity = 0

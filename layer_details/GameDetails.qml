@@ -18,31 +18,36 @@ Item {
   signal detailsCloseRequested
   signal filtersRequested
 
+  onFocusChanged: {
+    if(focus)
+      launchBtn.focus = true
+  }
+
+
   Keys.onPressed: {
     if (event.isAutoRepeat)
-        return;
+      return;
 
-    /*if (api.keys.isAccept(event.key)) {
-        event.accepted = true;
-        api.collections.index = gameList.currentIndex
-        root.launchRequested()
-        return;
-    }*/
+    if (api.keys.isAccept(event.key)) {
+      event.accepted = true;
+      root.launchRequested()
+      return;
+    }
     if (api.keys.isDetails(event.key)) {
-        event.accepted = true;
-        detailsCloseRequested();
-        return;
+      event.accepted = true;
+      detailsCloseRequested();
+      return;
     }
     if (api.keys.isCancel(event.key)) {
-          event.accepted = true;
-          detailsCloseRequested();
-          return;
-      }
-    /*if (api.keys.isFilters(event.key)) {
-        event.accepted = true;
-        filtersRequested();
-        return;
-    }*/
+      event.accepted = true;
+      detailsCloseRequested();
+      return;
+    }
+  }
+
+  function menucheck() {
+    if (launchBtn.activated)
+      api.currentGame.launch();
   }
 
     Rectangle {
@@ -115,7 +120,7 @@ Item {
             width: backgroundbox.width
             height: backgroundbox.height
             Rectangle {
-              anchors.centerIn: backgroundbox
+              anchors.centerIn: parent
               width: backgroundbox.width
               height: backgroundbox.height
               radius: cornerradius
@@ -451,12 +456,12 @@ Item {
               Keys.onPressed: {
                 if (api.keys.isAccept(event.key) && !event.isAutoRepeat) {
                   event.accepted = true;
-                  detailsCloseRequested();
+                  toggleDetails();
                 }
               }
               onClicked: {
                 focus = true;
-                detailsCloseRequested();
+                toggleDetails();
               }
             }
 
