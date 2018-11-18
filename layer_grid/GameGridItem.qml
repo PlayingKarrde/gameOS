@@ -54,7 +54,7 @@ Item {
 
   Timer {
     id: fadescreenshot
-    interval: 3500
+    interval: 1000
     onTriggered: {
       screenshot.opacity = 0;
     }
