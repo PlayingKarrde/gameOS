@@ -77,7 +77,7 @@ Item {
   }
 
   function toggleVideo() {
-    if (gameData.assets.screenshots.length) {
+    if (gameData.assets.videos.length) {
       if (showVideo) {
         // BOXART
         showVideo = false
