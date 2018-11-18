@@ -23,6 +23,7 @@ Item {
       launchBtn.focus = true
   }
 
+  visible: (backgroundbox.opacity == 0) ? false : true
 
   Keys.onPressed: {
     if (event.isAutoRepeat)
@@ -358,12 +359,19 @@ Item {
             height: parent.height
             anchors.fill: parent
 
+
             // Launch button
             GamePanelButton {
               id: launchBtn
               text: "Launch"
               width: parent.width/3
               height: parent.height
+
+              onFocusChanged: {
+                if (focus) {
+                  navSound.play()
+                }
+              }
 
               KeyNavigation.left: backBtn
               KeyNavigation.right: faveBtn
@@ -400,10 +408,15 @@ Item {
             // Favourite button
             GamePanelButton {
               id: faveBtn
-              text: "Favourite"
+              property bool isFavorite: (gameData && gameData.favorite) || false
+              text: isFavorite ? "Unfavorite" : "Favorite"
               width: parent.width/3
               height: parent.height
-              property bool isFavorite: (gameData && gameData.favorite) || false
+
+              onFocusChanged: {
+                if (focus)
+                  navSound.play()
+              }
 
               function toggleFav() {
                   if (api.currentGame)
@@ -412,7 +425,7 @@ Item {
                   toggleSound.play()
               }
 
-              KeyNavigation.left: launchBtn
+              KeyNavigation.left: launchBtn;
               KeyNavigation.right: backBtn
               Keys.onPressed: {
                   if (api.keys.isAccept(event.key) && !event.isAutoRepeat) {
@@ -450,6 +463,10 @@ Item {
               text: "Close"
               width: parent.width/3
               height: parent.height
+              onFocusChanged: {
+                if (focus)
+                  navSound.play()
+              }
 
               KeyNavigation.left: faveBtn
               KeyNavigation.right: launchBtn
