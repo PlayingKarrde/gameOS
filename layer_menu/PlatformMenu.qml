@@ -69,12 +69,11 @@ Item {
       anchors.fill: parent
     }
 
-    GaussianBlur {
+    FastBlur  {
       id: blur
       anchors.fill: effectSource
       source: effectSource
-      radius: 24
-      samples: 32
+      radius: 64
     }
 
   }

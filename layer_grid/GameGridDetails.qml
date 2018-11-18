@@ -11,6 +11,7 @@ Item {
   anchors.horizontalCenter: parent.horizontalCenter
   clip: true
 
+
   Text {
     id: collectiontitle
 
@@ -73,11 +74,11 @@ Item {
       visible: gameData.assets.logo
   }*/
 
+
   Text {
     id: gameTitle
 
     anchors {
-      //top: parent.top; topMargin: vpx(60)
       verticalCenter: parent.verticalCenter
     }
     width: vpx(850)

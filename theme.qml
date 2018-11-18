@@ -43,13 +43,45 @@ FocusScope {
       visible: gamegrid.focus
     }
 
+    Text {
+      id: collectiontitle
+
+      anchors {
+        top: parent.top; topMargin: vpx(35);
+        //horizontalCenter: menuicon.horizontalCenter
+        left: menuicon.right; leftMargin: vpx(35)
+      }
+
+      width: parent.width
+      text: api.currentCollection.name
+      color: "white"
+      font.pixelSize: vpx(16)
+      font.family: globalFonts.sans
+      //font.capitalization: Font.AllUppercase
+      elide: Text.ElideRight
+      //opacity: 0.5
+    }
+
+    DropShadow {
+        anchors.fill: collectiontitle
+        horizontalOffset: 0
+        verticalOffset: 0
+        radius: 8.0
+        samples: 17
+        color: "#80000000"
+        source: collectiontitle
+        //opacity: 0.5
+    }
+
+
+
     // Game details
     GameGridDetails {
       id: content
 
-      height: vpx(225)//vpx(280)
+      height: vpx(200)//vpx(280)
       width: parent.width - vpx(182)
-      anchors { top: parent.top; }
+      anchors { top: menuicon.bottom; }
 
       // Text doesn't look so good blurred so fade it out when blurring
       opacity: 1
