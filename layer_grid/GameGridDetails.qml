@@ -13,6 +13,69 @@ Item {
 
 
   Text {
+    id: collectiontitle
+
+    anchors {
+      top: parent.top; topMargin: vpx(35);
+      left: parent.left
+    }
+    width: parent.width
+    text: (api.filters.current.enabled) ? api.currentCollection.name + " | Favorites" : api.currentCollection.name
+    color: "white"
+    font.pixelSize: vpx(16)
+    font.family: globalFonts.sans
+    //font.capitalization: Font.AllUppercase
+    elide: Text.ElideRight
+    //opacity: 0.5
+  }
+
+  DropShadow {
+      anchors.fill: collectiontitle
+      horizontalOffset: 0
+      verticalOffset: 0
+      radius: 8.0
+      samples: 17
+      color: "#80000000"
+      source: collectiontitle
+      //opacity: 0.5
+  }
+
+  /*// Logo
+  // NOTE: Tried it but doubling up with the grid logo doesn't make sense.
+  // Maybe if using boxart for grid it could work
+  Image {
+    id: detailslogo
+
+    anchors {
+      //top: parent.top;  topMargin: vpx(60);
+      verticalCenter: parent.verticalCenter
+      left: parent.left
+    }
+
+    asynchronous: true
+
+    opacity: 0
+    source: (!issteam) ? gameData.assets.logo : ""
+    sourceSize { width: vpx(350); }
+    fillMode: Image.PreserveAspectFit
+    smooth: true
+    visible: gameData.assets.logo || ""
+    z:5
+  }
+
+  DropShadow {
+      anchors.fill: detailslogo
+      horizontalOffset: 0
+      verticalOffset: 0
+      radius: 8.0
+      samples: 17
+      color: "#80000000"
+      source: detailslogo
+      visible: gameData.assets.logo
+  }*/
+
+
+  Text {
     id: gameTitle
 
     anchors {

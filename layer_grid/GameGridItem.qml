@@ -40,6 +40,7 @@ Item {
 
   }
 
+
   Timer {
     id: videoDelay
     interval: 100
@@ -257,6 +258,8 @@ Item {
     Item {
       id: favetag
       anchors { fill: parent; margins: vpx(4) }
+      opacity: game.favorite ? 1 : 0
+      Behavior on opacity { NumberAnimation { duration: 100 } }
       //width: parent.width
       //height: parent.height
 
@@ -274,7 +277,6 @@ Item {
           anchors.fill: favebg
           source: favebg
           color: "#FF9E12"
-          visible: game.favorite
           z: 10
       }
 
@@ -286,7 +288,6 @@ Item {
         sourceSize { width: vpx(32); height: vpx(32)}
         anchors { top: parent.top; topMargin: vpx(3); right: parent.right; rightMargin: vpx(3) }
         smooth: true
-        visible: game.favorite
         z: 11
       }
       z: 12
