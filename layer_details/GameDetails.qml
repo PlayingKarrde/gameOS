@@ -51,11 +51,7 @@ Item {
       closedetails();
       return;
     }
-    if (api.keys.isPrevPage(event.key))
-    {
-      toggleVideo()
-    }
-    if (api.keys.isNextPage(event.key))
+    if (api.keys.isNextPage(event.key) || api.keys.isPageDown(event.key) || api.keys.isPrevPage(event.key) || api.keys.isPageUp(event.key))
     {
       toggleVideo()
     }
