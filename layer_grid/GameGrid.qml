@@ -25,7 +25,7 @@ FocusScope {
 
       if (api.keys.isDetails(event.key)) {
           event.accepted = true;
-          detailsRequested();
+          toggleFav();
           return;
       }
       if (api.keys.isCancel(event.key)) {
@@ -35,16 +35,34 @@ FocusScope {
         }
       if (api.keys.isFilters(event.key)) {
           event.accepted = true;
-          toggleFav();
+          toggleFilters()
+
           //filtersRequested();
           return;
       }
   }
 
+
+
   //property bool isFavorite: (gameData && gameData.favorite) || false
   function toggleFav() {
       if (api.currentGame)
           api.currentGame.favorite = !api.currentGame.favorite;
+  }
+
+  function toggleFilters() {
+    if (api.filters.favorite) {
+      api.filters.playerCount = 1
+      api.filters.favorite = false
+      api.filters.current.enabled = false
+    } else {
+      api.filters.playerCount = 1
+      api.filters.favorite = true
+      api.filters.current.enabled = true
+    }
+
+    //api.filters.index = 0
+
   }
 
 

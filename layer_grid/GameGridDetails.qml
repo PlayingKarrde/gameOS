@@ -19,7 +19,7 @@ Item {
       left: parent.left
     }
     width: parent.width
-    text: api.currentCollection.name
+    text: (api.filters.current.enabled) ? api.currentCollection.name + " | Favorites" : api.currentCollection.name
     color: "white"
     font.pixelSize: vpx(16)
     font.family: globalFonts.sans
