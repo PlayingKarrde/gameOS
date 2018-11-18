@@ -13,14 +13,18 @@ Item {
   property bool isSteam: false
   property int padding: vpx(50)
   property int cornerradius: vpx(8)
+  property bool showVideo: false
+  property int videooffset: vpx(330)
+  property int numbuttons: (gameData.assets.videos.length) ? 4 : 3
 
   signal launchRequested
   signal detailsCloseRequested
   signal filtersRequested
 
   onFocusChanged: {
-    if(focus)
+    if(focus) {
       launchBtn.focus = true
+    }
   }
 
   visible: (backgroundbox.opacity == 0) ? false : true
@@ -36,19 +40,75 @@ Item {
     }
     if (api.keys.isDetails(event.key)) {
       event.accepted = true;
-      detailsCloseRequested();
+      if (api.currentGame)
+          api.currentGame.favorite = !api.currentGame.favorite;
+
+      toggleSound.play()
       return;
     }
     if (api.keys.isCancel(event.key)) {
       event.accepted = true;
-      detailsCloseRequested();
+      closedetails();
       return;
+    }
+    if (api.keys.isPrevPage(event.key))
+    {
+      toggleVideo()
+    }
+    if (api.keys.isNextPage(event.key))
+    {
+      toggleVideo()
     }
   }
 
-  function menucheck() {
-    if (launchBtn.activated)
-      api.currentGame.launch();
+  Timer {
+    id: videoDelay
+    interval: 100
+    onTriggered: {
+      if (gameData.assets.videos.length) {
+        videoPreviewLoader.sourceComponent = videoPreviewWrapper;
+        fadescreenshot.restart();
+      }
+    }
+  }
+
+  Timer {
+    id: fadescreenshot
+    interval: 500
+    onTriggered: {
+      screenshot.opacity = 0;
+    }
+  }
+
+  function toggleVideo() {
+    if (gameData.assets.screenshots.length) {
+      if (showVideo) {
+        // BOXART
+        showVideo = false
+        boxart.x = boxart.x + videooffset
+        boxart.opacity = 1
+        details.anchors.rightMargin = 0
+        bgGradient.width = bgGradient.parent.width
+        videoPreviewLoader.sourceComponent = undefined;
+        fadescreenshot.stop();
+        screenshot.opacity = 1
+      } else {
+        // VIDEO
+        showVideo = true
+        boxart.x = boxart.x - videooffset
+        boxart.opacity = 0
+        details.anchors.rightMargin = videooffset
+        bgGradient.width = bgGradient.width/20
+        videoDelay.restart();
+      }
+    }
+  }
+
+  function closedetails() {
+    if (showVideo)
+      toggleVideo();
+
+    detailsCloseRequested();
   }
 
     Rectangle {
@@ -82,7 +142,45 @@ Item {
         id: bgart
         width: vpx(500)
         height: parent.height - navigationbox.height
+        anchors.right: parent.right
 
+        // Video preview
+        Component {
+          id: videoPreviewWrapper
+          Video {
+            source: gameData.assets.videos.length ? gameData.assets.videos[0] : ""
+            anchors.fill: parent
+            fillMode: VideoOutput.PreserveAspectCrop
+            muted: false
+            loops: MediaPlayer.Infinite
+            autoPlay: true
+          }
+
+        }
+
+        // Video
+        Loader {
+          id: videoPreviewLoader
+          asynchronous: true
+          anchors {
+            fill: parent
+          }
+          layer.enabled: true
+          layer.effect: OpacityMask {
+            maskSource: Item {
+              width: videoPreviewLoader.width
+              height: videoPreviewLoader.height
+              Rectangle {
+                anchors.centerIn: parent
+                width: videoPreviewLoader.width
+                height: videoPreviewLoader.height
+                radius: cornerradius - vpx(1)
+              }
+            }
+          }
+        }
+
+        // Screenshot
         Image {
           id: screenshot
           width: parent.width
@@ -93,25 +191,32 @@ Item {
             top: parent.top;
             verticalCenter: parent.verticalCenter
           }
+          Behavior on opacity { NumberAnimation { duration: 500 } }
         }
+
+
 
         // Fade off
         LinearGradient {
+          id: bgGradient
           z: parent.z + 1
           width: parent.width
           height: parent.height
-          anchors {
+          Behavior on width { NumberAnimation { duration: 100;  easing.type: Easing.InQuad } }
+          /*anchors {
             top: parent.top;// topMargin: vpx(200)
             left: parent.left;// leftMargin: vpx(200)
-            right: parent.right
+            right: parent.right; //rightMargin: vpx(200)
             bottom: parent.bottom
-          }
-          start: Qt.point(0, 0)
-          end: Qt.point(width, 0)
+          }*/
+          start: Qt.point(width, 0)
+          end: Qt.point(0, 0)
           gradient: Gradient {
-            GradientStop { position: 0.0; color: "#ee1a1a1a" }
-            GradientStop { position: 0.7; color: "#ff1a1a1a" }
+            GradientStop { position: 0.0; color: "#001a1a1a" }
+            GradientStop { position: 1; color: "#ff1a1a1a" }
           }
+          transform: Scale { xScale: 10.0 }
+          //scale: 10
         }
 
         // Round those corners!
@@ -149,6 +254,9 @@ Item {
           asynchronous: true
           visible: gameData.assets.boxFront || ""
           smooth: true
+          opacity: 1
+          Behavior on opacity { NumberAnimation { duration: 100 } }
+          Behavior on x { NumberAnimation { duration: 100;  easing.type: Easing.InQuad } }
 
           // Favourite tag
           Item {
@@ -213,6 +321,8 @@ Item {
             left: boxart.right; leftMargin: vpx(30)
             bottom: parent.bottom; right: parent.right
           }
+
+          Behavior on anchors.rightMargin { NumberAnimation { duration: 100; easing.type: Easing.InQuad } }
 
           Text {
             id: gameTitle
@@ -359,12 +469,11 @@ Item {
             height: parent.height
             anchors.fill: parent
 
-
             // Launch button
             GamePanelButton {
               id: launchBtn
               text: "Launch"
-              width: parent.width/3
+              width: parent.width/numbuttons
               height: parent.height
 
               onFocusChanged: {
@@ -410,7 +519,7 @@ Item {
               id: faveBtn
               property bool isFavorite: (gameData && gameData.favorite) || false
               text: isFavorite ? "Unfavorite" : "Favorite"
-              width: parent.width/3
+              width: parent.width/numbuttons
               height: parent.height
 
               onFocusChanged: {
@@ -426,7 +535,7 @@ Item {
               }
 
               KeyNavigation.left: launchBtn;
-              KeyNavigation.right: backBtn
+              KeyNavigation.right: (numbuttons == 4) ? videoBtn : backBtn
               Keys.onPressed: {
                   if (api.keys.isAccept(event.key) && !event.isAutoRepeat) {
                       event.accepted = true;
@@ -457,28 +566,60 @@ Item {
               color: "#1a1a1a"
             }
 
-            // Back button
+            // Video button
             GamePanelButton {
-              id: backBtn
-              text: "Close"
-              width: parent.width/3
+              id: videoBtn
+              text: (showVideo) ? "Boxart" : "Video"
+              width: parent.width/numbuttons
               height: parent.height
+              visible: (numbuttons == 4)
               onFocusChanged: {
                 if (focus)
                   navSound.play()
               }
 
               KeyNavigation.left: faveBtn
+              KeyNavigation.right: closeBtn
+              Keys.onPressed: {
+                if (api.keys.isAccept(event.key) && !event.isAutoRepeat) {
+                  event.accepted = true;
+                  toggleVideo();
+                }
+              }
+              onClicked: {
+                focus = true
+                toggleVideo();
+              }
+            }
+            Rectangle {
+              width: vpx(1)
+              height: parent.height
+              color: "#1a1a1a"
+              visible: (numbuttons == 4)
+            }
+
+            // Back button
+            GamePanelButton {
+              id: backBtn
+              text: "Close"
+              width: parent.width/numbuttons
+              height: parent.height
+              onFocusChanged: {
+                if (focus)
+                  navSound.play()
+              }
+
+              KeyNavigation.left: (numbuttons == 4) ? videoBtn : faveBtn
               KeyNavigation.right: launchBtn
               Keys.onPressed: {
                 if (api.keys.isAccept(event.key) && !event.isAutoRepeat) {
                   event.accepted = true;
-                  toggleDetails();
+                  closedetails();
                 }
               }
               onClicked: {
                 focus = true;
-                toggleDetails();
+                closedetails();
               }
             }
 
@@ -500,6 +641,17 @@ Item {
               radius: cornerradius
             }
           }
+        }
+      }
+
+      // Empty area for swiping on touch
+      Item {
+        anchors.fill: parent
+        PegasusUtils.HorizontalSwipeArea {
+            anchors.fill: parent
+            //visible: root.focus
+            onSwipeRight: if (showVideo) { toggleVideo() }
+            onSwipeLeft: if (!showVideo) { toggleVideo() }
         }
       }
 

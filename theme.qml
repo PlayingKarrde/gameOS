@@ -53,7 +53,7 @@ FocusScope {
       }
 
       width: parent.width
-      text: api.currentCollection.name
+      text: (api.filters.current.enabled) ? api.currentCollection.name + " | Favorites" : api.currentCollection.name
       color: "white"
       font.pixelSize: vpx(16)
       font.family: globalFonts.sans
@@ -81,7 +81,7 @@ FocusScope {
 
       height: vpx(200)//vpx(280)
       width: parent.width - vpx(182)
-      anchors { top: menuicon.bottom; }
+      anchors { top: menuicon.bottom; topMargin: vpx(-20)}
 
       // Text doesn't look so good blurred so fade it out when blurring
       opacity: 1

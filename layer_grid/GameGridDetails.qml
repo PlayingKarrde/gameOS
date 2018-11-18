@@ -12,7 +12,7 @@ Item {
   clip: true
 
 
-  Text {
+  /*Text {
     id: collectiontitle
 
     anchors {
@@ -38,7 +38,7 @@ Item {
       color: "#80000000"
       source: collectiontitle
       //opacity: 0.5
-  }
+  }*/
 
   /*// Logo
   // NOTE: Tried it but doubling up with the grid logo doesn't make sense.
