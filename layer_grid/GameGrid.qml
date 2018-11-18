@@ -47,7 +47,10 @@ FocusScope {
   //property bool isFavorite: (gameData && gameData.favorite) || false
   function toggleFav() {
       if (api.currentGame)
-          api.currentGame.favorite = !api.currentGame.favorite;
+          api.currentGame.favorite = !api.currentGame.favorite;3
+
+      toggleSound.play()
+
   }
 
   function toggleFilters() {
