@@ -23,17 +23,17 @@ FocusScope {
       if (event.isAutoRepeat)
           return;
 
-      if (api.keys.isDetails(event.key)) {
+      if (api.keys.isDetails(event)) {
           event.accepted = true;
           toggleFav();
           return;
       }
-      if (api.keys.isCancel(event.key)) {
+      if (api.keys.isCancel(event)) {
           event.accepted = true;
           menuRequested();
           return;
         }
-      if (api.keys.isFilters(event.key)) {
+      if (api.keys.isFilters(event)) {
           event.accepted = true;
           toggleFilters()
 
@@ -100,11 +100,11 @@ FocusScope {
     }
 
     Keys.onPressed: {
-        if (api.keys.isAccept(event.key) && !event.isAutoRepeat) {
+        if (api.keys.isAccept(event) && !event.isAutoRepeat) {
             event.accepted = true;
             root.detailsRequested()
         }
-        if (api.keys.isPageUp(event.key) || api.keys.isPageDown(event.key)) {
+        if (api.keys.isPageUp(event) || api.keys.isPageDown(event)) {
             event.accepted = true;
             var rows_to_skip = Math.max(1, Math.round(grid.height / cellHeight));
             var games_to_skip = rows_to_skip * numColumns;
@@ -113,11 +113,11 @@ FocusScope {
             else
                 currentIndex = Math.min(currentIndex + games_to_skip, model.length - 1);
         }
-        if (api.keys.isPrevPage(event.key))
+        if (api.keys.isPrevPage(event))
         {
           prevCollection()
         }
-        if (api.keys.isNextPage(event.key))
+        if (api.keys.isNextPage(event))
         {
           nextCollection()
         }

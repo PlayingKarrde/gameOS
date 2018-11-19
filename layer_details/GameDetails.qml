@@ -33,12 +33,12 @@ Item {
     if (event.isAutoRepeat)
       return;
 
-    if (api.keys.isAccept(event.key)) {
+    if (api.keys.isAccept(event)) {
       event.accepted = true;
       root.launchRequested()
       return;
     }
-    if (api.keys.isDetails(event.key)) {
+    if (api.keys.isDetails(event)) {
       event.accepted = true;
       if (api.currentGame)
           api.currentGame.favorite = !api.currentGame.favorite;
@@ -46,14 +46,21 @@ Item {
       toggleSound.play()
       return;
     }
-    if (api.keys.isCancel(event.key)) {
+    if (api.keys.isCancel(event)) {
       event.accepted = true;
       closedetails();
       return;
     }
-    if (api.keys.isNextPage(event.key) || api.keys.isPageDown(event.key) || api.keys.isPrevPage(event.key) || api.keys.isPageUp(event.key))
-    {
-      toggleVideo()
+    if (api.keys.isNextPage(event) || api.keys.isPrevPage(event)) {
+      event.accepted = true;
+
+      return;
+    }
+    if (api.keys.isPageDown(event) || api.keys.isPageUp(event)) {
+      event.accepted = true;
+      toggleVideo();
+
+      return;
     }
   }
 
@@ -77,7 +84,7 @@ Item {
   }
 
   function toggleVideo() {
-    if (gameData.assets.videos.length) {
+    if (gameData.assets.videos.length && (boxart.opacity == 0 || boxart.opacity == 1)) {
       if (showVideo) {
         // BOXART
         showVideo = false
@@ -96,6 +103,7 @@ Item {
         details.anchors.rightMargin = videooffset
         bgGradient.width = bgGradient.width/20
         videoDelay.restart();
+        menuIntroSound.play();
       }
     }
   }
@@ -481,7 +489,7 @@ Item {
               KeyNavigation.left: backBtn
               KeyNavigation.right: faveBtn
               Keys.onPressed: {
-                if (api.keys.isAccept(event.key) && !event.isAutoRepeat) {
+                if (api.keys.isAccept(event) && !event.isAutoRepeat) {
                   event.accepted = true;
                   api.currentGame.launch();
                 }
@@ -533,7 +541,7 @@ Item {
               KeyNavigation.left: launchBtn;
               KeyNavigation.right: (numbuttons == 4) ? videoBtn : backBtn
               Keys.onPressed: {
-                  if (api.keys.isAccept(event.key) && !event.isAutoRepeat) {
+                  if (api.keys.isAccept(event) && !event.isAutoRepeat) {
                       event.accepted = true;
                       toggleFav();
                   }
@@ -575,9 +583,9 @@ Item {
               }
 
               KeyNavigation.left: faveBtn
-              KeyNavigation.right: closeBtn
+              KeyNavigation.right: backBtn
               Keys.onPressed: {
-                if (api.keys.isAccept(event.key) && !event.isAutoRepeat) {
+                if (api.keys.isAccept(event) && !event.isAutoRepeat) {
                   event.accepted = true;
                   toggleVideo();
                 }
@@ -608,7 +616,7 @@ Item {
               KeyNavigation.left: (numbuttons == 4) ? videoBtn : faveBtn
               KeyNavigation.right: launchBtn
               Keys.onPressed: {
-                if (api.keys.isAccept(event.key) && !event.isAutoRepeat) {
+                if (api.keys.isAccept(event) && !event.isAutoRepeat) {
                   event.accepted = true;
                   closedetails();
                 }
@@ -644,11 +652,13 @@ Item {
       Item {
         anchors.fill: parent
         PegasusUtils.HorizontalSwipeArea {
-            anchors.fill: parent
+            anchors { top: parent.top; left: parent.left; right: parent.right; bottom: parent.bottom; bottomMargin: vpx(60) }
             //visible: root.focus
             onSwipeRight: if (showVideo) { toggleVideo() }
             onSwipeLeft: if (!showVideo) { toggleVideo() }
+            onClicked: toggleVideo()
         }
+
       }
 
     }
