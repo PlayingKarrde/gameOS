@@ -216,19 +216,19 @@ FocusScope {
   SoundEffect {
       id: navSound
       source: "assets/audio/tap-mellow.wav"
-      volume: 0.2
+      volume: 1.0
   }
 
   SoundEffect {
       id: menuIntroSound
       source: "assets/audio/slide-scissors.wav"
-      volume: 0.2
+      volume: 1.0
   }
 
   SoundEffect {
       id: toggleSound
       source: "assets/audio/tap-sizzle.wav"
-      volume: 0.2
+      volume: 1.0
   }
 
 }
