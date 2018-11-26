@@ -359,13 +359,21 @@ Item {
               metatext: (gameData.release != "" ) ? gameData.year : ""
             }
 
+            // Players
+            GameGridMetaBox {
+              metatext: if (gameData.players > 1)
+                gameData.players + " players"
+              else
+                gameData.players + " player"
+            }
+
             // Spacer
             Item {
               Layout.preferredWidth: vpx(5)
             }
 
             Rectangle {
-              id: spacer
+              id: spacer2
               Layout.preferredWidth: vpx(2)
               Layout.fillHeight: true
               opacity: 0.5
@@ -399,7 +407,8 @@ Item {
             width: vpx(75)
             height: vpx(75)
 
-            opacity: (gameData.rating != "") ? 1 : 0.3
+            opacity: (gameData.rating != "" && !showVideo) ? 1 : 0.1
+            Behavior on opacity { NumberAnimation { duration: 100 } }
 
             Text {
               id: metarating
@@ -443,6 +452,8 @@ Item {
             color: "#fff"
             elide: Text.ElideRight
             wrapMode: Text.WordWrap
+            opacity: showVideo ? 0.1 : 1.0
+            Behavior on opacity { NumberAnimation { duration: 100 } }
           }
 
         }
@@ -573,7 +584,7 @@ Item {
             // Video button
             GamePanelButton {
               id: videoBtn
-              text: (showVideo) ? "Boxart" : "Video"
+              text: (showVideo) ? "Details" : "Preview"
               width: parent.width/numbuttons
               height: parent.height
               visible: (numbuttons == 4)
