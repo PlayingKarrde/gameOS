@@ -18,7 +18,7 @@ Simply download the theme and place it in your [Pegasus theme directory](http://
 
 ## Metadata
 
-It is recommended to use Skraper.net to acquire media assets for this theme. These are the minimum requirements for media scraping, although adding more could be useful for other themes or the future:
+It is recommended to use [Skraper.net](http://www.skraper.net/) to acquire media assets for this theme. These are the minimum requirements for media scraping, although adding more could be useful for other themes or the future:
 
 - video
 - screenshot
