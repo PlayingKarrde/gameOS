@@ -8,6 +8,8 @@ Item {
 
   signal menuCloseRequested
 
+  property alias menuwidth: menubar.width
+
   Keys.onLeftPressed: menuCloseRequested()
   Keys.onRightPressed: menuCloseRequested()
   Keys.onUpPressed: gameList.decrementCurrentIndex()
@@ -52,7 +54,7 @@ Item {
   width: parent.width
   height: parent.height
 
-  Item {
+  /*Item {
     id: bgblur
     anchors.fill: parent
     opacity: 0
@@ -76,9 +78,9 @@ Item {
       radius: 64
     }
 
-  }
+  }*/
 
-  Image {
+  Item {
     id: menubg
     x: -width
     Behavior on x {
@@ -92,8 +94,8 @@ Item {
 
     width: vpx(350)
     height: parent.height
-    source: "../assets/images/defaultbg.jpg"
-    fillMode: Image.PreserveAspectCrop
+    //source: "../assets/images/defaultbg.jpg"
+    //fillMode: Image.PreserveAspectCrop
 
     PegasusUtils.HorizontalSwipeArea {
         anchors.fill: parent
@@ -107,7 +109,7 @@ Item {
       width: parent.width
       height: parent.height
       color: "#000"
-      opacity: 0.5
+      opacity: 0
 
       }
 
@@ -115,7 +117,7 @@ Item {
         id: logo
 
         width: menubar.contentWidth
-        height: vpx(60)
+        height: vpx(75)
 
         fillMode: Image.PreserveAspectFit
         source: "../assets/images/logos/" + api.currentCollection.shortName + ".svg"
@@ -153,7 +155,7 @@ Item {
         highlightRangeMode: ListView.ApplyRange
 
         anchors {
-          top: logo.bottom; topMargin: vpx(80)
+          top: logo.bottom; topMargin: vpx(70)
           left: parent.left;
           right: parent.right
           bottom: parent.bottom; bottomMargin: vpx(80)
@@ -253,13 +255,13 @@ Item {
   }
 
   function intro() {
-      bgblur.opacity = 1;
+      //bgblur.opacity = 1;
       menubg.x = 0;
       menuIntroSound.play()
   }
 
   function outro() {
-      bgblur.opacity = 0;
+      //bgblur.opacity = 0;
       menubg.x = -menubar.width;
       menuIntroSound.play()
   }
