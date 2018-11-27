@@ -8,11 +8,27 @@
 
 
 
-gameOS theme for Pegasus Frontend
+## gameOS theme for Pegasus Frontend
 
-This is currently the alpha version of the theme. Filters and game details still to come along with a few other features.
+The goal of this theme is to create a modern game launcher that can fit in alongside other tvOS-like apps.
 
-An exe has been provided to allow easy sorting of Skraper.net meta files. Simply place it in your rom folder, perform a scrape using Skraper (choosing EmulationStation gamelist.xml as the type) and then run the exe. It will automatically sort the media files into the format that Pegasus can read.
+## Installation
+
+Simply download the theme and place it in your [Pegasus theme directory](http://pegasus-frontend.org/docs/user-guide/installing-themes/) under a folder called gameOS.
+
+## Metadata
+
+It is recommended to use Skraper.net to acquire media assets for this theme. These are the minimum requirements for media scraping, although adding more could be useful for other themes or the future:
+
+- video
+- screenshot
+- fanart
+- box 2d
+- wheel
+
+Skraper will place these in your roms folder under another folder called media.
+
+If no media files are showing up, make sure that Skraper Assets is checked in the Additional Data Sources section of Pegasus settings. It may also be preferable to convert the created gamelist.xml (assuming EmulationStation was chosen for the game list in Skraper) to a metadata.txt file using the [Pegasus conversion tool](http://pegasus-frontend.org/tools/convert/)
 
 
 v0.3
