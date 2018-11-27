@@ -543,7 +543,7 @@ Item {
             GamePanelButton {
               id: faveBtn
               property bool isFavorite: (gameData && gameData.favorite) || false
-              text: isFavorite ? "Unfavorite" : "Favorite"
+              text: isFavorite ? "Unfavorite" : "Add to Favorites"
               width: parent.width/numbuttons
               height: parent.height
 

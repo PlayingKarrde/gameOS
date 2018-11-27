@@ -192,10 +192,10 @@ Item {
             }
 
             anchors { left: parent.left; leftMargin: vpx(50)}
-            color: selected ? "black" : "white"
+            color: selected ? "#fff" : "#666"
             Behavior on color {
               ColorAnimation {
-                duration: 400;
+                duration: 200;
                 easing.type: Easing.OutQuart;
                 easing.amplitude: 2.0;
                 easing.period: 1.5
@@ -204,11 +204,22 @@ Item {
             font.pixelSize: vpx(25)
             font.family: globalFonts.sans
             //font.capitalization: Font.AllUppercase
-            //font.bold: true
+            font.bold: selected
             //width: ListView.view.width
             height: vpx(40)
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
+
+            // DropShadow
+            /*layer.enabled: selected
+            layer.effect: DropShadow {
+                horizontalOffset: 0
+                verticalOffset: 2
+                radius: 0
+                samples: 17
+                color: "#32000000"
+                transparentBorder: true
+            }*/
           }
 
           MouseArea {
