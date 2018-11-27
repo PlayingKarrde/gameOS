@@ -29,6 +29,16 @@ Item {
 
   visible: (backgroundbox.opacity == 0) ? false : true
 
+  // Empty area for closing out of bounds
+  Item {
+    anchors.fill: parent
+    PegasusUtils.HorizontalSwipeArea {
+        anchors.fill: parent
+        onClicked: closedetails()
+    }
+
+  }
+
   Keys.onPressed: {
     if (event.isAutoRepeat)
       return;
@@ -665,8 +675,8 @@ Item {
         PegasusUtils.HorizontalSwipeArea {
             anchors { top: parent.top; left: parent.left; right: parent.right; bottom: parent.bottom; bottomMargin: vpx(60) }
             //visible: root.focus
-            onSwipeRight: if (showVideo) { toggleVideo() }
-            onSwipeLeft: if (!showVideo) { toggleVideo() }
+            //onSwipeRight: if (showVideo) { toggleVideo() }
+            //onSwipeLeft: if (!showVideo) { toggleVideo() }
             onClicked: toggleVideo()
         }
 
