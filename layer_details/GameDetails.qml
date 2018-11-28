@@ -14,6 +14,7 @@ Item {
   property int padding: vpx(50)
   property int cornerradius: vpx(8)
   property bool showVideo: false
+  property bool boxAvailable: gameData.assets.boxFront
   property int videooffset: vpx(330)
   property int numbuttons: (gameData.assets.videos.length) ? 4 : 3
 
@@ -132,7 +133,7 @@ Item {
         verticalCenter: parent.verticalCenter
       }
       width: parent.width - vpx(182)
-      height: boxart.height + (padding*2) + navigationbox.height
+      height: boxAvailable ? boxart.height + (padding*2) + navigationbox.height : vpx(400)
       color: "#1a1a1a"//"#ee1a1a1a"
       radius: cornerradius
       opacity: 0
@@ -268,9 +269,9 @@ Item {
           asynchronous: true
           visible: gameData.assets.boxFront || ""
           smooth: true
-          opacity: 1
           Behavior on opacity { NumberAnimation { duration: 100 } }
           Behavior on x { NumberAnimation { duration: 100;  easing.type: Easing.InQuad } }
+
 
           // Favourite tag
           Item {
@@ -332,7 +333,8 @@ Item {
           id: details
           anchors {
             top: parent.top; topMargin: vpx(0)
-            left: boxart.right; leftMargin: vpx(30)
+            left: boxAvailable ? boxart.right : parent.left;
+            leftMargin: boxAvailable ? vpx(30) : vpx(5)
             bottom: parent.bottom; right: parent.right
           }
 
@@ -455,7 +457,7 @@ Item {
               top: metadata.bottom; topMargin: vpx(60);
             }
             horizontalAlignment: Text.AlignJustify
-            text: api.currentGame.summary || api.currentGame.description
+            text: (api.currentGame.summary || api.currentGame.description) ? api.currentGame.summary || api.currentGame.description : "No description available"
             font.pixelSize: vpx(22)
             font.family: "Open Sans"
             //textFormat: Text.RichText
@@ -470,7 +472,7 @@ Item {
 
       }
 
-      // Navigation
+      // NOTE: Navigation
       Item {
         id: navigation
         anchors.fill: parent
@@ -508,7 +510,7 @@ Item {
               }
 
               KeyNavigation.left: backBtn
-              KeyNavigation.right: faveBtn
+              KeyNavigation.right: (numbuttons == 4) ? videoBtn : faveBtn
               Keys.onPressed: {
                 if (api.keys.isAccept(event) && !event.isAutoRepeat) {
                   event.accepted = true;
@@ -539,6 +541,38 @@ Item {
               color: "#1a1a1a"
             }
 
+            // Video button
+            GamePanelButton {
+              id: videoBtn
+              text: (showVideo) ? "Details" : "Preview"
+              width: parent.width/numbuttons
+              height: parent.height
+              visible: (numbuttons == 4)
+              onFocusChanged: {
+                if (focus)
+                  navSound.play()
+              }
+
+              KeyNavigation.left: launchBtn
+              KeyNavigation.right: faveBtn
+              Keys.onPressed: {
+                if (api.keys.isAccept(event) && !event.isAutoRepeat) {
+                  event.accepted = true;
+                  toggleVideo();
+                }
+              }
+              onClicked: {
+                focus = true
+                toggleVideo();
+              }
+            }
+            Rectangle {
+              width: vpx(1)
+              height: parent.height
+              color: "#1a1a1a"
+              visible: (numbuttons == 4)
+            }
+
             // Favourite button
             GamePanelButton {
               id: faveBtn
@@ -559,8 +593,8 @@ Item {
                   toggleSound.play()
               }
 
-              KeyNavigation.left: launchBtn;
-              KeyNavigation.right: (numbuttons == 4) ? videoBtn : backBtn
+              KeyNavigation.left: (numbuttons == 4) ? videoBtn : launchBtn
+              KeyNavigation.right: backBtn
               Keys.onPressed: {
                   if (api.keys.isAccept(event) && !event.isAutoRepeat) {
                       event.accepted = true;
@@ -591,38 +625,6 @@ Item {
               color: "#1a1a1a"
             }
 
-            // Video button
-            GamePanelButton {
-              id: videoBtn
-              text: (showVideo) ? "Details" : "Preview"
-              width: parent.width/numbuttons
-              height: parent.height
-              visible: (numbuttons == 4)
-              onFocusChanged: {
-                if (focus)
-                  navSound.play()
-              }
-
-              KeyNavigation.left: faveBtn
-              KeyNavigation.right: backBtn
-              Keys.onPressed: {
-                if (api.keys.isAccept(event) && !event.isAutoRepeat) {
-                  event.accepted = true;
-                  toggleVideo();
-                }
-              }
-              onClicked: {
-                focus = true
-                toggleVideo();
-              }
-            }
-            Rectangle {
-              width: vpx(1)
-              height: parent.height
-              color: "#1a1a1a"
-              visible: (numbuttons == 4)
-            }
-
             // Back button
             GamePanelButton {
               id: backBtn
@@ -634,7 +636,7 @@ Item {
                   navSound.play()
               }
 
-              KeyNavigation.left: (numbuttons == 4) ? videoBtn : faveBtn
+              KeyNavigation.left: faveBtn
               KeyNavigation.right: launchBtn
               Keys.onPressed: {
                 if (api.keys.isAccept(event) && !event.isAutoRepeat) {
