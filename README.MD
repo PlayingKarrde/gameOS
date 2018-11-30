@@ -37,6 +37,7 @@ v0.4
 - Removed blur when using platform menu to increase performance
 - Button consistency across the board
 - Fixed details page not elegantly displaying with no media
+- Bug fixes
 
 v0.3
 - Favorites filter toggle (X button to add to favorites, Y button to view)
