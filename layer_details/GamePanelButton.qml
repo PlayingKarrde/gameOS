@@ -41,9 +41,9 @@ Rectangle {
           }
         }
         font {
-            pixelSize: vpx(25)
+            pixelSize: root.focus ? vpx(28) : vpx(25)
             family: globalFonts.sans
-            bold: (root.focus || mouseArea.containsMouse)
+            bold: root.focus
         }
         // DropShadow
         /*layer.enabled: (root.focus || mouseArea.containsMouse)
