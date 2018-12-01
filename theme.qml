@@ -173,6 +173,8 @@ FocusScope {
             left: parent.left; right: parent.right
           }
 
+          detailsActive: gamedetails.active
+
           onLaunchRequested: api.currentGame.launch()
           onNextCollection: api.collections.incrementIndex()
           onPrevCollection: api.collections.decrementIndex()

@@ -5,6 +5,7 @@ FocusScope {
   id: root
 
   // Options
+  property bool detailsActive: false
   property int numColumns: 4
 
   property alias gridWidth: grid.width
@@ -133,6 +134,7 @@ FocusScope {
       width: GridView.view.cellWidth
       height: GridView.view.cellHeight
       selected: GridView.isCurrentItem
+      mute: root.detailsActive
       //collection: api.currentCollection
 
       game: modelData

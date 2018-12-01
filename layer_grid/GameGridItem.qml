@@ -12,6 +12,8 @@ Item {
   property var collection: api.currentCollection
   property bool steam: false
 
+  property bool mute: false
+
   signal details
   signal clicked
 
@@ -175,7 +177,7 @@ Item {
         source: game.assets.videos.length ? game.assets.videos[0] : ""
         anchors.fill: parent
         fillMode: VideoOutput.PreserveAspectCrop
-        muted: true
+        muted: root.mute
         loops: MediaPlayer.Infinite
         autoPlay: true
       }
