@@ -1,16 +1,18 @@
 # gameOS v0.3
 
-![gameOS Pegasus theme](https://i.imgur.com/8QORO2z.png)
+![gameOS Pegasus theme](https://i.imgur.com/FeGjoC8.png)
 
-![gameOS Pegasus theme image 2](https://i.imgur.com/hIo4wzK.png)
+![gameOS Pegasus theme image 2](https://i.imgur.com/ebBfIiu.png)
 
-![gameOS pegasus theme image 3](https://i.imgur.com/1Nk7R54.png)
+![gameOS pegasus theme image 3](https://i.imgur.com/7r0yx8K.png)
+
+[Video preview](https://youtu.be/bqA817pnLsI)
 
 
 
 ## gameOS theme for Pegasus Frontend
 
-The goal of this theme is to create a modern game launcher that can fit in alongside other tvOS-like apps.
+The goal of this theme is to create a modern game launcher that can fit in alongside other tvOS-like apps (sometimes called 10 foot user interfaces). gameOS is a theme for [Pegasus Frontend](http://pegasus-frontend.org/).
 
 ## Installation
 
@@ -31,6 +33,8 @@ It is recommended to use [Skraper.net](http://www.skraper.net/) to acquire media
 Skraper will place these in your roms folder under another folder called media.
 
 If no media files are showing up, make sure that Skraper Assets is checked in the Additional Data Sources section of Pegasus settings. It may also be preferable to convert the created gamelist.xml (assuming EmulationStation was chosen for the game list in Skraper) to a metadata.txt file using the [Pegasus conversion tool](http://pegasus-frontend.org/tools/convert/)
+
+## Version history
 
 v0.4
 - Updated platform menu for cleaner experience
