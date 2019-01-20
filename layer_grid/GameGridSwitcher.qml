@@ -5,7 +5,7 @@ import QtMultimedia 5.9
 
 Rectangle {
   id: root
-  property var currentCollection: api.collections.current
+  property var collection//: api.collections.current
   property var backgroundcontainer
 
   color: "black"
@@ -25,7 +25,7 @@ Rectangle {
     width: vpx(600)
     sourceSize { width: 512; height: 512 }
     fillMode: Image.PreserveAspectFit
-    source: "../assets/images/logos/" + api.currentCollection.shortName + ".svg"
+    source: "../assets/images/logos/" + collection.shortName + ".svg"
     asynchronous: true
     anchors.centerIn: parent
     opacity: 0
@@ -36,7 +36,7 @@ Rectangle {
 
     anchors { top: parent.top; topMargin: vpx(60)}
     width: parent.width
-    text: api.currentCollection.name
+    text: collection.name
     color: "white"
     font.pixelSize: vpx(70)
     font.family: titleFont.name
@@ -50,7 +50,7 @@ Rectangle {
   }
 
 
-  onCurrentCollectionChanged: {
+  onCollectionChanged: {
     logo.opacity = 0
     switchanimation.restart()
     switchanimation.running = true

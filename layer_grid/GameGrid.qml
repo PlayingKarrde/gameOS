@@ -9,15 +9,16 @@ FocusScope {
 
   property alias gridWidth: grid.width
   property int gridItemSpacing: (numColumns == 4) ? vpx(7) : vpx(5) // it will double this
-  property var platformData: api.currentCollection
-  property var platformModel: api.collections.model
+  property var collectionData
+  property var gameData
 
   signal launchRequested
   signal menuRequested
   signal detailsRequested
   //signal filtersRequested
-  signal nextCollection
-  signal prevCollection
+  signal collectionNext
+  signal collectionPrev
+  signal gameChanged(int currentIdx)
 
   Keys.onPressed: {
       if (event.isAutoRepeat)
@@ -46,8 +47,8 @@ FocusScope {
 
   //property bool isFavorite: (gameData && gameData.favorite) || false
   function toggleFav() {
-      if (api.currentGame)
-          api.currentGame.favorite = !api.currentGame.favorite;3
+      if (gameData)
+          gameData.favorite = !gameData.favorite;
 
       toggleSound.play()
 
@@ -91,11 +92,12 @@ FocusScope {
     displayMarginBeginning: 300
     //snapMode: GridView.SnapOneItem
 
-    model: platformData ? platformData.games.model : []
-    currentIndex: platformData ? platformData.games.index : 0
+    model: collectionData ? collectionData.games : []
+    currentIndex: 0
     onCurrentIndexChanged: {
-      if (api.currentCollection) api.currentCollection.games.index = currentIndex;
+      //if (api.currentCollection) api.currentCollection.games.index = currentIndex;
       navSound.play()
+      gameChanged(currentIndex)
 
     }
 
@@ -115,11 +117,11 @@ FocusScope {
         }
         if (api.keys.isPrevPage(event))
         {
-          prevCollection()
+          collectionPrev()
         }
         if (api.keys.isNextPage(event))
         {
-          nextCollection()
+          collectionNext()
         }
         if (event.modifiers === Qt.AltModifier && event.text) {
             event.accepted = true;
@@ -136,6 +138,7 @@ FocusScope {
       //collection: api.currentCollection
 
       game: modelData
+      collection: collectionData
       z: (selected) ? 100 : 1
 
       onDetails: detailsRequested();

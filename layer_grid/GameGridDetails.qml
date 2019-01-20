@@ -6,7 +6,7 @@ import "../utils.js" as Utils
 Item {
   id: root
 
-  property var gameData: api.currentGame
+  property var gameData//: api.currentGame
   property bool issteam: false
   anchors.horizontalCenter: parent.horizontalCenter
   clip: true
@@ -82,7 +82,7 @@ Item {
       verticalCenter: parent.verticalCenter
     }
     width: vpx(850)
-    text: api.currentGame.title
+    text: gameData.title
     color: "white"
     font.pixelSize: vpx(70)
     font.family: titleFont.name
@@ -286,7 +286,7 @@ Item {
         left: parent.left
       }
 
-      text: api.currentGame.summary || api.currentGame.description
+      text: gameData.summary || gameData.description
       font.pixelSize: vpx(22)
       font.family: "Open Sans"
       //font.weight: Font.Light

@@ -9,7 +9,7 @@ Item {
   property bool selected: false
   property var game
   property int cornerradius: vpx(3)
-  property var collection: api.currentCollection
+  property var collection//: api.currentCollection
   property bool steam: false
 
   signal details
