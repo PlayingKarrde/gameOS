@@ -54,6 +54,23 @@ FocusScope {
   // End game switching //
   ////////////////////////
 
+  ////////////////////
+  // Launching game //
+
+  Component.onCompleted: {
+    collectionIndex = api.memory.get('collectionIndex') || 0;
+    currentGameIndex = api.memory.get('gameIndex') || 0;
+  }
+
+  function launchGame() {
+    api.memory.set('collectionIndex', collectionIndex);
+    api.memory.set('gameIndex', currentGameIndex);
+    currentGame.launch();
+  }
+
+  // End launching game //
+  ////////////////////////
+
   function toggleMenu() {
 
     if (platformmenu.focus) {
@@ -220,7 +237,7 @@ FocusScope {
             left: parent.left; right: parent.right
           }
 
-          onLaunchRequested: api.currentGame.launch()
+          onLaunchRequested: launchGame()
           onCollectionNext: nextCollection()
           onCollectionPrev: prevCollection()
           onMenuRequested: toggleMenu()
@@ -244,6 +261,7 @@ FocusScope {
         height: parent.height
 
         onDetailsCloseRequested: toggleDetails()
+        onLaunchRequested: launchGame()
 
       }
 
