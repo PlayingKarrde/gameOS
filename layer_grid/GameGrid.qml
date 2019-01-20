@@ -11,6 +11,7 @@ FocusScope {
   property int gridItemSpacing: (numColumns == 4) ? vpx(7) : vpx(5) // it will double this
   property var collectionData
   property var gameData
+  property int currentGameIdx
 
   signal launchRequested
   signal menuRequested
@@ -93,7 +94,7 @@ FocusScope {
     //snapMode: GridView.SnapOneItem
 
     model: collectionData ? collectionData.games : []
-    currentIndex: 0
+    currentIndex: currentGameIdx
     onCurrentIndexChanged: {
       //if (api.currentCollection) api.currentCollection.games.index = currentIndex;
       navSound.play()
