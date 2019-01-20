@@ -515,12 +515,12 @@ Item {
               Keys.onPressed: {
                 if (api.keys.isAccept(event) && !event.isAutoRepeat) {
                   event.accepted = true;
-                  gameData.launch();
+                  root.launchRequested();
                 }
               }
               onClicked: {
                 focus = true;
-                gameData.launch();
+                root.launchRequested();
               }
 
               /*Image {
