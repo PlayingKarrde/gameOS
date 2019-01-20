@@ -237,7 +237,7 @@ Item {
 
     // Release year
     GameGridMetaBox {
-      metatext: (gameData.release != "" ) ? gameData.year : ""
+      metatext: (gameData.release != "") ? gameData.release.getFullYear() : ""
     }
 
     /*// Number of supported players
