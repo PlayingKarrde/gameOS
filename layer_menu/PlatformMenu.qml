@@ -11,7 +11,7 @@ Item {
 
   property alias menuwidth: menubar.width
   property var collection
-  property int collectionIndex
+  property int collectionIdx
 
   Keys.onLeftPressed: menuCloseRequested()
   Keys.onRightPressed: menuCloseRequested()
@@ -167,7 +167,7 @@ Item {
         model: collectionList
 
         delegate: collectionListItemDelegate
-        currentIndex: collectionIndex
+        currentIndex: collectionIdx
         onCurrentIndexChanged: navSound.play()
         highlight: highlight
         highlightFollowsCurrentItem: true
