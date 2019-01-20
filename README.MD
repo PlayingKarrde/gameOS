@@ -38,6 +38,7 @@ If no media files are showing up, make sure that Skraper Assets is checked in th
 
 v0.5
 - Updated to latest version of Pegasus
+- Now remembers last game played
 
 v0.4
 - Updated platform menu for cleaner experience
