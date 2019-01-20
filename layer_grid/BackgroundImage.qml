@@ -3,8 +3,7 @@ import QtGraphicalEffects 1.0
 
 Item {
   id: root
-  property var gameData: api.currentGame
-  property var collection: api.currentCollection
+  property var gameData//: currentCollection.games.get(gameList.currentIndex)
   property real dimopacity: 0.96
 
 

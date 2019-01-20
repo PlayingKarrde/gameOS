@@ -16,6 +16,44 @@ FocusScope {
 
   property bool menuactive: false
 
+  //////////////////////////
+  // Collection switching //
+
+  function modulo(a,n) {
+    return (a % n + n) % n;
+  }
+
+  property int collectionIndex: 0
+  property var currentCollection: api.collections.get(collectionIndex)
+
+  function nextCollection () {
+    collectionIndex = modulo(collectionIndex + 1, api.collections.count);
+  }
+
+  function prevCollection() {
+      collectionIndex = modulo(collectionIndex - 1, api.collections.count);
+  }
+
+  function jumpToCollection(id) {
+    collectionIndex = id;
+  }
+
+  // End collection switching //
+  //////////////////////////////
+
+  ////////////////////
+  // Game switching //
+
+  property int currentGameIndex: 0
+  readonly property var currentGame: currentCollection.games.get(currentGameIndex)
+
+  function changeGameIndex (idx) {
+    currentGameIndex = idx
+  }
+
+  // End game switching //
+  ////////////////////////
+
   function toggleMenu() {
 
     if (platformmenu.focus) {
@@ -69,6 +107,7 @@ FocusScope {
 
     BackgroundImage {
       id: backgroundimage
+      gameData: currentGame
       anchors {
         left: parent.left; right: parent.right
         top: parent.top; bottom: parent.bottom
@@ -112,7 +151,7 @@ FocusScope {
         Behavior on opacity { NumberAnimation { duration: 100 } }
 
         width: parent.width
-        text: (api.filters.current.enabled) ? api.currentCollection.name + " | Favorites" : api.currentCollection.name
+        //  text: (api.filters.current.enabled) ? api.currentCollection.name + " | Favorites" : api.currentCollection.name
         color: "white"
         font.pixelSize: vpx(16)
         font.family: globalFonts.sans
@@ -132,9 +171,12 @@ FocusScope {
         }
       }
 
+
       // Game details
       GameGridDetails {
         id: content
+
+        gameData: currentGame
 
         height: vpx(200)//vpx(280)
         width: parent.width - vpx(182)
@@ -144,6 +186,7 @@ FocusScope {
         opacity: 1
         Behavior on opacity { OpacityAnimator { duration: 100 } }
       }
+
 
       // Game grid
       Item {
@@ -155,12 +198,16 @@ FocusScope {
 
         anchors {
           top: content.bottom; //topMargin: vpx(75)
+          //top: parent.top;
           bottom: parent.bottom;
           left: parent.left; right: parent.right
         }
 
         GameGrid {
           id: gamegrid
+
+          collectionData: currentCollection
+          gameData: currentGame
 
           focus: true
           Behavior on opacity { OpacityAnimator { duration: 100 } }
@@ -174,17 +221,20 @@ FocusScope {
           }
 
           onLaunchRequested: api.currentGame.launch()
-          onNextCollection: api.collections.incrementIndex()
-          onPrevCollection: api.collections.decrementIndex()
+          onCollectionNext: nextCollection()
+          onCollectionPrev: prevCollection()
           onMenuRequested: toggleMenu()
           onDetailsRequested: toggleDetails()
+          onGameChanged: changeGameIndex(currentIdx)
         }
       }
+
 
       GameDetails {
         id: gamedetails
 
         property bool active : false
+        gameData: currentGame
 
         anchors {
           left: parent.left; right: parent.right
@@ -204,6 +254,8 @@ FocusScope {
 
   PlatformMenu {
     id: platformmenu
+    collection: currentCollection
+    collectionIndex: collectionIndex
     anchors {
       left: parent.left; right: parent.right
       top: parent.top; bottom: parent.bottom
@@ -212,11 +264,13 @@ FocusScope {
     height: parent.height
     backgroundcontainer: everythingcontainer
     onMenuCloseRequested: toggleMenu()
+    onSwitchCollection: jumpToCollection(collectionIdx)
   }
 
   // Switch collection overlay
   GameGridSwitcher {
     id: switchoverlay
+    collection: currentCollection
     anchors.fill: parent
     width: parent.width
     height: parent.height

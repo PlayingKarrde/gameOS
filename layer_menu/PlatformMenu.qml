@@ -7,8 +7,11 @@ Item {
   id: root
 
   signal menuCloseRequested
+  signal switchCollection(int collectionIdx)
 
   property alias menuwidth: menubar.width
+  property var collection
+  property int collectionIndex
 
   Keys.onLeftPressed: menuCloseRequested()
   Keys.onRightPressed: menuCloseRequested()
@@ -23,7 +26,7 @@ Item {
 
       if (api.keys.isAccept(event)) {
           event.accepted = true;
-          api.collections.index = gameList.currentIndex
+          switchCollection(gameList.currentIndex);
           menuCloseRequested();
           return;
       }
@@ -120,7 +123,7 @@ Item {
         height: vpx(75)
 
         fillMode: Image.PreserveAspectFit
-        source: "../assets/images/logos/" + api.currentCollection.shortName + ".svg"
+        source: "../assets/images/logos/" + collection.shortName + ".svg"
         asynchronous: true
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
@@ -148,7 +151,7 @@ Item {
       // Menu
       ListView {
         id: gameList
-        property var collectionList: api.collections.model
+        property var collectionList: api.collections
         width: parent.width
 
         preferredHighlightBegin: vpx(160); preferredHighlightEnd: vpx(160)
@@ -164,7 +167,7 @@ Item {
         model: collectionList
 
         delegate: collectionListItemDelegate
-        currentIndex: api.collections.index
+        currentIndex: collectionIndex
         onCurrentIndexChanged: navSound.play()
         highlight: highlight
         highlightFollowsCurrentItem: true
@@ -229,7 +232,7 @@ Item {
             onExited: {}
             onWheel: {}
             onClicked: {
-              api.collections.index = index
+              switchCollection(index);
               menuCloseRequested();
             }
           }

@@ -9,7 +9,7 @@ import "../utils.js" as Utils
 Item {
   id: root
 
-  property var gameData: api.currentGame
+  property var gameData//: api.currentGame
   property bool isSteam: false
   property int padding: vpx(50)
   property int cornerradius: vpx(8)
@@ -21,6 +21,7 @@ Item {
   signal launchRequested
   signal detailsCloseRequested
   signal filtersRequested
+  signal switchCollection(int collectionIdx)
 
   onFocusChanged: {
     if(focus) {
@@ -51,8 +52,8 @@ Item {
     }
     if (api.keys.isDetails(event)) {
       event.accepted = true;
-      if (api.currentGame)
-          api.currentGame.favorite = !api.currentGame.favorite;
+      if (gameData)
+          gameData.favorite = !gameData.favorite;
 
       toggleSound.play()
       return;
@@ -346,7 +347,7 @@ Item {
             anchors { top: parent.top; }
 
             width: parent.width - wreath.width
-            text: api.currentGame.title
+            text: gameData.title
             color: "white"
             font.pixelSize: vpx(50)
             font.family: titleFont.name
@@ -457,7 +458,7 @@ Item {
               top: metadata.bottom; topMargin: vpx(60);
             }
             horizontalAlignment: Text.AlignJustify
-            text: (api.currentGame.summary || api.currentGame.description) ? api.currentGame.summary || api.currentGame.description : "No description available"
+            text: (gameData.summary || gameData.description) ? gameData.summary || gameData.description : "No description available"
             font.pixelSize: vpx(22)
             font.family: "Open Sans"
             //textFormat: Text.RichText
@@ -514,12 +515,12 @@ Item {
               Keys.onPressed: {
                 if (api.keys.isAccept(event) && !event.isAutoRepeat) {
                   event.accepted = true;
-                  api.currentGame.launch();
+                  gameData.launch();
                 }
               }
               onClicked: {
                 focus = true;
-                api.currentGame.launch();
+                gameData.launch();
               }
 
               /*Image {
@@ -587,8 +588,8 @@ Item {
               }
 
               function toggleFav() {
-                  if (api.currentGame)
-                      api.currentGame.favorite = !api.currentGame.favorite;
+                  if (gameData)
+                      gameData.favorite = !gameData.favorite;
 
                   toggleSound.play()
               }
