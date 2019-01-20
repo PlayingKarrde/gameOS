@@ -225,6 +225,7 @@ FocusScope {
 
           collectionData: currentCollection
           gameData: currentGame
+          currentGameIdx: currentGameIndex
 
           focus: true
           Behavior on opacity { OpacityAnimator { duration: 100 } }
