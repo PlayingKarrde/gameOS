@@ -138,11 +138,11 @@ Item {
       }
 
       asynchronous: true
-      visible: game.assets.screenshots[0] || ""
+      visible: game.assets.screenshots[0] || game.assets.boxFront || ""
 
       smooth: true
 
-      source: (steam) ? game.assets.logo : game.assets.screenshots[0] || ""
+      source: (steam) ? game.assets.logo : game.assets.screenshots[0] || game.assets.boxFront || ""
       sourceSize { width: 256; height: 256 }
       fillMode: Image.PreserveAspectCrop
 
