@@ -27,15 +27,17 @@ FocusScope {
   property var currentCollection: api.collections.get(collectionIndex)
 
   function nextCollection () {
-    collectionIndex = modulo(collectionIndex + 1, api.collections.count);
+    jumpToCollection(collectionIndex + 1);
   }
 
   function prevCollection() {
-      collectionIndex = modulo(collectionIndex - 1, api.collections.count);
+    jumpToCollection(collectionIndex - 1);
   }
 
-  function jumpToCollection(id) {
-    collectionIndex = id;
+  function jumpToCollection(idx) {
+    api.memory.set('gameCollIndex' + collectionIndex, currentGameIndex); // save game index of current collection
+    collectionIndex = modulo(idx, api.collections.count); // new collection index
+    currentGameIndex = api.memory.get('gameCollIndex' + collectionIndex) || 0; // restore game index for newly selected collection
   }
 
   // End collection switching //
@@ -59,12 +61,12 @@ FocusScope {
 
   Component.onCompleted: {
     collectionIndex = api.memory.get('collectionIndex') || 0;
-    currentGameIndex = api.memory.get('gameIndex') || 0;
+    currentGameIndex = api.memory.get('gameCollIndex' + collectionIndex) || 0;
   }
 
   function launchGame() {
     api.memory.set('collectionIndex', collectionIndex);
-    api.memory.set('gameIndex', currentGameIndex);
+    api.memory.set('gameCollIndex' + collectionIndex, currentGameIndex);
     currentGame.launch();
   }
 
