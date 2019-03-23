@@ -70,6 +70,10 @@ FocusScope {
 
   }
 
+  onCurrentGameIdxChanged: {
+    grid.currentIndex = currentGameIdx
+  }
+
 
 
   GridView {
@@ -94,7 +98,6 @@ FocusScope {
     //snapMode: GridView.SnapOneItem
 
     model: collectionData ? collectionData.games : []
-    currentIndex: currentGameIdx
     onCurrentIndexChanged: {
       //if (api.currentCollection) api.currentCollection.games.index = currentIndex;
       navSound.play()
