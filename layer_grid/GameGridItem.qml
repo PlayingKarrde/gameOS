@@ -373,7 +373,6 @@ Item {
       hoverEnabled: true
       onEntered: {}
       onExited: {}
-      onWheel: {}
       onClicked: {
         if (selected)
           root.details()
