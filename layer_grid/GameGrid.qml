@@ -105,6 +105,10 @@ FocusScope {
 
     }
 
+    Component.onCompleted: {
+      positionViewAtIndex(currentIndex, GridView.Contain);
+    }
+
     Keys.onPressed: {
         if (api.keys.isAccept(event) && !event.isAutoRepeat) {
             event.accepted = true;
