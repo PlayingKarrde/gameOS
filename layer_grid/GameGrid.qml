@@ -114,18 +114,22 @@ FocusScope {
             event.accepted = true;
             var rows_to_skip = Math.max(1, Math.round(grid.height / cellHeight));
             var games_to_skip = rows_to_skip * numColumns;
-            if (api.keys.isPageUp(event.key))
+            if (api.keys.isPageUp(event))
                 currentIndex = Math.max(currentIndex - games_to_skip, 0);
             else
-                currentIndex = Math.min(currentIndex + games_to_skip, model.length - 1);
+                currentIndex = Math.min(currentIndex + games_to_skip, model.count - 1);
         }
-        if (api.keys.isPrevPage(event))
-        {
-          collectionPrev()
+        else if (event.key == Qt.Key_Home) {
+            currentIndex = 0
         }
-        if (api.keys.isNextPage(event))
-        {
-          collectionNext()
+        else if (event.key == Qt.Key_End) {
+            currentIndex = model.count  - 1
+        }
+        if (api.keys.isPrevPage(event)) {
+            collectionPrev()
+        }
+        if (api.keys.isNextPage(event)) {
+            collectionNext()
         }
         if (event.modifiers === Qt.AltModifier && event.text) {
             event.accepted = true;
