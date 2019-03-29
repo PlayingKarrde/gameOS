@@ -12,6 +12,7 @@ FocusScope {
   property var collectionData
   property var gameData
   property int currentGameIdx
+  property string jumpToPattern: ''
 
   signal launchRequested
   signal menuRequested
@@ -135,9 +136,30 @@ FocusScope {
         if (api.keys.isNextPage(event)) {
             collectionNext()
         }
-        if (event.modifiers === Qt.AltModifier && event.text) {
-            event.accepted = true;
-            api.currentCollection.games.jumpToLetter(event.text);
+        if (event.key == Qt.Key_Alt) { // single Alt key
+          jumpToPattern = ''
+        }
+        if ((event.modifiers & Qt.AltModifier) && event.text) {
+          event.accepted = true;
+          jumpToPattern += event.text.toLowerCase();
+          var match = false;
+          for (var idx = 0; idx < model.count; idx++) { // search title starting-with pattern
+            var lowTitle = model.get(idx).title.toLowerCase();
+            if (lowTitle.indexOf(jumpToPattern) == 0) {
+              currentIndex = idx;
+              match = true;
+              break;
+            }
+          }
+          if (!match) { // no match - try to search title containing pattern
+            for (var idx = 0; idx < model.count; idx++) {
+              var lowTitle = model.get(idx).title.toLowerCase();
+              if (lowTitle.indexOf(jumpToPattern) != -1) {
+                currentIndex = idx;
+                break;
+              }
+            }
+          }
         }
     }
 
