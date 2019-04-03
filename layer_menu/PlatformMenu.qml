@@ -12,9 +12,10 @@ Item {
   property alias menuwidth: menubar.width
   property var collection
   property int collectionIdx
+  property bool showSystemMenu: true
 
-  Keys.onLeftPressed: menuCloseRequested()
-  Keys.onRightPressed: menuCloseRequested()
+  Keys.onLeftPressed: closeMenu()
+  Keys.onRightPressed: closeMenu()
   Keys.onUpPressed: gameList.decrementCurrentIndex()
   Keys.onDownPressed: gameList.incrementCurrentIndex()
   //Keys.onUpPressed: api.collections.decrementIndex()
@@ -27,29 +28,39 @@ Item {
       if (api.keys.isAccept(event)) {
           event.accepted = true;
           switchCollection(gameList.currentIndex);
-          menuCloseRequested();
+          closeMenu();
           return;
       }
       if (api.keys.isCancel(event)) {
+          if (showSystemMenu) {
+            showSystemMenu = false;
+          }
+          else {
             event.accepted = true;
-            menuCloseRequested();
-            return;
-        }
+            closeMenu();
+          }
+          return;
+      }
       if (api.keys.isFilters(event)) {
           event.accepted = true;
           filtersRequested();
           return;
       }
       if (api.keys.isNextPage(event)) {
-            event.accepted = true;
-            api.collections.incrementIndex();
-            return;
-        }
-        if (api.keys.isPrevPage(event)) {
-            event.accepted = true;
-            api.collections.decrementIndex();
-            return;
-        }
+          event.accepted = true;
+          api.collections.incrementIndex();
+          return;
+      }
+      if (api.keys.isPrevPage(event)) {
+          event.accepted = true;
+          api.collections.decrementIndex();
+          return;
+      }
+  }
+
+  function closeMenu() {
+    menuCloseRequested();
+    showSystemMenu = true;
   }
 
   property var backgroundcontainer
@@ -102,7 +113,7 @@ Item {
 
     PegasusUtils.HorizontalSwipeArea {
         anchors.fill: parent
-        onSwipeLeft: menuCloseRequested()
+        onSwipeLeft: closeMenu()
     }
 
     Rectangle {
@@ -233,7 +244,7 @@ Item {
             onWheel: {}
             onClicked: {
               switchCollection(index);
-              menuCloseRequested();
+              closeMenu();
             }
           }
         }
