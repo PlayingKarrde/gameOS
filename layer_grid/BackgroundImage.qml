@@ -6,8 +6,8 @@ Item {
   property var gameData//: currentCollection.games.get(gameList.currentIndex)
   property real dimopacity: 0.96
 
-
-  property string bgSource: gameData ? gameData.assets.background || gameData.assets.screenshots[0] || "../assets/images/defaultbg.jpg" : ""
+  property string bgDefault: '../assets/images/defaultbg.jpg'
+  property string bgSource: gameData ? gameData.assets.background || gameData.assets.screenshots[0] || bgDefault : bgDefault
   property string bgImage1
   property string bgImage2
   property bool firstBG: true
