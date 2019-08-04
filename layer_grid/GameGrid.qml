@@ -9,6 +9,7 @@ FocusScope {
 
   property alias gridWidth: grid.width
   property int gridItemSpacing: (numColumns == 4) ? vpx(10) : vpx(15) // it will double this
+  property int gridItemHeight: (numColumns == 4) ? vpx(180) : vpx(230)
   property var collectionData
   property var gameData
   property bool mainScreenDetails
@@ -18,6 +19,7 @@ FocusScope {
   signal launchRequested
   signal menuRequested
   signal detailsRequested
+  signal settingsRequested
   //signal filtersRequested
   signal collectionNext
   signal collectionPrev
@@ -40,7 +42,7 @@ FocusScope {
       if (api.keys.isFilters(event)) {
           event.accepted = true;
           //toggleFilters()
-          showSettings()
+          settingsRequested()
           //filtersRequested();
           return;
       }
@@ -72,9 +74,6 @@ FocusScope {
 
   }
 
-  function showSettings() {
-
-  }
 
   onCurrentGameIdxChanged: {
     grid.currentIndex = currentGameIdx
@@ -95,11 +94,11 @@ FocusScope {
     anchors.horizontalCenter: parent.horizontalCenter
 
     cellWidth: grid.width/numColumns
-    cellHeight: (numColumns == 4) ? vpx(180) : vpx(230)
+    cellHeight: gridItemHeight
 
     //highlightFollowsCurrentItem: false
     preferredHighlightBegin: vpx(0);
-    preferredHighlightEnd: mainScreenDetails ? vpx(314) : vpx(475)
+    preferredHighlightEnd: mainScreenDetails ? gridItemHeight * 2 : gridItemHeight * 3
     highlightRangeMode: GridView.StrictlyEnforceRange
     displayMarginBeginning: vpx(300)
     //snapMode: GridView.SnapOneItem

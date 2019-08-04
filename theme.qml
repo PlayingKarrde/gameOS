@@ -124,7 +124,19 @@ FocusScope {
   }
 
   function toggleSettings() {
-
+    if (!settings.active) {
+      // Open settings screen
+      settings.visible = true
+      settings.focus = true
+      gamegrid.visible = false
+      settings.active = true
+    } else {
+      // Close settings screen
+      settings.visible = false
+      gamegrid.focus = true
+      gamegrid.visible = true
+      settings.active = false
+    }
   }
 
   Item {
@@ -260,6 +272,7 @@ FocusScope {
           onCollectionNext: nextCollection()
           onCollectionPrev: prevCollection()
           onMenuRequested: toggleMenu()
+          onSettingsRequested: toggleSettings()
           onDetailsRequested: toggleDetails()
           onGameChanged: changeGameIndex(currentIdx)
         }
@@ -329,6 +342,8 @@ FocusScope {
   // Settings screen
   Settings {
     id: settings
+    visible: false
+    property bool active : false
     anchors {
       left: parent.left; right: parent.right
       top: parent.top; bottom: parent.bottom
