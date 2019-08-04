@@ -420,12 +420,12 @@ Item {
             width: vpx(75)
             height: vpx(75)
 
-            opacity: (gameData.rating != "" && !showVideo) ? 1 : 0.1
+            opacity: (gameData.rating != null && !showVideo) ? 1 : 0.1
             Behavior on opacity { NumberAnimation { duration: 100 } }
 
             Text {
               id: metarating
-              text: (gameData.rating == "") ? "NA" : Math.round(gameData.rating * 100)
+              text: (gameData.rating == null) ? "NA" : Math.round(gameData.rating * 100)
               color: (gameData.rating > 0.89) ? "#FFCE00" : "white"
               font.pixelSize: vpx(35)
               font.family: globalFonts.condensed
@@ -458,7 +458,7 @@ Item {
               top: metadata.bottom; topMargin: vpx(60);
             }
             horizontalAlignment: Text.AlignJustify
-            text: (gameData.summary || gameData.description) ? gameData.summary || gameData.description : "No description available"
+            text: (gameData.summary != null || gameData.description != null) ? gameData.summary || gameData.description : "No description available"
             font.pixelSize: vpx(22)
             font.family: "Open Sans"
             //textFormat: Text.RichText

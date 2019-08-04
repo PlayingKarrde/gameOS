@@ -2,3 +2,10 @@
 *.jsc
 *.jsc.*
 *.qmlc.*
+*.cflags
+*.config
+*.creator
+*.creator.*
+*.cxxflags
+*.files
+*.includes

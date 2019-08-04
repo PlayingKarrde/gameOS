@@ -7,8 +7,12 @@ import "qrc:/qmlutils" as PegasusUtils
 import "layer_grid"
 import "layer_menu"
 import "layer_details"
+import "layer_settings"
 
 FocusScope {
+  //SETTINGS
+  property bool mainShowDetails: api.memory.get('settingsMainShowDetails') | false
+
   // Loading the fonts here makes them usable in the rest of the theme
   // and can be referred to using their name and weight.
   FontLoader { id: titleFont; source: "fonts/AkzidenzGrotesk-BoldCond.otf" }
@@ -82,7 +86,7 @@ FocusScope {
       // Close the menu
       gamegrid.focus = true
       platformmenu.outro()
-      content.opacity = 1
+      if (mainShowDetails) { content.opacity = 1 }
       contentcontainer.opacity = 1
       contentcontainer.x = 0
       collectiontitle.opacity = 1
@@ -90,7 +94,7 @@ FocusScope {
       // Open the menu
       platformmenu.focus = true
       platformmenu.intro()
-      content.opacity = 0.3
+      if (mainShowDetails) { content.opacity = 0.3 }
       contentcontainer.opacity = 0.3
       contentcontainer.x = platformmenu.menuwidth
       collectiontitle.opacity = 0
@@ -103,7 +107,8 @@ FocusScope {
       // Close the details
       gamegrid.focus = true
       gamegrid.visible = true
-      content.opacity = 1
+      if (mainShowDetails)
+        content.opacity = 1
       backgroundimage.dimopacity = 0.97
       gamedetails.active = false
       gamedetails.outro()
@@ -116,6 +121,10 @@ FocusScope {
       backgroundimage.dimopacity = 0
       gamedetails.intro()
     }
+  }
+
+  function toggleSettings() {
+
   }
 
   Item {
@@ -173,7 +182,8 @@ FocusScope {
         Behavior on opacity { NumberAnimation { duration: 100 } }
 
         width: parent.width
-        //  text: (api.filters.current.enabled) ? api.currentCollection.name + " | Favorites" : api.currentCollection.name
+        //text: (api.filters.current.enabled) ? api.currentCollection.name + " | Favorites" : api.currentCollection.name
+        text: currentCollection.name
         color: "white"
         font.pixelSize: vpx(16)
         font.family: globalFonts.sans
@@ -202,10 +212,12 @@ FocusScope {
 
         height: vpx(200)//vpx(280)
         width: parent.width - vpx(182)
-        anchors { top: menuicon.bottom; topMargin: vpx(-20)}
+        anchors {
+          top: menuicon.bottom;
+          topMargin: mainShowDetails ? vpx(-20) : vpx(-190)}
 
         // Text doesn't look so good blurred so fade it out when blurring
-        opacity: 1
+        opacity: mainShowDetails ? 1 : 0
         Behavior on opacity { OpacityAnimator { duration: 100 } }
       }
 
@@ -231,6 +243,7 @@ FocusScope {
           collectionData: currentCollection
           gameData: currentGame
           currentGameIdx: currentGameIndex
+          mainScreenDetails: mainShowDetails
 
           focus: true
           Behavior on opacity { OpacityAnimator { duration: 100 } }
@@ -311,6 +324,18 @@ FocusScope {
         //onSwipeLeft: closeRequested()
         onClicked: toggleMenu()
     }
+  }
+
+  // Settings screen
+  Settings {
+    id: settings
+    anchors {
+      left: parent.left; right: parent.right
+      top: parent.top; bottom: parent.bottom
+    }
+    width: parent.width
+    height: parent.height
+    onCloseRequested: toggleSettings()
   }
 
   ///////////////////
