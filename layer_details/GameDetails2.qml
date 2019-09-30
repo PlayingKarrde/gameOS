@@ -149,7 +149,7 @@ Item {
       width: vpx(275)
       height: boxart.height
       anchors {
-        bottom: parent.bottom; bottomMargin: vpx(100);
+        bottom: parent.bottom; bottomMargin: vpx(80);
       }
 
       Image {
@@ -237,7 +237,8 @@ Item {
       spacing: 4
       width: parent.width - boxart.width
       anchors {
-        left: boxContainer.right; leftMargin: vpx(25);
+        left: (gameData.assets.boxFront) ? boxContainer.right : parent.left;
+        leftMargin: (gameData.assets.boxFront) ? vpx(25) : vpx(0);
         bottom: boxContainer.bottom;
       }
 
@@ -284,8 +285,9 @@ Item {
         Layout.fillWidth: true;
         horizontalAlignment: Text.AlignJustify
         text: (gameData.summary != null || gameData.description != null) ? gameData.summary || gameData.description : "No description available"
-        font.pixelSize: vpx(18)
+        font.pointSize: 24
         font.family: subtitleFont.name
+        font.bold: true
         //textFormat: Text.RichText
         color: "#fff"
         elide: Text.ElideRight
@@ -302,13 +304,13 @@ Item {
         id: navigationbox
         spacing: vpx(15)
         width: parent.width
-        height: vpx(40)
+        height: vpx(35)
 
         // Launch button
         GamePanelButton2 {
           id: launchBtn
           text: "Launch"
-          width: vpx(125)
+          width: vpx(90)
           height: parent.height
 
           onFocusChanged: {
@@ -352,7 +354,7 @@ Item {
         GamePanelButton2 {
           id: videoBtn
           text: (showVideo) ? "Details" : "Preview"
-          width: vpx(125)
+          width: vpx(96)
           height: parent.height
           visible: (numbuttons == 4)
 
@@ -444,7 +446,7 @@ Item {
         GamePanelButton2 {
           id: backBtn
           text: "Back"
-          width: vpx(125)
+          width: vpx(70)
           height: parent.height
           onFocusChanged: {
             if (focus)

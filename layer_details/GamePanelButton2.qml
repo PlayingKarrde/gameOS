@@ -44,8 +44,8 @@ Rectangle {
           }
         }
         font {
-            pixelSize: vpx(20)
-            family: globalFonts.sans
+            pointSize: 24
+            family: subtitleFont.name
             bold: true
         }
         // DropShadow

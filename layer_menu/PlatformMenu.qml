@@ -231,12 +231,12 @@ Item {
                 easing.period: 1.5
               }
             }
-            font.pixelSize: vpx(25)
-            font.family: globalFonts.sans
+            font.pixelSize: vpx(22)
+            font.family: bodyFont.name
             //font.capitalization: Font.AllUppercase
-            font.bold: selected
+            //font.bold: true//selected
             //width: ListView.view.width
-            height: vpx(40)
+            //height: vpx(40)
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
 
