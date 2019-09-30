@@ -90,6 +90,7 @@ Item {
         boxart.opacity = 1
         gameTitle.opacity = 1;
         metadata.opacity = 1;
+        infoContainer.opacity = 1;
         gameDescription.opacity = 1;
       } else {
         // VIDEO
@@ -100,6 +101,7 @@ Item {
         boxart.opacity = 0
         gameTitle.opacity = 0;
         metadata.opacity = 0;
+        infoContainer.opacity = 0;
         gameDescription.opacity = 0;
       }
     }
@@ -231,6 +233,8 @@ Item {
       id: infoContainer
       spacing: 4
       width: parent.width - boxart.width
+      opacity: 1
+      Behavior on opacity { NumberAnimation { duration: 100 } }
       anchors {
         left: (gameData.assets.boxFront) ? boxContainer.right : parent.left;
         leftMargin: (gameData.assets.boxFront) ? vpx(25) : vpx(0);
@@ -352,7 +356,7 @@ Item {
         // Video button
         GamePanelButton2 {
           id: videoBtn
-          text: (showVideo) ? "Details" : "Preview"
+          text: "Preview"
           width: vpx(96)
           height: parent.height
           visible: (numbuttons == 4)
@@ -367,11 +371,13 @@ Item {
           Keys.onPressed: {
             if (api.keys.isAccept(event) && !event.isAutoRepeat) {
               event.accepted = true;
+              videoBackBtn.focus = true
               toggleVideo();
             }
           }
           onClicked: {
-            focus = true
+            //focus = true
+            videoBackBtn.focus = true
             toggleVideo();
           }
 
@@ -482,6 +488,55 @@ Item {
         }
       } //navigationBox
     } //infoContainer
+
+    // NOTE: Preview video back button
+    // Back button
+    GamePanelButton2 {
+      id: videoBackBtn
+      anchors {
+        right: parent.right; rightMargin: vpx(0);
+        bottom: boxContainer.bottom; bottomMargin: vpx(0);
+      }
+      text: "Back"
+      width: vpx(70)
+      height: vpx(35)
+      opacity: showVideo ? 1 : 0
+      Behavior on opacity { NumberAnimation { duration: 100 } }
+      onFocusChanged: {
+        if (focus)
+          navSound.play()
+      }
+
+      //KeyNavigation.left: faveBtn
+      //KeyNavigation.right: launchBtn
+      Keys.onPressed: {
+        if (api.keys.isAccept(event) && !event.isAutoRepeat) {
+          event.accepted = true;
+          toggleVideo();
+          videoBtn.focus = true;
+        }
+      }
+      onClicked: {
+        focus = true
+        toggleVideo();
+        videoBtn.focus = true;
+      }
+
+      // Round the corners
+      layer.enabled: true
+      layer.effect: OpacityMask {
+        maskSource: Item {
+          width: backBtn.width
+          height: backBtn.height
+          Rectangle {
+            anchors.centerIn: parent
+            width: backBtn.width
+            height: backBtn.height
+            radius: vpx(3)
+          }
+        }
+      } //OpacityMask
+    }
 
   } //backgroundBox
 
