@@ -1,5 +1,6 @@
 import QtQuick 2.8
 import QtGraphicalEffects 1.0
+import QtMultimedia 5.9
 
 Item {
   id: root
@@ -11,15 +12,84 @@ Item {
   property string bgImage1
   property string bgImage2
   property bool firstBG: true
+  property bool showVideo: false
+  property bool muteVideo: true
 
   onBgSourceChanged: swapImage(bgSource)
 
+  /////////////////
+  // Video Stuff //
+  /////////////////
+  function toggleVideo() {
+      if (showVideo)
+      {
+        // Turn off video
+        showVideo = false;
+        bg.opacity = 1;
+        videoPreviewLoader.sourceComponent = undefined;
+        fadescreenshot.stop();
+      } else {
+        // Turn on video
+        showVideo = true;
+        videoDelay.restart();
+      }
+  }
 
+  // NOTE: Start the countdown to load the video behind the bg
+  Timer {
+    id: videoDelay
+    interval: 500
+    onTriggered: {
+      if (gameData.assets.videos.length) {
+        videoPreviewLoader.sourceComponent = videoPreviewWrapper;
+        fadescreenshot.restart();
+      }
+    }
+  }
+
+  // NOTE: Next fade out the bg so there is a smooth transition into the video
+  Timer {
+    id: fadescreenshot
+    interval: 500
+    onTriggered: {
+      bg.opacity = 0;
+    }
+  }
+
+  // NOTE: Video Preview
+  Component {
+    id: videoPreviewWrapper
+    Video {
+      source: gameData.assets.videos.length ? gameData.assets.videos[0] : ""
+      anchors.fill: parent
+      fillMode: VideoOutput.PreserveAspectCrop
+      muted: muteVideo
+      loops: MediaPlayer.Infinite
+      autoPlay: true
+    }
+
+  }
+
+  // Video
+  Loader {
+    id: videoPreviewLoader
+    asynchronous: true
+    anchors {
+      fill: parent
+    }
+  }
+
+  /////////////////////
+  // End Video Stuff //
+  /////////////////////
 
   Item {
     id: bg
 
     anchors.fill: parent
+
+    opacity: 1
+    Behavior on opacity { NumberAnimation { duration: 500 } }
 
     states: [
         State { // this will fade in rect2 and fade out rect
@@ -48,7 +118,7 @@ Item {
         source: bgImage1
         sourceSize { width: 1920; height: 1080 }
         fillMode: Image.PreserveAspectCrop
-        smooth: false
+        smooth: true
     }
 
     Image {
@@ -59,7 +129,7 @@ Item {
         source: bgImage2
         sourceSize { width: 1920; height: 1080 }
         fillMode: Image.PreserveAspectCrop
-        smooth: false
+        smooth: true
     }
 
     state: "fadeInRect2"
@@ -81,6 +151,17 @@ Item {
       firstBG = true
     }
     bg.state = bg.state == "fadeInRect2" ? "fadeOutRect2" : "fadeInRect2"
+  }
+
+  Image
+  {
+    id: overlay
+    anchors.fill: parent
+    //source: "../assets/images/CRT-Integer-4-K-256-Grey-lfan.png"
+    source: "../assets/images/scanlines.png"
+    sourceSize { width: 1920; height: 1080 }
+    opacity: 0.3
+    smooth: true
   }
 
   LinearGradient {

@@ -43,7 +43,7 @@ Item {
       }
       if (api.keys.isFilters(event)) {
           event.accepted = true;
-          filtersRequested();
+          toggleSettings();
           return;
       }
       if (api.keys.isNextPage(event)) {
@@ -61,6 +61,22 @@ Item {
   function closeMenu() {
     menuCloseRequested();
     showSystemMenu = true;
+  }
+
+  function toggleSettings() {
+    if (!settings.visible) {
+      // Open settings menu
+      gameList.visible = false;
+      settings.visible = true;
+      settings.focus = true;
+      menubar.focus = false;
+    } else {
+      // Close settings menu
+      gameList.visible = true;
+      settings.visible = false;
+      settings.focus = false;
+      menubar.focus = true;
+    }
   }
 
   property var backgroundcontainer
@@ -249,6 +265,22 @@ Item {
           }
         }
     }
+
+    // Settings screen
+    Settings {
+      id: settings
+      visible: false
+      focus: false
+      property bool active : false
+      anchors {
+        left: parent.left; right: parent.right
+        top: parent.top; bottom: parent.bottom
+      }
+      width: parent.width
+      height: parent.height
+      onCloseRequested: toggleSettings()
+    }
+
     LinearGradient {
           width: vpx(2)
           height: parent.height

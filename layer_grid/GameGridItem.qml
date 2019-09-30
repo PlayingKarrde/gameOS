@@ -27,10 +27,10 @@ Item {
     if (thumbnailType == "video")
     {
       if (selected) {
-        videoDelay.restart();
+        //videoDelay.restart();
       }
       else {
-        videoPreviewLoader.sourceComponent = undefined;
+        //videoPreviewLoader.sourceComponent = undefined;
         fadescreenshot.stop();
       }
     }
@@ -173,11 +173,19 @@ Item {
                   radius: cornerradius - vpx(1)
               }
           }
-      }
+      }//OpacityMask
+    }//screenshot
+
+    FastBlur {
+        anchors.fill: screenshot
+        source: screenshot
+        radius: 64
+        transparentBorder: false
     }
 
 
     // Video preview
+    /*
     Component {
       id: videoPreviewWrapper
       Video {
@@ -212,7 +220,7 @@ Item {
           }
       }
       //z: 3
-    }
+    }*/
 
     // Dim overlay
     Rectangle {

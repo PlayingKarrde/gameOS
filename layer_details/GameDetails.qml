@@ -134,7 +134,7 @@ Item {
         verticalCenter: parent.verticalCenter
       }
       width: parent.width - vpx(182)
-      height: boxAvailable ? boxart.height + (padding*2) + navigationbox.height : vpx(400)
+      height: boxAvailable ? boxart.height + (padding*2) + navigationbox.height : vpx(500)
       color: "#1a1a1a"//"#ee1a1a1a"
       radius: cornerradius
       opacity: 0
@@ -264,7 +264,7 @@ Item {
         Image {
           id: boxart
           width: vpx(300)
-          source: gameData.assets.boxFront
+          source: gameData.assets.boxFront || ""
           sourceSize { width: vpx(512); height: vpx(512) }
           fillMode: Image.PreserveAspectFit
           asynchronous: true
@@ -453,7 +453,7 @@ Item {
           Text {
             id: gameDescription
             width: parent.width
-            height: boxart.height - y//parent.height - navigationbox.height
+            height: boxAvailable ? boxart.height - y : vpx(150)
             anchors {
               top: metadata.bottom; topMargin: vpx(60);
             }

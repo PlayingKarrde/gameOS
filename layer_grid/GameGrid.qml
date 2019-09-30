@@ -19,7 +19,6 @@ FocusScope {
   signal launchRequested
   signal menuRequested
   signal detailsRequested
-  signal settingsRequested
   //signal filtersRequested
   signal collectionNext
   signal collectionPrev
@@ -41,8 +40,7 @@ FocusScope {
         }
       if (api.keys.isFilters(event)) {
           event.accepted = true;
-          //toggleFilters()
-          settingsRequested()
+          toggleFilters()
           //filtersRequested();
           return;
       }

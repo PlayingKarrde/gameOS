@@ -7,7 +7,6 @@ import "qrc:/qmlutils" as PegasusUtils
 import "layer_grid"
 import "layer_menu"
 import "layer_details"
-import "layer_settings"
 
 FocusScope {
   //SETTINGS
@@ -110,6 +109,7 @@ FocusScope {
       if (mainShowDetails)
         content.opacity = 1
       backgroundimage.dimopacity = 0.97
+      backgroundimage.toggleVideo();
       gamedetails.active = false
       gamedetails.outro()
     } else {
@@ -118,24 +118,9 @@ FocusScope {
       gamedetails.active = true
       gamegrid.visible = false
       content.opacity = 0
+      backgroundimage.toggleVideo();
       backgroundimage.dimopacity = 0
       gamedetails.intro()
-    }
-  }
-
-  function toggleSettings() {
-    if (!settings.active) {
-      // Open settings screen
-      settings.visible = true
-      settings.focus = true
-      gamegrid.visible = false
-      settings.active = true
-    } else {
-      // Close settings screen
-      settings.visible = false
-      gamegrid.focus = true
-      gamegrid.visible = true
-      settings.active = false
     }
   }
 
@@ -272,14 +257,13 @@ FocusScope {
           onCollectionNext: nextCollection()
           onCollectionPrev: prevCollection()
           onMenuRequested: toggleMenu()
-          onSettingsRequested: toggleSettings()
           onDetailsRequested: toggleDetails()
           onGameChanged: changeGameIndex(currentIdx)
         }
       }
 
 
-      GameDetails {
+      GameDetails2 {
         id: gamedetails
 
         property bool active : false
@@ -339,19 +323,6 @@ FocusScope {
     }
   }
 
-  // Settings screen
-  Settings {
-    id: settings
-    visible: false
-    property bool active : false
-    anchors {
-      left: parent.left; right: parent.right
-      top: parent.top; bottom: parent.bottom
-    }
-    width: parent.width
-    height: parent.height
-    onCloseRequested: toggleSettings()
-  }
 
   ///////////////////
   // SOUND EFFECTS //

@@ -10,7 +10,7 @@ Rectangle {
     property alias text: label.text
     //property bool activated: false
 
-    color: focus ? "#FF9E12" : (mouseArea.containsMouse ? "#FF9E12" : "transparent")
+    color: focus ? "#FF9E12" : (mouseArea.containsMouse ? "#404040" : "#121212")
     Behavior on color {
       ColorAnimation {
         duration: 200;
@@ -19,6 +19,9 @@ Rectangle {
         easing.period: 1.5
       }
     }
+
+    scale: focus ? 1.12 : 1.0
+    Behavior on scale { PropertyAnimation { duration: 200; easing.type: Easing.OutQuart; easing.amplitude: 2.0; } }
     width: parent.width
     //border.width: vpx(1)
 
@@ -43,7 +46,7 @@ Rectangle {
         font {
             pixelSize: vpx(20)
             family: globalFonts.sans
-            bold: root.focus
+            bold: true
         }
         // DropShadow
         /*layer.enabled: (root.focus || mouseArea.containsMouse)
