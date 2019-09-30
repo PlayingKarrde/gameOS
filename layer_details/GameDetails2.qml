@@ -21,6 +21,7 @@ Item {
   signal launchRequested
   signal detailsCloseRequested
   signal filtersRequested
+  signal videoPreview
   signal switchCollection(int collectionIdx)
 
   onFocusChanged: {
@@ -30,6 +31,8 @@ Item {
   }
 
   visible: (backgroundbox.opacity == 0) ? false : true
+  opacity: 1
+  Behavior on opacity { NumberAnimation { duration: 100 } }
 
   // Empty area for closing out of bounds
   Item {
@@ -76,37 +79,28 @@ Item {
     }
   }
 
-  Timer {
-    id: videoDelay
-    interval: 100
-    onTriggered: {
-      if (gameData.assets.videos.length) {
-        videoPreviewLoader.sourceComponent = videoPreviewWrapper;
-        fadescreenshot.restart();
-      }
-    }
-  }
-
-  Timer {
-    id: fadescreenshot
-    interval: 500
-    onTriggered: {
-      //screenshot.opacity = 0;
-    }
-  }
-
   function toggleVideo() {
     if (gameData.assets.videos.length && (boxart.opacity == 0 || boxart.opacity == 1)) {
       if (showVideo) {
         // BOXART
         showVideo = false
+        root.videoPreview();
+        //root.opacity = 1;
         //boxart.x = boxart.x + videooffset
-        //boxart.opacity = 1
+        boxart.opacity = 1
+        gameTitle.opacity = 1;
+        metadata.opacity = 1;
+        gameDescription.opacity = 1;
       } else {
         // VIDEO
         showVideo = true
+        root.videoPreview();
+        //root.opacity = 0.05;
         //boxart.x = boxart.x - videooffset
-        //boxart.opacity = 0
+        boxart.opacity = 0
+        gameTitle.opacity = 0;
+        metadata.opacity = 0;
+        gameDescription.opacity = 0;
       }
     }
   }
@@ -148,6 +142,7 @@ Item {
       id: boxContainer
       width: vpx(275)
       height: boxart.height
+
       anchors {
         bottom: parent.bottom; bottomMargin: vpx(80);
       }
@@ -253,12 +248,16 @@ Item {
         font.bold: true
         //font.capitalization: Font.AllUppercase
         elide: Text.ElideRight
+        opacity: 1
+        Behavior on opacity { NumberAnimation { duration: 100 } }
       }
 
       // NOTE: Play data
       RowLayout {
         id: metadata
         spacing: vpx(6)
+        opacity: 1
+        Behavior on opacity { NumberAnimation { duration: 100 } }
 
         // Times played
         GameGridMetaBox {
@@ -285,14 +284,14 @@ Item {
         Layout.fillWidth: true;
         horizontalAlignment: Text.AlignJustify
         text: (gameData.summary != null || gameData.description != null) ? gameData.summary || gameData.description : "No description available"
-        font.pointSize: 24
+        font.pixelSize: vpx(16)
         font.family: subtitleFont.name
         font.bold: true
         //textFormat: Text.RichText
         color: "#fff"
         elide: Text.ElideRight
         wrapMode: Text.WordWrap
-        opacity: showVideo ? 0.1 : 1.0
+        //opacity: showVideo ? 0.1 : 1.0
         Behavior on opacity { NumberAnimation { duration: 100 } }
       }
 

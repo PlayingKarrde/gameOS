@@ -22,6 +22,8 @@ Rectangle {
 
     scale: focus ? 1.12 : 1.0
     Behavior on scale { PropertyAnimation { duration: 200; easing.type: Easing.OutQuart; easing.amplitude: 2.0; } }
+    opacity: focus ? 1 : 0.8
+    Behavior on opacity { NumberAnimation { duration: 100 } }
     width: parent.width
     //border.width: vpx(1)
 
@@ -44,7 +46,7 @@ Rectangle {
           }
         }
         font {
-            pointSize: 24
+            pixelSize: vpx(16)
             family: subtitleFont.name
             bold: true
         }

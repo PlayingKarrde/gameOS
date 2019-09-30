@@ -1,12 +1,14 @@
-# gameOS v0.5.5
+# gameOS v0.6
 
-![gameOS Pegasus theme](https://i.imgur.com/FeGjoC8.png)
+![gameOS Pegasus theme](https://i.imgur.com/Zzq3q1n.png)
 
-![gameOS Pegasus theme image 2](https://i.imgur.com/ebBfIiu.png)
+![gameOS Pegasus theme image 2](https://i.imgur.com/1BfAUM2.png)
 
-![gameOS pegasus theme image 3](https://i.imgur.com/7r0yx8K.png)
+![gameOS Pegasus theme image 3](https://i.imgur.com/1BfAUM2.png)
 
-[Video preview](https://youtu.be/bqA817pnLsI)
+![gameOS pegasus theme image 4](https://i.imgur.com/fDRio9O.png)
+
+[Video preview](https://youtu.be/WVAV7dAqc08)
 
 
 
@@ -35,11 +37,14 @@ Skraper will place these in your roms folder under another folder called media.
 If no media files are showing up, make sure that Skraper Assets is checked in the Additional Data Sources section of Pegasus settings. It may also be preferable to convert the created gamelist.xml (assuming EmulationStation was chosen for the game list in Skraper) to a metadata.txt file using the [Pegasus conversion tool](http://pegasus-frontend.org/tools/convert/)
 
 ## Version history
-v0.5.5
-- Setup for upcoming settings screen
+v0.6
+- Added new default game details screen
 - Added new default grid view without game details with to toggle
-- Added column number options
+- Added column number options (for future update)
+- Added theme support (for future update)
 - Brought back collection title
+- Video previews in thumbnail currently turned off to improve performance
+- Various bug fixes (thanks to bedgoe, waldnercharles)
 
 v0.5
 - Updated to latest version of Pegasus

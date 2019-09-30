@@ -131,6 +131,17 @@ FocusScope {
     }
   }
 
+  function toggleVideoAudio()
+  {
+    if (backgroundimage.muteVideo) {
+      backgroundimage.muteVideo = false;
+      backgroundimage.bggradient.opacity = 0;
+    } else {
+      backgroundimage.muteVideo = true;
+      backgroundimage.bggradient.opacity = 1;
+    }
+  }
+
   Item {
     id: everythingcontainer
     anchors {
@@ -285,6 +296,7 @@ FocusScope {
 
         onDetailsCloseRequested: toggleDetails()
         onLaunchRequested: launchGame()
+        onVideoPreview: toggleVideoAudio()
 
       }
 

@@ -165,6 +165,7 @@ Item {
   }
 
   LinearGradient {
+    id: bggradient
     z: parent.z + 1
     width: parent.width
     height: parent.height
@@ -179,6 +180,9 @@ Item {
       GradientStop { position: 0.0; color: "#00000000" }
       GradientStop { position: 0.7; color: "#ff000000" }
     }
+    opacity: (muteVideo) ? 1 : 0
+    Behavior on opacity { NumberAnimation { duration: 100 } }
+
   }
 
   Rectangle {
