@@ -4,7 +4,7 @@
 
 ![gameOS Pegasus theme image 2](https://i.imgur.com/1BfAUM2.png)
 
-![gameOS Pegasus theme image 3](https://i.imgur.com/1BfAUM2.png)
+![gameOS Pegasus theme image 3](https://i.imgur.com/WTdWS63.png)
 
 ![gameOS pegasus theme image 4](https://i.imgur.com/fDRio9O.png)
 
