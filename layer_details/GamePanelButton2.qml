@@ -10,7 +10,7 @@ Rectangle {
     property alias text: label.text
     //property bool activated: false
 
-    color: focus ? "#FF9E12" : (mouseArea.containsMouse ? "#404040" : "#121212")
+    color: focus ? themeColour : (mouseArea.containsMouse ? "#404040" : "#121212")
     Behavior on color {
       ColorAnimation {
         duration: 200;

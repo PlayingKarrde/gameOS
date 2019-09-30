@@ -16,8 +16,10 @@ FocusScope {
   // and can be referred to using their name and weight.
   FontLoader { id: titleFont; source: "fonts/AkzidenzGrotesk-BoldCond.otf" }
   FontLoader { id: subtitleFont; source: "fonts/Gotham-Bold.otf" }
+  FontLoader { id: bodyFont; source: "fonts/Montserrat-Medium.otf" }
 
   property bool menuactive: false
+  property string themeColour: "#FF9E12"
 
   //////////////////////////
   // Collection switching //

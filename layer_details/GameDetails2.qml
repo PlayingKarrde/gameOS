@@ -185,7 +185,7 @@ Item {
           ColorOverlay {
               anchors.fill: favebg
               source: favebg
-              color: "#FF9E12"
+              color: themeColour
               z: 10
           }
 
@@ -285,7 +285,7 @@ Item {
         horizontalAlignment: Text.AlignJustify
         text: (gameData.summary != null || gameData.description != null) ? gameData.summary || gameData.description : "No description available"
         font.pixelSize: vpx(20)
-        font.family: "Open Sans"
+        font.family: subtitleFont.name
         //textFormat: Text.RichText
         color: "#fff"
         elide: Text.ElideRight
@@ -355,6 +355,7 @@ Item {
           width: vpx(125)
           height: parent.height
           visible: (numbuttons == 4)
+
           onFocusChanged: {
             if (focus)
               navSound.play()

@@ -293,7 +293,7 @@ Item {
       ColorOverlay {
           anchors.fill: favebg
           source: favebg
-          color: "#FF9E12"
+          color: themeColour
           z: 10
       }
 
@@ -331,7 +331,7 @@ Item {
     states: [
       State {
         name: "SELECTED"
-        PropertyChanges { target: itemcontainer; color: "#FF9E12"}
+        PropertyChanges { target: itemcontainer; color: themeColour}
         PropertyChanges { target: rectAnim; opacity: 1 }
         PropertyChanges { target: screenshot; opacity: 1 }
         PropertyChanges { target: dimoverlay; opacity: 0.2 }
