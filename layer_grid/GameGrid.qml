@@ -4,13 +4,15 @@ import QtMultimedia 5.9
 FocusScope {
   id: root
 
-  // Options
-  property int numColumns: 4
+  // SETTINGS
+  property int numColumns : api.memory.get('settingGridNumColumns') || 4
 
   property alias gridWidth: grid.width
-  property int gridItemSpacing: (numColumns == 4) ? vpx(7) : vpx(5) // it will double this
+  property int gridItemSpacing: (numColumns == 4) ? vpx(10) : vpx(15) // it will double this
+  property int gridItemHeight: (numColumns == 4) ? vpx(180) : vpx(230)
   property var collectionData
   property var gameData
+  property bool mainScreenDetails
   property int currentGameIdx
   property string jumpToPattern: ''
 
@@ -39,7 +41,6 @@ FocusScope {
       if (api.keys.isFilters(event)) {
           event.accepted = true;
           toggleFilters()
-
           //filtersRequested();
           return;
       }
@@ -71,6 +72,7 @@ FocusScope {
 
   }
 
+
   onCurrentGameIdxChanged: {
     grid.currentIndex = currentGameIdx
   }
@@ -90,12 +92,13 @@ FocusScope {
     anchors.horizontalCenter: parent.horizontalCenter
 
     cellWidth: grid.width/numColumns
-    cellHeight: (numColumns == 4) ? vpx(157) : vpx(210)
+    cellHeight: gridItemHeight
 
     //highlightFollowsCurrentItem: false
-    preferredHighlightBegin: vpx(0); preferredHighlightEnd: vpx(314)
+    preferredHighlightBegin: vpx(0);
+    preferredHighlightEnd: mainScreenDetails ? gridItemHeight * 2 : gridItemHeight * 3
     highlightRangeMode: GridView.StrictlyEnforceRange
-    displayMarginBeginning: 300
+    displayMarginBeginning: vpx(300)
     //snapMode: GridView.SnapOneItem
 
     model: collectionData ? collectionData.games : []

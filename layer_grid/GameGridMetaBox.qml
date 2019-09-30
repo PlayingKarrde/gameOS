@@ -30,7 +30,7 @@ BorderImage {
       Layout.preferredHeight: vpx(15)
       Layout.maximumWidth: vpx(25)
       Layout.maximumHeight: vpx(15)
-      opacity: 0.75
+      opacity: 0.5
       visible: icon
     }
 
@@ -44,7 +44,7 @@ BorderImage {
       font.bold: true
       font.capitalization: Font.AllUppercase
       Layout.alignment: Qt.AlignVCenter
-      //opacity: 0.75
+      opacity: 0.5
     }
 
     // DropShadow

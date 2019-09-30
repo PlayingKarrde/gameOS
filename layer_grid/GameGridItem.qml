@@ -6,6 +6,9 @@ Item {
 
   id: root
 
+  // SETTINGS
+  property var thumbnailType: "video"
+
   property bool selected: false
   property var game
   property int cornerradius: vpx(3)
@@ -21,14 +24,16 @@ Item {
   /////////////////
 
   onSelectedChanged: {
-    if (selected) {
-      videoDelay.restart();
+    if (thumbnailType == "video")
+    {
+      if (selected) {
+        //videoDelay.restart();
+      }
+      else {
+        //videoPreviewLoader.sourceComponent = undefined;
+        fadescreenshot.stop();
+      }
     }
-    else {
-      videoPreviewLoader.sourceComponent = undefined;
-      fadescreenshot.stop();
-    }
-
   }
 
   onCollectionChanged: {
@@ -69,16 +74,21 @@ Item {
     id: itemcontainer
     state: selected ? "SELECTED" : "UNSELECTED"
 
-    width: root.gridItemWidth
-    height: root.gridItemHeight
+    //width: root.gridItemWidth
+    //height: root.gridItemHeight
     anchors {
       fill: parent
-      margins: gridItemSpacing
+      leftMargin: gridItemSpacing
+      rightMargin: gridItemSpacing
+      topMargin: gridItemSpacing
+      bottomMargin: 40
+      //margins: gridItemSpacing
+      //leftMargin:
     }
 
     radius: cornerradius + vpx(3)
 
-    scale: selected ? 1.14 : 1.0
+    scale: selected ? 1.12 : 1.0
     Behavior on scale { PropertyAnimation { duration: 200; easing.type: Easing.OutQuart; easing.amplitude: 2.0; } }
 
     // DropShadow
@@ -163,12 +173,19 @@ Item {
                   radius: cornerradius - vpx(1)
               }
           }
-      }
+      }//OpacityMask
+    }//screenshot
+
+    FastBlur {
+        anchors.fill: screenshot
+        source: screenshot
+        radius: 64
+        transparentBorder: false
     }
 
 
-
     // Video preview
+    /*
     Component {
       id: videoPreviewWrapper
       Video {
@@ -203,7 +220,7 @@ Item {
           }
       }
       //z: 3
-    }
+    }*/
 
     // Dim overlay
     Rectangle {
@@ -215,9 +232,9 @@ Item {
         margins: vpx(3)
       }
       color: "black"
-      opacity: 0.6
+      opacity: 0.4
       visible: !steam || ""
-      z: (selected) ? 4 : 6
+      z: (selected) ? 4 : 5
       radius: cornerradius
     }
 
@@ -276,7 +293,7 @@ Item {
       ColorOverlay {
           anchors.fill: favebg
           source: favebg
-          color: "#FF9E12"
+          color: themeColour
           z: 10
       }
 
@@ -314,19 +331,19 @@ Item {
     states: [
       State {
         name: "SELECTED"
-        PropertyChanges { target: screenshot; opacity: 1 }
-        PropertyChanges { target: itemcontainer; color: "#FF9E12"}
+        PropertyChanges { target: itemcontainer; color: themeColour}
         PropertyChanges { target: rectAnim; opacity: 1 }
         PropertyChanges { target: screenshot; opacity: 1 }
-        PropertyChanges { target: dimoverlay; opacity: 0.4 }
+        PropertyChanges { target: dimoverlay; opacity: 0.2 }
+        PropertyChanges { target: selectedGameName; opacity: 1.0 }
       },
       State {
         name: "UNSELECTED"
-        PropertyChanges { target: screenshot; opacity: 1 }
         PropertyChanges { target: itemcontainer; color: "transparent"}
         PropertyChanges { target: rectAnim; opacity: 0 }
         PropertyChanges { target: screenshot; opacity: 0.8 }
-        PropertyChanges { target: dimoverlay; opacity: 0.5 }
+        PropertyChanges { target: dimoverlay; opacity: 0.4 }
+        PropertyChanges { target: selectedGameName; opacity: 0 }
       }
     ]
 
@@ -334,23 +351,25 @@ Item {
       Transition {
         from: "SELECTED"
         to: "UNSELECTED"
-        PropertyAnimation { target: rectAnim; duration: 100 }
         ColorAnimation { target: itemcontainer; duration: 100 }
         PropertyAnimation { target: rectAnim; duration: 100 }
         PropertyAnimation { target: screenshot; duration: 100 }
         PropertyAnimation { target: dimoverlay; duration: 100 }
+        PropertyAnimation { target: selectedGameName; duration: 1000 }
       },
       Transition {
         from: "UNSELECTED"
         to: "SELECTED"
-        PropertyAnimation { target: rectAnim; duration: 100 }
         ColorAnimation { target: itemcontainer; duration: 100 }
         PropertyAnimation { target: rectAnim; duration: 1000 }
         PropertyAnimation { target: screenshot; duration: 100 }
         PropertyAnimation { target: dimoverlay; duration: 100 }
+        PropertyAnimation { target: selectedGameName; duration: 2000 }
       }
     ]
   }
+
+
 
   Image {
     anchors.centerIn: parent
@@ -393,10 +412,32 @@ Item {
     font.bold: true
     style: Text.Outline; styleColor: "black"
     visible: !game.assets.logo
-    anchors.centerIn: parent
+    anchors.centerIn: itemcontainer
     elide: Text.ElideRight
     wrapMode: Text.WordWrap
     horizontalAlignment: Text.AlignHCenter
 
+  }
+
+  Text {
+    id: selectedGameName
+
+    anchors {
+      horizontalCenter: parent.horizontalCenter
+      top: itemcontainer.bottom
+      topMargin: vpx(10)
+    }
+    horizontalAlignment: Text.AlignHCenter
+    width: itemcontainer.width
+    text: game.title
+    color: "white"
+    opacity: 0
+    font.pixelSize: vpx(14)
+    font.family: subtitleFont.name
+    font.bold: true
+    //font.capitalization: Font.AllUppercase
+    elide: Text.ElideRight
+    //visible: (gameData.assets.logo == "") ? true : false
+    //style: Text.Outline; styleColor: "#cc000000"
   }
 }

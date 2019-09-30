@@ -134,7 +134,7 @@ Item {
         verticalCenter: parent.verticalCenter
       }
       width: parent.width - vpx(182)
-      height: boxAvailable ? boxart.height + (padding*2) + navigationbox.height : vpx(400)
+      height: boxAvailable ? boxart.height + (padding*2) + navigationbox.height : vpx(500)
       color: "#1a1a1a"//"#ee1a1a1a"
       radius: cornerradius
       opacity: 0
@@ -264,7 +264,7 @@ Item {
         Image {
           id: boxart
           width: vpx(300)
-          source: gameData.assets.boxFront
+          source: gameData.assets.boxFront || ""
           sourceSize { width: vpx(512); height: vpx(512) }
           fillMode: Image.PreserveAspectFit
           asynchronous: true
@@ -420,12 +420,12 @@ Item {
             width: vpx(75)
             height: vpx(75)
 
-            opacity: (gameData.rating != "" && !showVideo) ? 1 : 0.1
+            opacity: (gameData.rating != null && !showVideo) ? 1 : 0.1
             Behavior on opacity { NumberAnimation { duration: 100 } }
 
             Text {
               id: metarating
-              text: (gameData.rating == "") ? "NA" : Math.round(gameData.rating * 100)
+              text: (gameData.rating == null) ? "NA" : Math.round(gameData.rating * 100)
               color: (gameData.rating > 0.89) ? "#FFCE00" : "white"
               font.pixelSize: vpx(35)
               font.family: globalFonts.condensed
@@ -453,12 +453,12 @@ Item {
           Text {
             id: gameDescription
             width: parent.width
-            height: boxart.height - y//parent.height - navigationbox.height
+            height: boxAvailable ? boxart.height - y : vpx(150)
             anchors {
               top: metadata.bottom; topMargin: vpx(60);
             }
             horizontalAlignment: Text.AlignJustify
-            text: (gameData.summary || gameData.description) ? gameData.summary || gameData.description : "No description available"
+            text: (gameData.summary != null || gameData.description != null) ? gameData.summary || gameData.description : "No description available"
             font.pixelSize: vpx(22)
             font.family: "Open Sans"
             //textFormat: Text.RichText

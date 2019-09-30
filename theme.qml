@@ -9,12 +9,22 @@ import "layer_menu"
 import "layer_details"
 
 FocusScope {
+  //SETTINGS
+  property bool mainShowDetails: api.memory.get('settingsMainShowDetails') | false
+
   // Loading the fonts here makes them usable in the rest of the theme
   // and can be referred to using their name and weight.
   FontLoader { id: titleFont; source: "fonts/AkzidenzGrotesk-BoldCond.otf" }
   FontLoader { id: subtitleFont; source: "fonts/Gotham-Bold.otf" }
+  FontLoader { id: bodyFont; source: "fonts/Montserrat-Medium.otf" }
 
   property bool menuactive: false
+  property string themeOrange: "#FF9E12"
+  property string themeGreen: "#297373"
+  property string themePeach: "#FF8552"
+  property string themePink: "#FF7BAC"
+  property string themeYellow: "#E9D758"
+  property string themeColour: themeOrange
 
   //////////////////////////
   // Collection switching //
@@ -82,7 +92,7 @@ FocusScope {
       // Close the menu
       gamegrid.focus = true
       platformmenu.outro()
-      content.opacity = 1
+      if (mainShowDetails) { content.opacity = 1 }
       contentcontainer.opacity = 1
       contentcontainer.x = 0
       collectiontitle.opacity = 1
@@ -90,7 +100,7 @@ FocusScope {
       // Open the menu
       platformmenu.focus = true
       platformmenu.intro()
-      content.opacity = 0.3
+      if (mainShowDetails) { content.opacity = 0.3 }
       contentcontainer.opacity = 0.3
       contentcontainer.x = platformmenu.menuwidth
       collectiontitle.opacity = 0
@@ -103,8 +113,10 @@ FocusScope {
       // Close the details
       gamegrid.focus = true
       gamegrid.visible = true
-      content.opacity = 1
+      if (mainShowDetails)
+        content.opacity = 1
       backgroundimage.dimopacity = 0.97
+      backgroundimage.toggleVideo();
       gamedetails.active = false
       gamedetails.outro()
     } else {
@@ -113,8 +125,20 @@ FocusScope {
       gamedetails.active = true
       gamegrid.visible = false
       content.opacity = 0
+      backgroundimage.toggleVideo();
       backgroundimage.dimopacity = 0
       gamedetails.intro()
+    }
+  }
+
+  function toggleVideoAudio()
+  {
+    if (backgroundimage.muteVideo) {
+      backgroundimage.muteVideo = false;
+      backgroundimage.bggradient.opacity = 0;
+    } else {
+      backgroundimage.muteVideo = true;
+      backgroundimage.bggradient.opacity = 1;
     }
   }
 
@@ -173,7 +197,8 @@ FocusScope {
         Behavior on opacity { NumberAnimation { duration: 100 } }
 
         width: parent.width
-        //  text: (api.filters.current.enabled) ? api.currentCollection.name + " | Favorites" : api.currentCollection.name
+        //text: (api.filters.current.enabled) ? api.currentCollection.name + " | Favorites" : api.currentCollection.name
+        text: currentCollection.name
         color: "white"
         font.pixelSize: vpx(16)
         font.family: globalFonts.sans
@@ -202,10 +227,12 @@ FocusScope {
 
         height: vpx(200)//vpx(280)
         width: parent.width - vpx(182)
-        anchors { top: menuicon.bottom; topMargin: vpx(-20)}
+        anchors {
+          top: menuicon.bottom;
+          topMargin: mainShowDetails ? vpx(-20) : vpx(-190)}
 
         // Text doesn't look so good blurred so fade it out when blurring
-        opacity: 1
+        opacity: mainShowDetails ? 1 : 0
         Behavior on opacity { OpacityAnimator { duration: 100 } }
       }
 
@@ -231,6 +258,7 @@ FocusScope {
           collectionData: currentCollection
           gameData: currentGame
           currentGameIdx: currentGameIndex
+          mainScreenDetails: mainShowDetails
 
           focus: true
           Behavior on opacity { OpacityAnimator { duration: 100 } }
@@ -253,7 +281,7 @@ FocusScope {
       }
 
 
-      GameDetails {
+      GameDetails2 {
         id: gamedetails
 
         property bool active : false
@@ -268,6 +296,7 @@ FocusScope {
 
         onDetailsCloseRequested: toggleDetails()
         onLaunchRequested: launchGame()
+        onVideoPreview: toggleVideoAudio()
 
       }
 
@@ -312,6 +341,7 @@ FocusScope {
         onClicked: toggleMenu()
     }
   }
+
 
   ///////////////////
   // SOUND EFFECTS //
