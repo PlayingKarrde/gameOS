@@ -146,7 +146,7 @@ Item {
     Item {
       // NOTE: Need the container for the dropshadow (until I figure out how to combine layer styles)
       id: boxContainer
-      width: vpx(300)
+      width: vpx(275)
       height: boxart.height
       anchors {
         bottom: parent.bottom; bottomMargin: vpx(100);
@@ -284,7 +284,7 @@ Item {
         Layout.fillWidth: true;
         horizontalAlignment: Text.AlignJustify
         text: (gameData.summary != null || gameData.description != null) ? gameData.summary || gameData.description : "No description available"
-        font.pixelSize: vpx(20)
+        font.pixelSize: vpx(18)
         font.family: subtitleFont.name
         //textFormat: Text.RichText
         color: "#fff"

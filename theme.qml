@@ -19,7 +19,12 @@ FocusScope {
   FontLoader { id: bodyFont; source: "fonts/Montserrat-Medium.otf" }
 
   property bool menuactive: false
-  property string themeColour: "#FF9E12"
+  property string themeOrange: "#FF9E12"
+  property string themeGreen: "#297373"
+  property string themePeach: "#FF8552"
+  property string themePink: "#FF7BAC"
+  property string themeYellow: "#E9D758"
+  property string themeColour: themeOrange
 
   //////////////////////////
   // Collection switching //
