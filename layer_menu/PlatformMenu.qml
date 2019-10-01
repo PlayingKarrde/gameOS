@@ -199,6 +199,10 @@ Item {
         highlight: highlight
         highlightFollowsCurrentItem: true
         focus: true
+
+        Component.onCompleted: {
+          positionViewAtIndex(currentIndex, ListView.Contain);
+        }
       }
 
       // Menu item
@@ -236,20 +240,10 @@ Item {
             //font.capitalization: Font.AllUppercase
             //font.bold: true//selected
             //width: ListView.view.width
-            //height: vpx(40)
+            height: vpx(40)
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
 
-            // DropShadow
-            /*layer.enabled: selected
-            layer.effect: DropShadow {
-                horizontalOffset: 0
-                verticalOffset: 2
-                radius: 0
-                samples: 17
-                color: "#32000000"
-                transparentBorder: true
-            }*/
           }
 
           MouseArea {
