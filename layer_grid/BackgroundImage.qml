@@ -5,7 +5,8 @@ import QtMultimedia 5.9
 Item {
   id: root
   property var gameData//: currentCollection.games.get(gameList.currentIndex)
-  property real dimopacity: 0.96
+  property real storedDimOpacity: 0.7
+  property real dimopacity: storedDimOpacity
 
   property string bgDefault: '../assets/images/defaultbg.jpg'
   property string bgSource: gameData ? gameData.assets.background || gameData.assets.screenshots[0] || bgDefault : bgDefault
@@ -19,7 +20,6 @@ Item {
 
   /////////////////
   // Video Stuff //
-  /////////////////
   function toggleVideo() {
       if (showVideo)
       {
@@ -79,7 +79,6 @@ Item {
     }
   }
 
-  /////////////////////
   // End Video Stuff //
   /////////////////////
 
@@ -157,8 +156,7 @@ Item {
   {
     id: overlay
     anchors.fill: parent
-    //source: "../assets/images/CRT-Integer-4-K-256-Grey-lfan.png"
-    source: "../assets/images/scanlines.png"
+    source: (gameData.assets.videos[0].height > gameData.assets.videos[0].width) ? "../assets/images/scanlines-vert.png" : "../assets/images/scanlines.png"
     sourceSize { width: 1920; height: 1080 }
     opacity: 0.3
     smooth: true
