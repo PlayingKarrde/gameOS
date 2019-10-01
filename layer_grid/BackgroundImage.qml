@@ -38,7 +38,7 @@ Item {
   // NOTE: Start the countdown to load the video behind the bg
   Timer {
     id: videoDelay
-    interval: 500
+    interval: 1000
     onTriggered: {
       if (gameData.assets.videos.length) {
         videoPreviewLoader.sourceComponent = videoPreviewWrapper;
