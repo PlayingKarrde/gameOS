@@ -93,7 +93,7 @@ Item {
         verticalOffset: 0
         radius: 15.0
         samples: 16
-        color: "#80000000"
+        color: selected ? "#00000000" : "#80000000"
         transparentBorder: true
     }
 
@@ -133,80 +133,29 @@ Item {
                   anchors.centerIn: parent
                   width: screenshot.width
                   height: screenshot.height
-                  radius: cornerradius - vpx(1)
+                  radius: cornerradius
               }
           }
       }//OpacityMask
 
-      // Dim overlay
-      Rectangle {
-        id: dimoverlay
-        width: root.gridItemWidth
-        height: root.gridItemHeight
-        anchors {
-          fill: parent
-          //margins: vpx(3)
-        }
-        color: "black"
-        opacity: selected ? 0 : 0.4
-        visible: !steam || ""
-        z: (selected) ? 4 : 5
-        radius: cornerradius
-      }
+
     }//screenshot
 
-    /*Rectangle {
-      id: blackborder
-      color: "#000"
-      radius: cornerradius - vpx(1)
-      anchors.fill: parent
-      anchors.margins: vpx(-1)
-      layer.enabled: true
-      layer.effect: OpacityMask {
-          invert: true
-          maskSource: Item {
-              width: blackborder.width
-              height: blackborder.height
-              Rectangle {
-                  anchors.centerIn: parent
-                  width: blackborder.width - vpx(2)
-                  height: blackborder.height - vpx(2)
-                  radius: parent.radius - vpx(1)
-              }
-          }
-      }//OpacityMask
-      z:10
-    }*/
-
-    // Border
-    /*BorderImage {
-      visible: false
-      id: borderImg
-      width: parent.width; height: parent.height
-      border { left: 18; top: 18; right: 18; bottom: 18 }
-      horizontalTileMode: BorderImage.Stretch
-      verticalTileMode: BorderImage.Stretch
-      source: "../assets/images/border.svg"
-      smooth: true
-      opacity: selected ? 1 : 0
-      Behavior on opacity { NumberAnimation { duration: 100 } }
-      z:4
-
-      ColorOverlay {
-        anchors.fill: borderImg
-        source: borderImg
-        color: themeColour
-        // Looping colour animation
-        SequentialAnimation on opacity {
-          id: colorAnim
-          running: true
-          loops: Animation.Infinite
-          NumberAnimation { to: 1; duration: 500; }
-          NumberAnimation { to: 0; duration: 200; }
-          PauseAnimation { duration: 200 }
-        }
+    // Dim overlay
+    Rectangle {
+      id: dimoverlay
+      width: root.gridItemWidth
+      height: root.gridItemHeight
+      anchors {
+        fill: parent
+        //margins: vpx(3)
       }
-    }*/
+      color: "black"
+      opacity: selected ? 0 : 0.4
+      visible: !steam || ""
+      z: (selected) ? 4 : 5
+      radius: cornerradius
+    }
 
     // Logo
     Image {
@@ -244,7 +193,7 @@ Item {
     // Favourite tag
     Item {
       id: favetag
-      anchors { fill: parent; margins: vpx(4) }
+      anchors { fill: parent; }
       opacity: game.favorite ? 1 : 0
       Behavior on opacity { NumberAnimation { duration: 100 } }
       //width: parent.width

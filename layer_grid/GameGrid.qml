@@ -167,13 +167,13 @@ FocusScope {
 
     cellWidth: grid.width/numColumns
     cellHeight: gridItemHeight
-
+    header: headerSpace
     preferredHighlightBegin: vpx(0)
     preferredHighlightEnd: mainScreenDetails ? gridItemHeight * 2 : gridItemHeight * 3
     highlightRangeMode: GridView.ApplyRange
-    displayMarginBeginning: vpx(300)
+    //displayMarginBeginning: vpx(300)
     highlight: highlight
-    //snapMode: GridView.SnapOneItem
+    snapMode: GridView.SnapOneItem
     highlightFollowsCurrentItem: false
 
     model: collectionData ? collectionData.games : []
@@ -258,7 +258,13 @@ FocusScope {
       onClicked: GridView.view.currentIndex = index
 
     }
-
+    Component {
+      id: headerSpace
+      Item {
+        width: vpx(1)
+        height: vpx(5)
+      }
+    }
     // Removal animation
     remove: Transition {
       NumberAnimation { property: "opacity"; to: 0; duration: 100 }
