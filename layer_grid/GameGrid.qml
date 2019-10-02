@@ -1,6 +1,6 @@
 import QtQuick 2.8
 import QtMultimedia 5.9
-import QtGraphicalEffects 1.0
+import QtGraphicalEffects 1.12
 
 FocusScope {
   id: root
@@ -16,7 +16,9 @@ FocusScope {
   property bool mainScreenDetails
   property int currentGameIdx
   property string jumpToPattern: ''
-  property int cornerradius: vpx(3)
+  property real cornerradius: vpx(4)
+  property real borderWidth: vpx(5)
+  property real itemBottomMargin: vpx(40)
 
   signal launchRequested
   signal menuRequested
@@ -80,10 +82,11 @@ FocusScope {
     id: highlight
     Rectangle {
       id: highlightBorder
-      width: grid.currentItem.width
-      height: grid.currentItem.height
-      x: grid.currentItem.x
-      y: grid.currentItem.y
+      width: GridView.view.cellWidth + (borderWidth*2)
+      height: grid.currentItem.height - vpx(30)
+
+      x: grid.currentItem.x - borderWidth
+      y: grid.currentItem.y - borderWidth
       Behavior on x { SmoothedAnimation { duration: 100 } }
       Behavior on y { SmoothedAnimation { duration: 100 } }
       color: themeColour
@@ -92,11 +95,11 @@ FocusScope {
       //scale: grid.currentItem.scale
       Behavior on scale { NumberAnimation { duration: 100} }
 
-      /*ColorOverlay {
-        anchors.fill: highlightBorder
-        source: highlightBorder
+      // Highlight animation (ColorOverlay causes graphical glitches on W10)
+      Rectangle {
+        anchors.fill: parent
         color: "#fff"
-        // Looping colour animation
+        radius: cornerradius + vpx(3)
         SequentialAnimation on opacity {
           id: colorAnim
           running: true
@@ -105,16 +108,8 @@ FocusScope {
           NumberAnimation { to: 0; duration: 500; }
           PauseAnimation { duration: 200 }
         }
-      }*/
-
-      anchors {
-        // This is a pretty crappy hack...
-        fill: grid.currentItem
-        topMargin: vpx(1)
-        bottomMargin: vpx(35)
-        leftMargin: vpx(-5)
-        rightMargin: vpx(-5)
       }
+
 
       // DropShadow
       layer.enabled: true
@@ -131,7 +126,7 @@ FocusScope {
         id: videoThumb
         source: gameData.assets.videos.length ? gameData.assets.videos[0] : ""
         anchors.fill: parent
-        anchors.margins: vpx(4)
+        anchors.margins: borderWidth
         fillMode: VideoOutput.PreserveAspectCrop
         muted: true
         loops: MediaPlayer.Infinite
@@ -179,7 +174,7 @@ FocusScope {
     displayMarginBeginning: vpx(300)
     highlight: highlight
     //snapMode: GridView.SnapOneItem
-    //highlightFollowsCurrentItem: false
+    highlightFollowsCurrentItem: false
 
     model: collectionData ? collectionData.games : []
     onCurrentIndexChanged: {
@@ -252,6 +247,8 @@ FocusScope {
       height: GridView.view.cellHeight
       selected: GridView.isCurrentItem
       //collection: api.currentCollection
+      videoBorderWidth: borderWidth
+      titleBottomMargin: itemBottomMargin
 
       game: modelData
       collection: collectionData

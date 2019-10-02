@@ -142,8 +142,18 @@ Item {
     Item {
       // NOTE: Need the container for the dropshadow (until I figure out how to combine layer styles)
       id: boxContainer
-      width: (boxart.width > boxart.height) ? vpx(350) : vpx(275)
+
+      width: vpx(275)
       height: boxart.height
+      /*onHeightChanged: {
+        if (boxart.width > boxart.height) {
+          width = vpx(350)
+        } else {
+          width = vpx(275)
+        }
+      }*/
+      //width: (boxart.width > boxart.height) ? vpx(350) : vpx(275)
+
 
       anchors {
         bottom: parent.bottom; bottomMargin: vpx(80);

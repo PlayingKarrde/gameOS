@@ -13,12 +13,14 @@ Item {
   property var game
   property var collection//: api.currentCollection
   property bool steam: false
+  property real videoBorderWidth
+  property real titleBottomMargin
 
   signal details
   signal clicked
 
 
-  scale: selected ? 1.12 : 1.0
+  scale: selected ? 1 : 0.95
   Behavior on scale { PropertyAnimation { duration: 200; easing.type: Easing.OutQuart; easing.amplitude: 2.0; } }
 
   /////////////////
@@ -78,10 +80,21 @@ Item {
 
     anchors {
       fill: parent
-      leftMargin: gridItemSpacing
-      rightMargin: gridItemSpacing
-      topMargin: gridItemSpacing
-      bottomMargin: vpx(40)
+      //leftMargin: gridItemSpacing
+      //rightMargin: gridItemSpacing
+      //topMargin: gridItemSpacing
+      bottomMargin: titleBottomMargin
+    }
+
+    // DropShadow
+    layer.enabled: true
+    layer.effect: DropShadow {
+        horizontalOffset: 0
+        verticalOffset: 0
+        radius: 15.0
+        samples: 16
+        color: "#80000000"
+        transparentBorder: true
     }
 
 
@@ -94,7 +107,7 @@ Item {
       z: 3
       anchors {
         fill: parent
-        margins: vpx(4)
+        //margins: vpx(5)
       }
 
       asynchronous: true
@@ -124,23 +137,46 @@ Item {
               }
           }
       }//OpacityMask
+
+      // Dim overlay
+      Rectangle {
+        id: dimoverlay
+        width: root.gridItemWidth
+        height: root.gridItemHeight
+        anchors {
+          fill: parent
+          //margins: vpx(3)
+        }
+        color: "black"
+        opacity: selected ? 0 : 0.4
+        visible: !steam || ""
+        z: (selected) ? 4 : 5
+        radius: cornerradius
+      }
     }//screenshot
 
-    // Dim overlay
-    Rectangle {
-      id: dimoverlay
-      width: root.gridItemWidth
-      height: root.gridItemHeight
-      anchors {
-        fill: parent
-        margins: vpx(3)
-      }
-      color: "black"
-      opacity: selected ? 0 : 0.4
-      visible: !steam || ""
-      z: (selected) ? 4 : 5
-      radius: cornerradius
-    }
+    /*Rectangle {
+      id: blackborder
+      color: "#000"
+      radius: cornerradius - vpx(1)
+      anchors.fill: parent
+      anchors.margins: vpx(-1)
+      layer.enabled: true
+      layer.effect: OpacityMask {
+          invert: true
+          maskSource: Item {
+              width: blackborder.width
+              height: blackborder.height
+              Rectangle {
+                  anchors.centerIn: parent
+                  width: blackborder.width - vpx(2)
+                  height: blackborder.height - vpx(2)
+                  radius: parent.radius - vpx(1)
+              }
+          }
+      }//OpacityMask
+      z:10
+    }*/
 
     // Border
     /*BorderImage {
