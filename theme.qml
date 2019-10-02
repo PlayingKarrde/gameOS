@@ -79,7 +79,7 @@ FocusScope {
 
   function launchGame() {
     api.memory.set('collectionIndex', collectionIndex);
-    api.memory.set('gameCollIndex' + collectionIndex, currentGameIndex);
+    api.memory.set('gameCollIndewx' + collectionIndex, currentGameIndex);
     currentGame.launch();
   }
 
@@ -115,7 +115,7 @@ FocusScope {
       gamegrid.visible = true
       if (mainShowDetails)
         content.opacity = 1
-      backgroundimage.dimopacity = 0.97
+      backgroundimage.dimopacity = backgroundimage.storedDimOpacity
       backgroundimage.toggleVideo();
       gamedetails.active = false
       gamedetails.outro()

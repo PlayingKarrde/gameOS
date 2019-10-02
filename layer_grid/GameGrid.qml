@@ -1,5 +1,6 @@
 import QtQuick 2.8
 import QtMultimedia 5.9
+import QtGraphicalEffects 1.0
 
 FocusScope {
   id: root
@@ -15,11 +16,12 @@ FocusScope {
   property bool mainScreenDetails
   property int currentGameIdx
   property string jumpToPattern: ''
+  property int cornerradius: vpx(3)
 
   signal launchRequested
   signal menuRequested
   signal detailsRequested
-  //signal filtersRequested
+  signal filtersRequested
   signal collectionNext
   signal collectionPrev
   signal gameChanged(int currentIdx)
@@ -46,8 +48,6 @@ FocusScope {
       }
   }
 
-
-
   //property bool isFavorite: (gameData && gameData.favorite) || false
   function toggleFav() {
       if (gameData)
@@ -68,15 +68,94 @@ FocusScope {
       api.filters.current.enabled = true
     }
 
-    //api.filters.index = 0
-
   }
-
 
   onCurrentGameIdxChanged: {
     grid.currentIndex = currentGameIdx
   }
 
+  // Highlight
+  // NOTE: Used to show the video player
+  Component {
+    id: highlight
+    Rectangle {
+      id: highlightBorder
+      width: grid.currentItem.width
+      height: grid.currentItem.height
+      x: grid.currentItem.x
+      y: grid.currentItem.y
+      Behavior on x { SmoothedAnimation { duration: 100 } }
+      Behavior on y { SmoothedAnimation { duration: 100 } }
+      color: themeColour
+      radius: cornerradius + vpx(3)
+
+      //scale: grid.currentItem.scale
+      Behavior on scale { NumberAnimation { duration: 100} }
+
+      ColorOverlay {
+        anchors.fill: highlightBorder
+        source: highlightBorder
+        color: "#fff"
+        // Looping colour animation
+        SequentialAnimation on opacity {
+          id: colorAnim
+          running: true
+          loops: Animation.Infinite
+          NumberAnimation { to: 1; duration: 200; }
+          NumberAnimation { to: 0; duration: 500; }
+          PauseAnimation { duration: 200 }
+        }
+      }
+
+      anchors {
+        // This is a pretty crappy hack...
+        fill: grid.currentItem
+        //topMargin: vpx(3)
+        bottomMargin: vpx(35)
+        leftMargin: vpx(5)
+        rightMargin: vpx(5)
+      }
+
+      // DropShadow
+      layer.enabled: true
+      layer.effect: DropShadow {
+          horizontalOffset: 0
+          verticalOffset: 0
+          radius: 10.0
+          samples: 17
+          color: "#80000000"
+          transparentBorder: true
+      }
+
+      Video {
+        id: videoThumb
+        source: gameData.assets.videos.length ? gameData.assets.videos[0] : ""
+        anchors.fill: parent
+        anchors.margins: vpx(4)
+        fillMode: VideoOutput.PreserveAspectCrop
+        muted: true
+        loops: MediaPlayer.Infinite
+        autoPlay: true
+
+        layer.enabled: true
+        layer.effect: OpacityMask {
+            maskSource: Item {
+                width: videoThumb.width
+                height: videoThumb.height
+                Rectangle {
+                    anchors.centerIn: parent
+                    width: videoThumb.width
+                    height: videoThumb.height
+                    radius: cornerradius
+                }
+            }
+        }//OpacityMask
+
+      }//Video
+
+    }
+
+  }
 
 
   GridView {
@@ -94,19 +173,19 @@ FocusScope {
     cellWidth: grid.width/numColumns
     cellHeight: gridItemHeight
 
-    //highlightFollowsCurrentItem: false
-    preferredHighlightBegin: vpx(0);
+    preferredHighlightBegin: vpx(0)
     preferredHighlightEnd: mainScreenDetails ? gridItemHeight * 2 : gridItemHeight * 3
-    highlightRangeMode: GridView.StrictlyEnforceRange
+    highlightRangeMode: GridView.ApplyRange
     displayMarginBeginning: vpx(300)
+    highlight: highlight
     //snapMode: GridView.SnapOneItem
+    //highlightFollowsCurrentItem: false
 
     model: collectionData ? collectionData.games : []
     onCurrentIndexChanged: {
       //if (api.currentCollection) api.currentCollection.games.index = currentIndex;
       navSound.play()
       gameChanged(currentIndex)
-
     }
 
     Component.onCompleted: {
