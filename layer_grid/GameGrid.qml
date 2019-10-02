@@ -110,10 +110,10 @@ FocusScope {
       anchors {
         // This is a pretty crappy hack...
         fill: grid.currentItem
-        //topMargin: vpx(3)
+        topMargin: vpx(1)
         bottomMargin: vpx(35)
-        leftMargin: vpx(5)
-        rightMargin: vpx(5)
+        leftMargin: vpx(3)
+        rightMargin: vpx(3)
       }
 
       // DropShadow
