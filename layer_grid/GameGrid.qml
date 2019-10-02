@@ -92,7 +92,7 @@ FocusScope {
       //scale: grid.currentItem.scale
       Behavior on scale { NumberAnimation { duration: 100} }
 
-      ColorOverlay {
+      /*ColorOverlay {
         anchors.fill: highlightBorder
         source: highlightBorder
         color: "#fff"
@@ -105,15 +105,15 @@ FocusScope {
           NumberAnimation { to: 0; duration: 500; }
           PauseAnimation { duration: 200 }
         }
-      }
+      }*/
 
       anchors {
         // This is a pretty crappy hack...
         fill: grid.currentItem
         topMargin: vpx(1)
         bottomMargin: vpx(35)
-        leftMargin: vpx(3)
-        rightMargin: vpx(3)
+        leftMargin: vpx(-5)
+        rightMargin: vpx(-5)
       }
 
       // DropShadow
