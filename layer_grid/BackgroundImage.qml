@@ -6,6 +6,8 @@ Item {
   id: root
   property var gameData//: currentCollection.games.get(gameList.currentIndex)
   property real storedDimOpacity: 0.7
+  property real storedScanlineOpacity: 0.3
+  property string storedScanlines: "scanlines_v3.png"
   property real dimopacity: storedDimOpacity
 
   property string bgDefault: '../assets/images/defaultbg.jpg'
@@ -26,6 +28,7 @@ Item {
         // Turn off video
         showVideo = false;
         bg.opacity = 1;
+        //overlay.opacity = 0;
         videoPreviewLoader.sourceComponent = undefined;
         fadescreenshot.stop();
       } else {
@@ -53,6 +56,7 @@ Item {
     interval: 500
     onTriggered: {
       bg.opacity = 0;
+      //overlay.opacity = storedScanlineOpacity;
     }
   }
 
@@ -156,9 +160,10 @@ Item {
   {
     id: overlay
     anchors.fill: parent
-    source: (gameData.assets.videos[0].height > gameData.assets.videos[0].width) ? "../assets/images/scanlines-vert.png" : "../assets/images/scanlines.png"
+    source: (gameData.assets.videos[0].height > gameData.assets.videos[0].width) ? "../assets/images/scanlines-vert.png" : "../assets/images/" + storedScanlines
     sourceSize { width: 1920; height: 1080 }
-    opacity: 0.3
+    opacity: storedScanlineOpacity
+    Behavior on opacity { NumberAnimation { duration: 500 } }
     smooth: true
   }
 

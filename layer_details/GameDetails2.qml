@@ -24,6 +24,14 @@ Item {
   signal videoPreview
   signal switchCollection(int collectionIdx)
 
+  function boxArtWidth()
+  {
+    if (boxart.width > boxart.height)
+      return vpx(350)
+    else
+      return vpx(275)
+  }
+
   onFocusChanged: {
     if(focus) {
       launchBtn.focus = true
@@ -142,8 +150,11 @@ Item {
     Item {
       // NOTE: Need the container for the dropshadow (until I figure out how to combine layer styles)
       id: boxContainer
-      width: (boxart.width > boxart.height) ? vpx(350) : vpx(275)
+
+      width: vpx(300)
       height: boxart.height
+      //width: (boxart.width > boxart.height) ? vpx(350) : vpx(275)
+
 
       anchors {
         bottom: parent.bottom; bottomMargin: vpx(80);

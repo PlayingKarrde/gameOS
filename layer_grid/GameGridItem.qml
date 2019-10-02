@@ -13,12 +13,14 @@ Item {
   property var game
   property var collection//: api.currentCollection
   property bool steam: false
+  property real videoBorderWidth
+  property real titleBottomMargin
 
   signal details
   signal clicked
 
 
-  scale: selected ? 1.12 : 1.0
+  scale: selected ? 1 : 0.95
   Behavior on scale { PropertyAnimation { duration: 200; easing.type: Easing.OutQuart; easing.amplitude: 2.0; } }
 
   /////////////////
@@ -78,10 +80,21 @@ Item {
 
     anchors {
       fill: parent
-      leftMargin: gridItemSpacing
-      rightMargin: gridItemSpacing
-      topMargin: gridItemSpacing
-      bottomMargin: vpx(40)
+      //leftMargin: gridItemSpacing
+      //rightMargin: gridItemSpacing
+      //topMargin: gridItemSpacing
+      bottomMargin: titleBottomMargin
+    }
+
+    // DropShadow
+    layer.enabled: true
+    layer.effect: DropShadow {
+        horizontalOffset: 0
+        verticalOffset: 0
+        radius: 15.0
+        samples: 16
+        color: selected ? "#00000000" : "#80000000"
+        transparentBorder: true
     }
 
 
@@ -94,7 +107,7 @@ Item {
       z: 3
       anchors {
         fill: parent
-        margins: vpx(4)
+        //margins: vpx(5)
       }
 
       asynchronous: true
@@ -120,10 +133,12 @@ Item {
                   anchors.centerIn: parent
                   width: screenshot.width
                   height: screenshot.height
-                  radius: cornerradius - vpx(1)
+                  radius: cornerradius
               }
           }
       }//OpacityMask
+
+
     }//screenshot
 
     // Dim overlay
@@ -133,7 +148,7 @@ Item {
       height: root.gridItemHeight
       anchors {
         fill: parent
-        margins: vpx(3)
+        //margins: vpx(3)
       }
       color: "black"
       opacity: selected ? 0 : 0.4
@@ -141,36 +156,6 @@ Item {
       z: (selected) ? 4 : 5
       radius: cornerradius
     }
-
-    // Border
-    /*BorderImage {
-      visible: false
-      id: borderImg
-      width: parent.width; height: parent.height
-      border { left: 18; top: 18; right: 18; bottom: 18 }
-      horizontalTileMode: BorderImage.Stretch
-      verticalTileMode: BorderImage.Stretch
-      source: "../assets/images/border.svg"
-      smooth: true
-      opacity: selected ? 1 : 0
-      Behavior on opacity { NumberAnimation { duration: 100 } }
-      z:4
-
-      ColorOverlay {
-        anchors.fill: borderImg
-        source: borderImg
-        color: themeColour
-        // Looping colour animation
-        SequentialAnimation on opacity {
-          id: colorAnim
-          running: true
-          loops: Animation.Infinite
-          NumberAnimation { to: 1; duration: 500; }
-          NumberAnimation { to: 0; duration: 200; }
-          PauseAnimation { duration: 200 }
-        }
-      }
-    }*/
 
     // Logo
     Image {
@@ -208,7 +193,7 @@ Item {
     // Favourite tag
     Item {
       id: favetag
-      anchors { fill: parent; margins: vpx(4) }
+      anchors { fill: parent; }
       opacity: game.favorite ? 1 : 0
       Behavior on opacity { NumberAnimation { duration: 100 } }
       //width: parent.width
