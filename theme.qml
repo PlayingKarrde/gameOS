@@ -79,7 +79,7 @@ FocusScope {
 
   function launchGame() {
     api.memory.set('collectionIndex', collectionIndex);
-    api.memory.set('gameCollIndewx' + collectionIndex, currentGameIndex);
+    api.memory.set('gameCollIndex' + collectionIndex, currentGameIndex);
     currentGame.launch();
   }
 
