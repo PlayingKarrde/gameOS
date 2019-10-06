@@ -3,6 +3,7 @@
 import QtQuick 2.8
 import QtGraphicalEffects 1.0
 import QtMultimedia 5.9
+import SortFilterProxyModel 0.2
 import "qrc:/qmlutils" as PegasusUtils
 import "utils.js" as Utils
 import "layer_grid"
@@ -10,6 +11,10 @@ import "layer_menu"
 import "layer_details"
 
 FocusScope {
+  property int collectionIndex: 0
+  property var allGamesInCollection: api.collections.get(collectionIndex)
+  property bool showFavs: false
+
   //SETTINGS
   property bool mainShowDetails: api.memory.get('settingsMainShowDetails') | false
 
@@ -27,15 +32,38 @@ FocusScope {
   property string themeYellow: "#E9D758"
   property string themeColour: themeOrange
 
+  ////////////////////////
+  // Custom Collections //
+
+  // Favourites
+  SortFilterProxyModel {
+    id: favGames
+    sourceModel: api.collections.get(collectionIndex).games
+    filters: ValueFilter {
+      roleName: "favorite"
+      value: true
+    }
+  }
+
+  property var favCollection: {
+    return {
+      name: "Favourites",
+      shortname: "favourites",
+      games: favGames
+    }
+  }
+
+  property var customCollection: [favCollection]
+  // End custom collections //
+  ////////////////////////////
+
   //////////////////////////
   // Collection switching //
 
   function modulo(a,n) {
     return (a % n + n) % n;
   }
-
-  property int collectionIndex: 0
-  property var currentCollection: api.collections.get(collectionIndex)
+  property var currentCollection: showFavs ? favCollection : allGamesInCollection
   property string platformShortname: Utils.processPlatformName(currentCollection.shortName)
 
   function nextCollection () {
@@ -279,6 +307,7 @@ FocusScope {
           onMenuRequested: toggleMenu()
           onDetailsRequested: toggleDetails()
           onGameChanged: changeGameIndex(currentIdx)
+          onToggleFav: showFavs ? showFavs = false : showFavs = true
         }
       }
 
@@ -341,6 +370,15 @@ FocusScope {
         onSwipeRight: toggleMenu()
         //onSwipeLeft: closeRequested()
         onClicked: toggleMenu()
+    }
+  }
+
+  ControllerHelp {
+    id: controllerHelp
+    width: parent.width
+    height: vpx(75)
+    anchors {
+      bottom: parent.bottom
     }
   }
 

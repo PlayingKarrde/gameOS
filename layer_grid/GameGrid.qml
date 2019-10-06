@@ -26,6 +26,7 @@ FocusScope {
   signal filtersRequested
   signal collectionNext
   signal collectionPrev
+  signal toggleFav
   signal gameChanged(int currentIdx)
 
   Keys.onPressed: {
@@ -34,7 +35,8 @@ FocusScope {
 
       if (api.keys.isDetails(event)) {
           event.accepted = true;
-          toggleFav();
+          toggleFilters();
+          //toggleFav();
           return;
       }
       if (api.keys.isCancel(event)) {
@@ -44,20 +46,21 @@ FocusScope {
         }
       if (api.keys.isFilters(event)) {
           event.accepted = true;
-          toggleFilters()
+          toggleFav();
+          //toggleFilters()
           //filtersRequested();
           return;
       }
   }
 
   //property bool isFavorite: (gameData && gameData.favorite) || false
-  function toggleFav() {
+  /*function toggleFav() {
       if (gameData)
           gameData.favorite = !gameData.favorite;
 
       toggleSound.play()
 
-  }
+  }*/
 
   function toggleFilters() {
     if (api.filters.favorite) {

@@ -1,4 +1,4 @@
-# gameOS v0.6.5
+# gameOS v0.6.6
 
 ![gameOS Pegasus theme](https://i.imgur.com/Zzq3q1n.png)
 
