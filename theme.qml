@@ -4,6 +4,7 @@ import QtQuick 2.8
 import QtGraphicalEffects 1.0
 import QtMultimedia 5.9
 import "qrc:/qmlutils" as PegasusUtils
+import "utils.js" as Utils
 import "layer_grid"
 import "layer_menu"
 import "layer_details"
@@ -35,6 +36,7 @@ FocusScope {
 
   property int collectionIndex: 0
   property var currentCollection: api.collections.get(collectionIndex)
+  property string platformShortname: Utils.processPlatformName(currentCollection.shortName)
 
   function nextCollection () {
     jumpToCollection(collectionIndex + 1);
