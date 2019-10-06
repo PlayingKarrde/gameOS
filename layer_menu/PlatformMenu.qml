@@ -150,7 +150,7 @@ Item {
         height: vpx(75)
 
         fillMode: Image.PreserveAspectFit
-        source: "../assets/images/logos/" + collection.shortName + ".svg"
+        source: "../assets/images/logos/" + platformShortname + ".svg"
         asynchronous: true
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
@@ -221,6 +221,8 @@ Item {
                 "Super NES"
               else if (modelData.name == "Nintendo Entertainment System")
                 "NES"
+              else if (modelData.name == "Nintendo Game Boy Advance")
+                "Nintendo GBA"
               else
                 modelData.name
             }

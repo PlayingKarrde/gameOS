@@ -16,7 +16,7 @@ Item {
   property bool showVideo: false
   property bool boxAvailable: gameData.assets.boxFront
   property int videooffset: vpx(330)
-  property int numbuttons: (gameData.assets.videos.length) ? 4 : 3
+  property int numbuttons: (gameData.assets.videos.length != null) ? 4 : 3
 
   signal launchRequested
   signal detailsCloseRequested
@@ -247,8 +247,8 @@ Item {
       opacity: 1
       Behavior on opacity { NumberAnimation { duration: 100 } }
       anchors {
-        left: (gameData.assets.boxFront) ? boxContainer.right : parent.left;
-        leftMargin: (gameData.assets.boxFront) ? vpx(25) : vpx(0);
+        left: (gameData.assets.boxFront != null) ? boxContainer.right : parent.left;
+        leftMargin: (gameData.assets.boxFront != null) ? vpx(25) : vpx(0);
         bottom: boxContainer.bottom;
       }
 

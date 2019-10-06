@@ -25,7 +25,7 @@ Rectangle {
     width: vpx(600)
     sourceSize { width: 512; height: 512 }
     fillMode: Image.PreserveAspectFit
-    source: "../assets/images/logos/" + collection.shortName + ".svg"
+    source: "../assets/images/logos/" + platformShortname + ".svg"
     asynchronous: true
     anchors.centerIn: parent
     opacity: 0
