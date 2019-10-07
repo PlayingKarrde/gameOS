@@ -9,11 +9,11 @@ import "utils.js" as Utils
 import "layer_grid"
 import "layer_menu"
 import "layer_details"
+import "layer_help"
 
 FocusScope {
   property int collectionIndex: 0
   property var allGamesInCollection: api.collections.get(collectionIndex)
-  property bool showFavs: false
 
   //SETTINGS
   property bool mainShowDetails: api.memory.get('settingsMainShowDetails') | false
@@ -32,6 +32,13 @@ FocusScope {
   property string themeYellow: "#E9D758"
   property string themeColour: themeOrange
 
+  // States
+  property bool stateHome: gamegrid.focus
+  property bool stateDetails: gamedetails.active
+  property bool stateMenu: platformmenu.focus
+  property bool showFavs: false
+  property bool showLastPlayed: false
+
   ////////////////////////
   // Custom Collections //
 
@@ -48,8 +55,25 @@ FocusScope {
   property var favCollection: {
     return {
       name: "Favourites",
-      shortname: "favourites",
+      shortName: "favourites",
       games: favGames
+    }
+  }
+
+  SortFilterProxyModel {
+    id: lastPlayedGames
+    sourceModel: api.collections.get(collectionIndex).games
+    sorters: RoleSorter {
+      roleName: "lastPlayed"
+      sortOrder: Qt.DescendingOrder
+    }
+  }
+
+  property var lastPlayedCollection: {
+    return {
+      name: "Last Played",
+      shortName: "lastplayed",
+      games: lastPlayedGames
     }
   }
 
@@ -63,7 +87,7 @@ FocusScope {
   function modulo(a,n) {
     return (a % n + n) % n;
   }
-  property var currentCollection: showFavs ? favCollection : allGamesInCollection
+  property var currentCollection: showFavs ? favCollection : showLastPlayed ? lastPlayedCollection : allGamesInCollection
   property string platformShortname: Utils.processPlatformName(currentCollection.shortName)
 
   function nextCollection () {
@@ -158,6 +182,19 @@ FocusScope {
       backgroundimage.toggleVideo();
       backgroundimage.dimopacity = 0
       gamedetails.intro()
+    }
+  }
+
+  function toggleFilters() {
+    if (showFavs) {
+      showFavs = false;
+      showLastPlayed = true;
+    } else if (showLastPlayed) {
+      showFavs = false;
+      showLastPlayed = false;
+    } else {
+      showFavs = true;
+      showLastPlayed = false;
     }
   }
 
@@ -307,7 +344,7 @@ FocusScope {
           onMenuRequested: toggleMenu()
           onDetailsRequested: toggleDetails()
           onGameChanged: changeGameIndex(currentIdx)
-          onToggleFav: showFavs ? showFavs = false : showFavs = true
+          onToggleFilter: toggleFilters()
         }
       }
 

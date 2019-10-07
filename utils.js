@@ -217,3 +217,7 @@ function processPlatformName(platform) {
       return platform;
   }
 }
+
+/*function processButtonArt(buttonModel) {
+  return buttonModel;
+}*/

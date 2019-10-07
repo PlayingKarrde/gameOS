@@ -26,7 +26,7 @@ FocusScope {
   signal filtersRequested
   signal collectionNext
   signal collectionPrev
-  signal toggleFav
+  signal toggleFilter
   signal gameChanged(int currentIdx)
 
   Keys.onPressed: {
@@ -35,7 +35,7 @@ FocusScope {
 
       if (api.keys.isDetails(event)) {
           event.accepted = true;
-          toggleFilters();
+          //toggleFilters();
           //toggleFav();
           return;
       }
@@ -46,7 +46,7 @@ FocusScope {
         }
       if (api.keys.isFilters(event)) {
           event.accepted = true;
-          toggleFav();
+          toggleFilter();
           //toggleFilters()
           //filtersRequested();
           return;
@@ -62,7 +62,7 @@ FocusScope {
 
   }*/
 
-  function toggleFilters() {
+  /*function toggleFilters() {
     if (api.filters.favorite) {
       api.filters.playerCount = 1
       api.filters.favorite = false
@@ -73,7 +73,7 @@ FocusScope {
       api.filters.current.enabled = true
     }
 
-  }
+  }*/
 
   onCurrentGameIdxChanged: {
     grid.currentIndex = currentGameIdx
