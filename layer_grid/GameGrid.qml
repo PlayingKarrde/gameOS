@@ -127,11 +127,20 @@ FocusScope {
 
       Video {
         id: videoThumb
+        property bool playVideo: stateHome
         source: gameData.assets.videos.length ? gameData.assets.videos[0] : ""
         anchors.fill: parent
         anchors.margins: borderWidth
         fillMode: VideoOutput.PreserveAspectCrop
         muted: true
+        volume: playVideo ? 0.5 : 0
+        //Behavior on volume { NumberAnimation { duration: 200 } }
+        onPlayVideoChanged: {
+          if (stateHome)
+            play();
+          else
+            pause();
+        }
         loops: MediaPlayer.Infinite
         autoPlay: true
 
@@ -176,7 +185,7 @@ FocusScope {
     highlightRangeMode: GridView.ApplyRange
     //displayMarginBeginning: vpx(300)
     highlight: highlight
-    snapMode: GridView.SnapOneItem
+    //snapMode: GridView.SnapOneItem
     highlightFollowsCurrentItem: false
 
     model: collectionData ? collectionData.games : []
