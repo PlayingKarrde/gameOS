@@ -27,9 +27,9 @@ BorderImage {
       fillMode: Image.PreserveAspectFit
       smooth: true
       //Layout.preferredWidth: vpx(15)
-      Layout.preferredHeight: vpx(15)
-      Layout.maximumWidth: vpx(25)
-      Layout.maximumHeight: vpx(15)
+      Layout.preferredHeight: vpx(10)
+      Layout.maximumWidth: vpx(20)
+      Layout.maximumHeight: vpx(10)
       opacity: 0.5
       visible: icon
     }
@@ -39,7 +39,7 @@ BorderImage {
       text: (metatext) ? metatext : ""
 
       color: "#F2F2F2"
-      font.pixelSize: vpx(12)
+      font.pixelSize: vpx(8)
       //font.family: globalFonts.sans
       font.bold: true
       font.capitalization: Font.AllUppercase
