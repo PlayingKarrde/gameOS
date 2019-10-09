@@ -185,7 +185,7 @@ FocusScope {
     highlightRangeMode: GridView.ApplyRange
     //displayMarginBeginning: vpx(300)
     highlight: highlight
-    //snapMode: GridView.SnapOneItem
+    snapMode: GridView.SnapOneRow
     highlightFollowsCurrentItem: false
 
     model: collectionData ? collectionData.games : []

@@ -270,7 +270,7 @@ Item {
       // NOTE: Play data
       RowLayout {
         id: metadata
-        anchors { top: gameTitle.bottom; topMargin: vpx(0) }
+        //anchors { top: gameTitle.bottom; topMargin: vpx(0) }
         height: vpx(1)
         spacing: vpx(6)
 
