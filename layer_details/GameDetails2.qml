@@ -163,7 +163,7 @@ Item {
       Image {
         id: boxart
         width: parent.width
-        source: gameData.assets.boxFront || ""
+        source: gameData.assets.boxFront || gameData.assets.poster || ""
         sourceSize { width: vpx(512); height: vpx(512) }
         fillMode: Image.PreserveAspectFit
         asynchronous: true
