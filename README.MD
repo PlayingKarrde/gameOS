@@ -43,6 +43,8 @@ v 0.7
 - Added recently played filter toggle
 - Brought back extra meta data for details
 - Fixed grid videos continuing to play while in details
+- Added flyer support (needed for arcade)
+- Added Windows 10 logo for Windows games
 
 v0.6.6
 - Added support for PS2, PS3, Switch, 3DS, Wii and Wii U logos
