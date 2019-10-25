@@ -188,31 +188,33 @@ FocusScope {
 
   function toggleFilters() {
     if (showFavs) {
+      // Last Played
       showFavs = false;
       showLastPlayed = true;
-      currentGameIndex = 0;
+      changeGameIndex(0);
     } else if (showLastPlayed) {
+      // No filter
       showFavs = false;
       showLastPlayed = false;
       currentGameIndex = api.memory.get('gameCollIndex' + collectionIndex) || 0;
     } else {
+      // Favourites
       showFavs = true;
       showLastPlayed = false;
-      currentGameIndex = 0;
+      changeGameIndex(0);
     }
-    changeGameIndex(0);
   }
 
   function toggleVideoAudio()
   {
     if (backgroundimage.muteVideo) {
       backgroundimage.muteVideo = false;
-      backgroundimage.bggradient.opacity = 0;
+      backgroundimage.gradientOpacity = 0;
       stateVideoPreview = true;
       console.log("Audio on");
     } else {
       backgroundimage.muteVideo = true;
-      backgroundimage.bggradient.opacity = 1;
+      backgroundimage.gradientOpacity = 1;
       stateVideoPreview = false;
       console.log("Audio off");
     }

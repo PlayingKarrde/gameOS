@@ -5,10 +5,12 @@ import QtMultimedia 5.9
 Item {
   id: root
   property var gameData//: currentCollection.games.get(gameList.currentIndex)
-  property real storedDimOpacity: 0.7
+  property real storedDimOpacity: 0.9
   property real storedScanlineOpacity: 0.3
+  property real storedGradientOpacity: 1.0
   property string storedScanlines: "scanlines_v3.png"
   property real dimopacity: storedDimOpacity
+  property real gradientOpacity: storedGradientOpacity
 
   property string bgDefault: '../assets/images/defaultbg.jpg'
   property string bgSource: gameData ? gameData.assets.background || gameData.assets.screenshots[0] || bgDefault : bgDefault
@@ -183,7 +185,7 @@ Item {
       GradientStop { position: 0.0; color: "#00000000" }
       GradientStop { position: 0.7; color: "#ff000000" }
     }
-    opacity: (muteVideo) ? 1 : 0
+    opacity: (muteVideo) ? storedGradientOpacity : 0
     Behavior on opacity { NumberAnimation { duration: 100 } }
 
   }
@@ -191,7 +193,7 @@ Item {
   Rectangle {
     id: backgrounddim
     anchors.fill: parent
-    color: "#15181e"
+    color: "#000"//"#15181e"
 
     opacity: dimopacity
 
