@@ -38,6 +38,7 @@ If no media files are showing up, make sure that Skraper Assets is checked in th
 
 ## Version history
 v 0.7
+- Major performance improvements (thanks to @SinisterSpatula for finding the fix)
 - Added contoller help
 - Fixed favourites filter toggle
 - Added recently played filter toggle

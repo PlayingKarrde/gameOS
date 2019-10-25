@@ -13,7 +13,7 @@ Item {
   property real gradientOpacity: storedGradientOpacity
 
   property string bgDefault: '../assets/images/defaultbg.jpg'
-  property string bgSource: gameData ? gameData.assets.background || gameData.assets.screenshots[0] || bgDefault : bgDefault
+  property string bgSource: gameData ? gameData.assets.background || gameData.assets.screenshots[getRandomInt(0,gameData.assets.screenshots.length-1)] || bgDefault : bgDefault
   property string bgImage1
   property string bgImage2
   property bool firstBG: true
@@ -21,6 +21,12 @@ Item {
   property bool muteVideo: true
 
   onBgSourceChanged: swapImage(bgSource)
+
+  function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+  }
 
   /////////////////
   // Video Stuff //
@@ -193,7 +199,7 @@ Item {
   Rectangle {
     id: backgrounddim
     anchors.fill: parent
-    color: "#000"//"#15181e"
+    color: "#15181e"
 
     opacity: dimopacity
 
