@@ -36,6 +36,7 @@ FocusScope {
   property bool stateHome: gamegrid.focus
   property bool stateDetails: gamedetails.active
   property bool stateMenu: platformmenu.focus
+  property bool stateVideoPreview
   property bool showFavs: false
   property bool showLastPlayed: false
 
@@ -189,13 +190,17 @@ FocusScope {
     if (showFavs) {
       showFavs = false;
       showLastPlayed = true;
+      currentGameIndex = 0;
     } else if (showLastPlayed) {
       showFavs = false;
       showLastPlayed = false;
+      currentGameIndex = api.memory.get('gameCollIndex' + collectionIndex) || 0;
     } else {
       showFavs = true;
       showLastPlayed = false;
+      currentGameIndex = 0;
     }
+    changeGameIndex(0);
   }
 
   function toggleVideoAudio()
@@ -203,9 +208,13 @@ FocusScope {
     if (backgroundimage.muteVideo) {
       backgroundimage.muteVideo = false;
       backgroundimage.bggradient.opacity = 0;
+      stateVideoPreview = true;
+      console.log("Audio on");
     } else {
       backgroundimage.muteVideo = true;
       backgroundimage.bggradient.opacity = 1;
+      stateVideoPreview = false;
+      console.log("Audio off");
     }
   }
 
@@ -412,6 +421,7 @@ FocusScope {
 
   ControllerHelp {
     id: controllerHelp
+    opacity: stateVideoPreview ? 0 : 1
     width: parent.width
     height: vpx(75)
     anchors {
@@ -425,7 +435,7 @@ FocusScope {
   ///////////////////
   SoundEffect {
       id: navSound
-      source: "assets/audio/tap-mellow.wav"
+      source: "assets/audio/tick-tap.wav"
       volume: 1.0
   }
 
