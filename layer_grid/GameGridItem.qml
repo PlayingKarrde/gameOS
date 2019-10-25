@@ -115,7 +115,7 @@ Item {
 
       smooth: true
 
-      source: (steam) ? game.assets.logo : game.assets.screenshots[0] || game.assets.boxFront || ""
+      source: (steam) ? game.assets.logo : /*game.assets.background || */game.assets.screenshots[0] || game.assets.boxFront || ""
       sourceSize { width: 256; height: 256 }
       fillMode: Image.PreserveAspectCrop
 

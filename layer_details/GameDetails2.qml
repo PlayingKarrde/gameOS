@@ -24,6 +24,7 @@ Item {
   signal videoPreview
   signal switchCollection(int collectionIdx)
 
+
   function boxArtWidth()
   {
     if (boxart.width > boxart.height)

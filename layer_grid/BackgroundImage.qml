@@ -160,7 +160,7 @@ Item {
   {
     id: overlay
     anchors.fill: parent
-    source: (gameData.assets.videos[0].height > gameData.assets.videos[0].width) ? "../assets/images/scanlines-vert.png" : "../assets/images/" + storedScanlines
+    source: ((gameData.assets.videos.length > 0) && (gameData.assets.videos[0].height > gameData.assets.videos[0].width)) ? "../assets/images/scanlines-vert.png" : "../assets/images/" + storedScanlines
     sourceSize { width: 1920; height: 1080 }
     opacity: storedScanlineOpacity
     Behavior on opacity { NumberAnimation { duration: 500 } }
