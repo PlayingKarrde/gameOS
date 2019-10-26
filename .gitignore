@@ -9,4 +9,5 @@
 *.cxxflags
 *.files
 *.includes
+*.code-workspace
 .vs/
