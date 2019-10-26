@@ -11,10 +11,10 @@ FocusScope {
   property alias gridWidth: grid.width
   property int gridItemSpacing: (numColumns == 4) ? vpx(10) : vpx(15) // it will double this
   property int gridItemHeight: (numColumns == 4) ? vpx(180) : vpx(230)
-  property var collectionData
-  property var gameData
+  property var collectionData: currentCollection
+  property var gameData: currentGame
   property bool mainScreenDetails
-  property int currentGameIdx
+  property int currentGameIdx: currentGameIndex
   property string jumpToPattern: ''
   property real cornerradius: vpx(4)
   property real borderWidth: vpx(5)
@@ -26,6 +26,7 @@ FocusScope {
   signal filtersRequested
   signal collectionNext
   signal collectionPrev
+  signal toggleFilter
   signal gameChanged(int currentIdx)
 
   Keys.onPressed: {
@@ -34,7 +35,8 @@ FocusScope {
 
       if (api.keys.isDetails(event)) {
           event.accepted = true;
-          toggleFav();
+          //toggleFilters();
+          //toggleFav();
           return;
       }
       if (api.keys.isCancel(event)) {
@@ -44,22 +46,23 @@ FocusScope {
         }
       if (api.keys.isFilters(event)) {
           event.accepted = true;
-          toggleFilters()
+          toggleFilter();
+          //toggleFilters()
           //filtersRequested();
           return;
       }
   }
 
   //property bool isFavorite: (gameData && gameData.favorite) || false
-  function toggleFav() {
+  /*function toggleFav() {
       if (gameData)
           gameData.favorite = !gameData.favorite;
 
       toggleSound.play()
 
-  }
+  }*/
 
-  function toggleFilters() {
+  /*function toggleFilters() {
     if (api.filters.favorite) {
       api.filters.playerCount = 1
       api.filters.favorite = false
@@ -70,7 +73,7 @@ FocusScope {
       api.filters.current.enabled = true
     }
 
-  }
+  }*/
 
   onCurrentGameIdxChanged: {
     grid.currentIndex = currentGameIdx
@@ -124,11 +127,20 @@ FocusScope {
 
       Video {
         id: videoThumb
+        property bool playVideo: stateHome
         source: gameData.assets.videos.length ? gameData.assets.videos[0] : ""
         anchors.fill: parent
         anchors.margins: borderWidth
         fillMode: VideoOutput.PreserveAspectCrop
         muted: true
+        volume: playVideo ? 0.5 : 0
+        //Behavior on volume { NumberAnimation { duration: 200 } }
+        onPlayVideoChanged: {
+          if (stateHome)
+            play();
+          else
+            pause();
+        }
         loops: MediaPlayer.Infinite
         autoPlay: true
 
@@ -173,18 +185,39 @@ FocusScope {
     highlightRangeMode: GridView.ApplyRange
     //displayMarginBeginning: vpx(300)
     highlight: highlight
-    snapMode: GridView.SnapOneItem
+    snapMode: GridView.SnapOneRow
     highlightFollowsCurrentItem: false
+    cacheBuffer: 9000
 
     model: collectionData ? collectionData.games : []
     onCurrentIndexChanged: {
       //if (api.currentCollection) api.currentCollection.games.index = currentIndex;
       navSound.play()
-      gameChanged(currentIndex)
+      changeGameTimer.restart();
+      return;
+    }
+
+    Timer {
+      id: changeGameTimer
+      running: true
+      repeat: false
+      interval: 200
+      onTriggered: { gameChanged(grid.currentIndex); }
     }
 
     Component.onCompleted: {
-      positionViewAtIndex(currentIndex, GridView.Contain);
+      startupTimer.restart();
+    }
+
+    Timer {
+      id: startupTimer
+      running: true
+      repeat: false
+      interval: 200
+      onTriggered: {
+
+        grid.positionViewAtIndex(grid.currentIndex, GridView.Contain);
+      }
     }
 
     Keys.onPressed: {

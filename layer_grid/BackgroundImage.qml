@@ -5,13 +5,15 @@ import QtMultimedia 5.9
 Item {
   id: root
   property var gameData//: currentCollection.games.get(gameList.currentIndex)
-  property real storedDimOpacity: 0.7
+  property real storedDimOpacity: 0.9
   property real storedScanlineOpacity: 0.3
+  property real storedGradientOpacity: 1.0
   property string storedScanlines: "scanlines_v3.png"
   property real dimopacity: storedDimOpacity
+  property real gradientOpacity: storedGradientOpacity
 
   property string bgDefault: '../assets/images/defaultbg.jpg'
-  property string bgSource: gameData ? gameData.assets.background || gameData.assets.screenshots[0] || bgDefault : bgDefault
+  property string bgSource: gameData ? gameData.assets.background || gameData.assets.screenshots[getRandomInt(0,gameData.assets.screenshots.length-1)] || bgDefault : bgDefault
   property string bgImage1
   property string bgImage2
   property bool firstBG: true
@@ -19,6 +21,12 @@ Item {
   property bool muteVideo: true
 
   onBgSourceChanged: swapImage(bgSource)
+
+  function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+  }
 
   /////////////////
   // Video Stuff //
@@ -160,7 +168,7 @@ Item {
   {
     id: overlay
     anchors.fill: parent
-    source: (gameData.assets.videos[0].height > gameData.assets.videos[0].width) ? "../assets/images/scanlines-vert.png" : "../assets/images/" + storedScanlines
+    source: ((gameData.assets.videos.length > 0) && (gameData.assets.videos[0].height > gameData.assets.videos[0].width)) ? "../assets/images/scanlines-vert.png" : "../assets/images/" + storedScanlines
     sourceSize { width: 1920; height: 1080 }
     opacity: storedScanlineOpacity
     Behavior on opacity { NumberAnimation { duration: 500 } }
@@ -183,7 +191,7 @@ Item {
       GradientStop { position: 0.0; color: "#00000000" }
       GradientStop { position: 0.7; color: "#ff000000" }
     }
-    opacity: (muteVideo) ? 1 : 0
+    opacity: (muteVideo) ? storedGradientOpacity : 0
     Behavior on opacity { NumberAnimation { duration: 100 } }
 
   }

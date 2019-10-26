@@ -23,6 +23,12 @@ Item {
   scale: selected ? 1 : 0.95
   Behavior on scale { PropertyAnimation { duration: 200; easing.type: Easing.OutQuart; easing.amplitude: 2.0; } }
 
+  function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+  }
+
   /////////////////
   // VIDEO STUFF //
   /////////////////
@@ -111,11 +117,11 @@ Item {
       }
 
       asynchronous: true
-      visible: game.assets.screenshots[0] || game.assets.boxFront || ""
+      visible: game.assets.screenshots[getRandomInt(0,game.assets.screenshots.length-1)] || game.assets.boxFront || ""
 
       smooth: true
 
-      source: (steam) ? game.assets.logo : game.assets.screenshots[0] || game.assets.boxFront || ""
+      source: (steam) ? game.assets.logo : /*game.assets.background || */game.assets.screenshots[0] || game.assets.boxFront || ""
       sourceSize { width: 256; height: 256 }
       fillMode: Image.PreserveAspectCrop
 

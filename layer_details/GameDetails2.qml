@@ -9,7 +9,7 @@ import "../utils.js" as Utils
 Item {
   id: root
 
-  property var gameData//: api.currentGame
+  property var gameData: currentGame//: api.currentGame
   property bool isSteam: false
   property int padding: vpx(50)
   property int cornerradius: vpx(8)
@@ -23,6 +23,7 @@ Item {
   signal filtersRequested
   signal videoPreview
   signal switchCollection(int collectionIdx)
+
 
   function boxArtWidth()
   {
@@ -163,7 +164,7 @@ Item {
       Image {
         id: boxart
         width: parent.width
-        source: gameData.assets.boxFront || ""
+        source: gameData.assets.boxFront || gameData.assets.poster || ""
         sourceSize { width: vpx(512); height: vpx(512) }
         fillMode: Image.PreserveAspectFit
         asynchronous: true
@@ -270,9 +271,43 @@ Item {
       // NOTE: Play data
       RowLayout {
         id: metadata
+        //anchors { top: gameTitle.bottom; topMargin: vpx(0) }
+        height: vpx(1)
         spacing: vpx(6)
-        opacity: 1
-        Behavior on opacity { NumberAnimation { duration: 100 } }
+
+        // Developer
+        GameGridMetaBox {
+          metatext: (gameData.developerList[0] != undefined) ? gameData.developerList[0] : "Unknown"
+        }
+
+        // Release year
+        GameGridMetaBox {
+          metatext: (gameData.release != "" ) ? gameData.release.getFullYear() : ""
+        }
+
+        // Players
+        GameGridMetaBox {
+          metatext: if (gameData.players > 1)
+            gameData.players + " players"
+          else
+            gameData.players + " player"
+        }
+
+        // Spacer
+        Item {
+          Layout.preferredWidth: vpx(5)
+        }
+
+        Rectangle {
+          id: spacer2
+          Layout.preferredWidth: vpx(2)
+          Layout.fillHeight: true
+          opacity: 0.5
+        }
+
+        Item {
+          Layout.preferredWidth: vpx(5)
+        }
 
         // Times played
         GameGridMetaBox {
@@ -287,6 +322,7 @@ Item {
           visible: (gameData.playTime > 0)
         }
       }
+
 
       // NOTE: Spacer between details and description
       Item { height: vpx(10) }

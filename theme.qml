@@ -3,13 +3,18 @@
 import QtQuick 2.8
 import QtGraphicalEffects 1.0
 import QtMultimedia 5.9
+import SortFilterProxyModel 0.2
 import "qrc:/qmlutils" as PegasusUtils
 import "utils.js" as Utils
 import "layer_grid"
 import "layer_menu"
 import "layer_details"
+import "layer_help"
 
 FocusScope {
+  property int collectionIndex: 0
+  property var allGamesInCollection: api.collections.get(collectionIndex)
+
   //SETTINGS
   property bool mainShowDetails: api.memory.get('settingsMainShowDetails') | false
 
@@ -27,15 +32,63 @@ FocusScope {
   property string themeYellow: "#E9D758"
   property string themeColour: themeOrange
 
+  // States
+  property bool stateHome: gamegrid.focus
+  property bool stateDetails: gamedetails.active
+  property bool stateMenu: platformmenu.focus
+  property bool stateVideoPreview
+  property bool showFavs: false
+  property bool showLastPlayed: false
+
+  ////////////////////////
+  // Custom Collections //
+
+  // Favourites
+  SortFilterProxyModel {
+    id: favGames
+    sourceModel: api.collections.get(collectionIndex).games
+    filters: ValueFilter {
+      roleName: "favorite"
+      value: true
+    }
+  }
+
+  property var favCollection: {
+    return {
+      name: "Favourites",
+      shortName: "favourites",
+      games: favGames
+    }
+  }
+
+  SortFilterProxyModel {
+    id: lastPlayedGames
+    sourceModel: api.collections.get(collectionIndex).games
+    sorters: RoleSorter {
+      roleName: "lastPlayed"
+      sortOrder: Qt.DescendingOrder
+    }
+  }
+
+  property var lastPlayedCollection: {
+    return {
+      name: "Last Played",
+      shortName: "lastplayed",
+      games: lastPlayedGames
+    }
+  }
+
+  property var customCollection: [favCollection]
+  // End custom collections //
+  ////////////////////////////
+
   //////////////////////////
   // Collection switching //
 
   function modulo(a,n) {
     return (a % n + n) % n;
   }
-
-  property int collectionIndex: 0
-  property var currentCollection: api.collections.get(collectionIndex)
+  property var currentCollection: showFavs ? favCollection : showLastPlayed ? lastPlayedCollection : allGamesInCollection
   property string platformShortname: Utils.processPlatformName(currentCollection.shortName)
 
   function nextCollection () {
@@ -49,7 +102,8 @@ FocusScope {
   function jumpToCollection(idx) {
     api.memory.set('gameCollIndex' + collectionIndex, currentGameIndex); // save game index of current collection
     collectionIndex = modulo(idx, api.collections.count); // new collection index
-    currentGameIndex = api.memory.get('gameCollIndex' + collectionIndex) || 0; // restore game index for newly selected collection
+    //currentGameIndex = api.memory.get('gameCollIndex' + collectionIndex) || 0; // restore game index for newly selected collection
+    currentGameIndex = 0; // Jump to the top of the list each time collection is changed
   }
 
   // End collection switching //
@@ -133,14 +187,39 @@ FocusScope {
     }
   }
 
+  function toggleFilters() {
+    /* Commenting out until I can fix the launch game bug
+    if (showFavs) {
+      // Last Played
+      showFavs = false;
+      showLastPlayed = true;
+      changeGameIndex(0);
+    } else if (showLastPlayed) {
+      // No filter
+      showFavs = false;
+      showLastPlayed = false;
+      currentGameIndex = api.memory.get('gameCollIndex' + collectionIndex) || 0;
+    } else {
+      // Favourites
+      showFavs = true;
+      showLastPlayed = false;
+      changeGameIndex(0);
+    }
+    console.log("Current game index: " + currentGameIndex);*/
+  }
+
   function toggleVideoAudio()
   {
     if (backgroundimage.muteVideo) {
       backgroundimage.muteVideo = false;
-      backgroundimage.bggradient.opacity = 0;
+      backgroundimage.gradientOpacity = 0;
+      stateVideoPreview = true;
+      console.log("Audio on");
     } else {
       backgroundimage.muteVideo = true;
-      backgroundimage.bggradient.opacity = 1;
+      backgroundimage.gradientOpacity = 1;
+      stateVideoPreview = false;
+      console.log("Audio off");
     }
   }
 
@@ -257,9 +336,6 @@ FocusScope {
         GameGrid {
           id: gamegrid
 
-          collectionData: currentCollection
-          gameData: currentGame
-          currentGameIdx: currentGameIndex
           mainScreenDetails: mainShowDetails
 
           focus: true
@@ -279,6 +355,7 @@ FocusScope {
           onMenuRequested: toggleMenu()
           onDetailsRequested: toggleDetails()
           onGameChanged: changeGameIndex(currentIdx)
+          onToggleFilter: toggleFilters()
         }
       }
 
@@ -287,7 +364,6 @@ FocusScope {
         id: gamedetails
 
         property bool active : false
-        gameData: currentGame
 
         anchors {
           left: parent.left; right: parent.right
@@ -344,13 +420,23 @@ FocusScope {
     }
   }
 
+  ControllerHelp {
+    id: controllerHelp
+    opacity: stateVideoPreview ? 0 : 1
+    width: parent.width
+    height: vpx(75)
+    anchors {
+      bottom: parent.bottom
+    }
+  }
+
 
   ///////////////////
   // SOUND EFFECTS //
   ///////////////////
   SoundEffect {
       id: navSound
-      source: "assets/audio/tap-mellow.wav"
+      source: "assets/audio/tick-tap.wav"
       volume: 1.0
   }
 
