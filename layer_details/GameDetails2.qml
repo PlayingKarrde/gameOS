@@ -9,7 +9,7 @@ import "../utils.js" as Utils
 Item {
   id: root
 
-  property var gameData//: api.currentGame
+  property var gameData: currentGame//: api.currentGame
   property bool isSteam: false
   property int padding: vpx(50)
   property int cornerradius: vpx(8)

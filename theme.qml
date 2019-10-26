@@ -102,7 +102,8 @@ FocusScope {
   function jumpToCollection(idx) {
     api.memory.set('gameCollIndex' + collectionIndex, currentGameIndex); // save game index of current collection
     collectionIndex = modulo(idx, api.collections.count); // new collection index
-    currentGameIndex = api.memory.get('gameCollIndex' + collectionIndex) || 0; // restore game index for newly selected collection
+    //currentGameIndex = api.memory.get('gameCollIndex' + collectionIndex) || 0; // restore game index for newly selected collection
+    currentGameIndex = 0; // Jump to the top of the list each time collection is changed
   }
 
   // End collection switching //
@@ -187,6 +188,7 @@ FocusScope {
   }
 
   function toggleFilters() {
+    /* Commenting out until I can fix the launch game bug
     if (showFavs) {
       // Last Played
       showFavs = false;
@@ -203,6 +205,7 @@ FocusScope {
       showLastPlayed = false;
       changeGameIndex(0);
     }
+    console.log("Current game index: " + currentGameIndex);*/
   }
 
   function toggleVideoAudio()
@@ -333,9 +336,6 @@ FocusScope {
         GameGrid {
           id: gamegrid
 
-          collectionData: currentCollection
-          gameData: currentGame
-          currentGameIdx: currentGameIndex
           mainScreenDetails: mainShowDetails
 
           focus: true
@@ -364,7 +364,6 @@ FocusScope {
         id: gamedetails
 
         property bool active : false
-        gameData: currentGame
 
         anchors {
           left: parent.left; right: parent.right

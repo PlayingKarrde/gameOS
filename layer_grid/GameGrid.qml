@@ -11,10 +11,10 @@ FocusScope {
   property alias gridWidth: grid.width
   property int gridItemSpacing: (numColumns == 4) ? vpx(10) : vpx(15) // it will double this
   property int gridItemHeight: (numColumns == 4) ? vpx(180) : vpx(230)
-  property var collectionData
-  property var gameData
+  property var collectionData: currentCollection
+  property var gameData: currentGame
   property bool mainScreenDetails
-  property int currentGameIdx
+  property int currentGameIdx: currentGameIndex
   property string jumpToPattern: ''
   property real cornerradius: vpx(4)
   property real borderWidth: vpx(5)

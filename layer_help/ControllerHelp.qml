@@ -124,7 +124,7 @@ FocusScope {
             rightMargin: vpx(20)
           }
         }//button2
-
+        /* Commenting out until filters are fixed
         Image {
           id: button3
           height: vpx(24)
@@ -158,7 +158,7 @@ FocusScope {
           opacity: stateDetails ? 0 : 1
           Behavior on opacity { NumberAnimation { duration: 100 } }
         }//button3
-
+        */
       }//buttonContainer
 
     }//bggradient
