@@ -9,3 +9,4 @@
 *.cxxflags
 *.files
 *.includes
+.vs/
