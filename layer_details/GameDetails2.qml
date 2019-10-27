@@ -14,7 +14,8 @@ Item {
   property int padding: vpx(50)
   property int cornerradius: vpx(8)
   property bool showVideo: false
-  property bool boxAvailable: gameData.assets.boxFront
+  property bool boxAvailable: gameData.assets.boxFront != null
+  property bool moreDetailsToggle: false
   property int videooffset: vpx(330)
   property int numbuttons: (gameData.assets.videos.length != null) ? 4 : 3
 
@@ -22,6 +23,7 @@ Item {
   signal detailsCloseRequested
   signal filtersRequested
   signal videoPreview
+  signal moreDetails
   signal switchCollection(int collectionIdx)
 
 
@@ -36,6 +38,19 @@ Item {
   onFocusChanged: {
     if(focus) {
       launchBtn.focus = true
+    }
+  }
+
+  onMoreDetailsToggleChanged: {
+    if (moreDetailsToggle)
+    {
+      console.log("moreDetailsToggle: False");
+      moreDetailsToggle = false;
+    }
+    else
+    {
+      console.log("moreDetailsToggle: True");
+      moreDetailsToggle = true;
     }
   }
 
@@ -72,7 +87,11 @@ Item {
     }
     if (api.keys.isCancel(event)) {
       event.accepted = true;
-      closedetails();
+      if (showVideo)
+        toggleVideo();
+      else
+        closedetails();
+
       return;
     }
     if (api.keys.isNextPage(event) || api.keys.isPrevPage(event)) {
@@ -101,6 +120,7 @@ Item {
         metadata.opacity = 1;
         infoContainer.opacity = 1;
         gameDescription.opacity = 1;
+        videoBtn.focus = true
       } else {
         // VIDEO
         showVideo = true
@@ -112,6 +132,7 @@ Item {
         metadata.opacity = 0;
         infoContainer.opacity = 0;
         gameDescription.opacity = 0;
+        videoBackBtn.focus = true
       }
     }
   }
@@ -418,13 +439,11 @@ Item {
           Keys.onPressed: {
             if (api.keys.isAccept(event) && !event.isAutoRepeat) {
               event.accepted = true;
-              videoBackBtn.focus = true
               toggleVideo();
             }
           }
           onClicked: {
             //focus = true
-            videoBackBtn.focus = true
             toggleVideo();
           }
 
@@ -560,13 +579,11 @@ Item {
         if (api.keys.isAccept(event) && !event.isAutoRepeat) {
           event.accepted = true;
           toggleVideo();
-          videoBtn.focus = true;
         }
       }
       onClicked: {
         focus = true
         toggleVideo();
-        videoBtn.focus = true;
       }
 
       // Round the corners

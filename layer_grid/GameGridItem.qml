@@ -289,7 +289,9 @@ Item {
     text: game.title
     width: itemcontainer.width - vpx(30)
     anchors { margins: vpx(10) }
-    color: selected ? "orange" : "white"
+    color: "white"
+    opacity: selected ? 0 : 1
+    Behavior on opacity { NumberAnimation { duration: 100 } }
     font.pixelSize: vpx(18)
     //font.family: openSans
     font.bold: true
