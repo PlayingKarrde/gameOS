@@ -299,7 +299,7 @@ FocusScope {
         }
       }
 
-
+      
       // Game details
       GameGridDetails {
         id: content
@@ -377,7 +377,7 @@ FocusScope {
         onVideoPreview: toggleVideoAudio()
 
       }
-
+      
     }
 
 
@@ -436,7 +436,7 @@ FocusScope {
   ///////////////////
   SoundEffect {
       id: navSound
-      source: "assets/audio/tick-tap.wav"
+      source: "assets/audio/tap-mellow.wav"
       volume: 1.0
   }
 
