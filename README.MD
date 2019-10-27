@@ -1,4 +1,4 @@
-# gameOS v0.6.7
+# gameOS v0.6.7.1
 
 ![gameOS Pegasus theme](https://i.imgur.com/Zzq3q1n.png)
 
@@ -39,8 +39,9 @@ If no media files are showing up, make sure that Skraper Assets is checked in th
 ## Version history
 v0.6.7.1
 - Fixed crash on Android
-- Fixed back button not returning to game details while watching preview video
 - Added WiiWare logo
+- Hiding text title when selected (only happens when no logo is found)
+- Fixed back button exiting game details when viewing video preview
 
 v0.6.7
 - Major performance improvements (thanks to @SinisterSpatula for finding the fix)
