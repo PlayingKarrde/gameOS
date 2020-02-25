@@ -37,6 +37,9 @@ Skraper will place these in your roms folder under another folder called media.
 If no media files are showing up, make sure that Skraper Assets is checked in the Additional Data Sources section of Pegasus settings. It may also be preferable to convert the created gamelist.xml (assuming EmulationStation was chosen for the game list in Skraper) to a metadata.txt file using the [Pegasus conversion tool](http://pegasus-frontend.org/tools/convert/)
 
 ## Version history
+v0.6.7.2
+- Added autoscroll text for description
+
 v0.6.7.1
 - Fixed crash on Android
 - Added WiiWare logo
