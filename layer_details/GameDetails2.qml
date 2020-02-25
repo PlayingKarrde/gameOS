@@ -349,23 +349,31 @@ Item {
       Item { height: vpx(10) }
 
       // description
-      Text {
+      PegasusUtils.AutoScroll
+      {
         id: gameDescription
-        //Layout.maximumWidth: parent.width
-        Layout.maximumHeight: vpx(100)
+        Layout.maximumHeight: vpx(145)
         Layout.fillWidth: true;
-        horizontalAlignment: Text.AlignJustify
-        text: (gameData.summary != null || gameData.description != null) ? gameData.summary || gameData.description : "No description available"
-        font.pixelSize: vpx(16)
-        font.family: subtitleFont.name
-        font.bold: true
-        //textFormat: Text.RichText
-        color: "#fff"
-        elide: Text.ElideRight
-        wrapMode: Text.WordWrap
-        //opacity: showVideo ? 0.1 : 1.0
-        Behavior on opacity { NumberAnimation { duration: 100 } }
+        height: vpx(145)
+
+        Text {
+
+          width: parent.width
+          horizontalAlignment: Text.AlignJustify
+          text: (gameData.summary || gameData.description) ? gameData.summary || gameData.description : "No description available"
+          font.pixelSize: vpx(16)
+          font.family: subtitleFont.name
+          font.bold: true
+          //textFormat: Text.RichText
+          color: "#fff"
+          elide: Text.ElideRight
+          wrapMode: Text.WordWrap
+          //opacity: showVideo ? 0.1 : 1.0
+          Behavior on opacity { NumberAnimation { duration: 100 } }
+        }
       }
+
+
 
       // NOTE: Spacer between description and buttons
       Item { height: vpx(20) }
