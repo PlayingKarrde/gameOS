@@ -32,13 +32,13 @@ Item {
           return;
       }
       if (api.keys.isCancel(event)) {
-          if (showSystemMenu) {
+          /*if (showSystemMenu) {
             showSystemMenu = false;
           }
-          else {
+          else {*/
             event.accepted = true;
             closeMenu();
-          }
+          //}
           return;
       }
       if (api.keys.isFilters(event)) {
