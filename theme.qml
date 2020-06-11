@@ -1,455 +1,429 @@
-// vgOS Frontend
-
-import QtQuick 2.8
-import QtGraphicalEffects 1.0
-import QtMultimedia 5.9
+import QtQuick 2.0
+import QtQuick.Layouts 1.11
 import SortFilterProxyModel 0.2
-import "qrc:/qmlutils" as PegasusUtils
-import "utils.js" as Utils
-import "layer_grid"
-import "layer_menu"
-import "layer_details"
-import "layer_help"
+import QtMultimedia 5.9
+import "VerticalList"
+import "GridView"
+import "Global"
+import "GameDetails"
+import "ShowcaseView"
+import "Settings"
 
 FocusScope {
-  property int collectionIndex: 0
-  property var allGamesInCollection: api.collections.get(collectionIndex)
+id: root
 
-  //SETTINGS
-  property bool mainShowDetails: api.memory.get('settingsMainShowDetails') | false
+    FontLoader { id: titleFont; source: "assets/fonts/SourceSansPro-Bold.ttf" }
+    FontLoader { id: subtitleFont; source: "assets/fonts/OpenSans-Bold.ttf" }
+    FontLoader { id: bodyFont; source: "assets/fonts/OpenSans-SemiBold.ttf" }
 
-  // Loading the fonts here makes them usable in the rest of the theme
-  // and can be referred to using their name and weight.
-  FontLoader { id: titleFont; source: "fonts/AkzidenzGrotesk-BoldCond.otf" }
-  FontLoader { id: subtitleFont; source: "fonts/Gotham-Bold.otf" }
-  FontLoader { id: bodyFont; source: "fonts/Montserrat-Medium.otf" }
-
-  property bool menuactive: false
-  property string themeOrange: "#FF9E12"
-  property string themeGreen: "#297373"
-  property string themePeach: "#FF8552"
-  property string themePink: "#FF7BAC"
-  property string themeYellow: "#E9D758"
-  property string themeColour: themeOrange
-
-  // States
-  property bool stateHome: gamegrid.focus
-  property bool stateDetails: gamedetails.active
-  property bool stateMenu: platformmenu.focus
-  property bool stateVideoPreview
-  property bool showFavs: false
-  property bool showLastPlayed: false
-
-  ////////////////////////
-  // Custom Collections //
-
-  // Favourites
-  SortFilterProxyModel {
-    id: favGames
-    sourceModel: api.collections.get(collectionIndex).games
-    filters: ValueFilter {
-      roleName: "favorite"
-      value: true
-    }
-  }
-
-  property var favCollection: {
-    return {
-      name: "Favourites",
-      shortName: "favourites",
-      games: favGames
-    }
-  }
-
-  SortFilterProxyModel {
-    id: lastPlayedGames
-    sourceModel: api.collections.get(collectionIndex).games
-    sorters: RoleSorter {
-      roleName: "lastPlayed"
-      sortOrder: Qt.DescendingOrder
-    }
-  }
-
-  property var lastPlayedCollection: {
-    return {
-      name: "Last Played",
-      shortName: "lastplayed",
-      games: lastPlayedGames
-    }
-  }
-
-  property var customCollection: [favCollection]
-  // End custom collections //
-  ////////////////////////////
-
-  //////////////////////////
-  // Collection switching //
-
-  function modulo(a,n) {
-    return (a % n + n) % n;
-  }
-  property var currentCollection: showFavs ? favCollection : showLastPlayed ? lastPlayedCollection : allGamesInCollection
-  property string platformShortname: Utils.processPlatformName(currentCollection.shortName)
-
-  function nextCollection () {
-    jumpToCollection(collectionIndex + 1);
-  }
-
-  function prevCollection() {
-    jumpToCollection(collectionIndex - 1);
-  }
-
-  function jumpToCollection(idx) {
-    api.memory.set('gameCollIndex' + collectionIndex, currentGameIndex); // save game index of current collection
-    collectionIndex = modulo(idx, api.collections.count); // new collection index
-    //currentGameIndex = api.memory.get('gameCollIndex' + collectionIndex) || 0; // restore game index for newly selected collection
-    currentGameIndex = 0; // Jump to the top of the list each time collection is changed
-  }
-
-  // End collection switching //
-  //////////////////////////////
-
-  ////////////////////
-  // Game switching //
-
-  property int currentGameIndex: 0
-  readonly property var currentGame: currentCollection.games.get(currentGameIndex)
-
-  function changeGameIndex (idx) {
-    currentGameIndex = idx
-    if (collectionIndex && idx) {
-      api.memory.set('gameIndex' + collectionIndex, idx);
-    }
-  }
-
-  // End game switching //
-  ////////////////////////
-
-  ////////////////////
-  // Launching game //
-
-  Component.onCompleted: {
-    collectionIndex = api.memory.get('collectionIndex') || 0;
-    currentGameIndex = api.memory.get('gameCollIndex' + collectionIndex) || 0;
-  }
-
-  function launchGame() {
-    api.memory.set('collectionIndex', collectionIndex);
-    api.memory.set('gameCollIndewx' + collectionIndex, currentGameIndex);
-    currentGame.launch();
-  }
-
-  // End launching game //
-  ////////////////////////
-
-  function toggleMenu() {
-
-    if (platformmenu.focus) {
-      // Close the menu
-      gamegrid.focus = true
-      platformmenu.outro()
-      if (mainShowDetails) { content.opacity = 1 }
-      contentcontainer.opacity = 1
-      contentcontainer.x = 0
-      collectiontitle.opacity = 1
-    } else {
-      // Open the menu
-      platformmenu.focus = true
-      platformmenu.intro()
-      if (mainShowDetails) { content.opacity = 0.3 }
-      contentcontainer.opacity = 0.3
-      contentcontainer.x = platformmenu.menuwidth
-      collectiontitle.opacity = 0
-    }
-
-  }
-
-  function toggleDetails() {
-    if (gamedetails.active) {
-      // Close the details
-      gamegrid.focus = true
-      gamegrid.visible = true
-      if (mainShowDetails)
-        content.opacity = 1
-      backgroundimage.dimopacity = backgroundimage.storedDimOpacity
-      backgroundimage.toggleVideo();
-      gamedetails.active = false
-      gamedetails.outro()
-    } else {
-      // Open details panel
-      gamedetails.focus = true
-      gamedetails.active = true
-      gamegrid.visible = false
-      content.opacity = 0
-      backgroundimage.toggleVideo();
-      backgroundimage.dimopacity = 0
-      gamedetails.intro()
-    }
-  }
-
-  function toggleFilters() {
-    /* Commenting out until I can fix the launch game bug
-    if (showFavs) {
-      // Last Played
-      showFavs = false;
-      showLastPlayed = true;
-      changeGameIndex(0);
-    } else if (showLastPlayed) {
-      // No filter
-      showFavs = false;
-      showLastPlayed = false;
-      currentGameIndex = api.memory.get('gameCollIndex' + collectionIndex) || 0;
-    } else {
-      // Favourites
-      showFavs = true;
-      showLastPlayed = false;
-      changeGameIndex(0);
-    }
-    console.log("Current game index: " + currentGameIndex);*/
-  }
-
-  function toggleVideoAudio()
-  {
-    if (backgroundimage.muteVideo) {
-      backgroundimage.muteVideo = false;
-      backgroundimage.gradientOpacity = 0;
-      stateVideoPreview = true;
-      console.log("Audio on");
-    } else {
-      backgroundimage.muteVideo = true;
-      backgroundimage.gradientOpacity = 1;
-      stateVideoPreview = false;
-      console.log("Audio off");
-    }
-  }
-
-  Item {
-    id: everythingcontainer
-    anchors {
-      left: parent.left; right: parent.right
-      top: parent.top; bottom: parent.bottom
-    }
-    width: parent.width
-    height: parent.height
-
-    BackgroundImage {
-      id: backgroundimage
-      gameData: currentGame
-      anchors {
-        left: parent.left; right: parent.right
-        top: parent.top; bottom: parent.bottom
-      }
-
-    }
-
-    Item {
-      id: contentcontainer
-
-      width: parent.width
-      height: parent.height
-
-      Behavior on x {
-        PropertyAnimation {
-          duration: 300;
-          easing.type: Easing.OutQuart;
-          easing.amplitude: 2.0;
-          easing.period: 1.5
+    // Load settings
+    property var settings: {
+        return {
+            PlatformView:               api.memory.has("Game View") ? api.memory.get("Game View") : "Grid",
+            GridThumbnail:              api.memory.has("Grid Thumbnail") ? api.memory.get("Grid Thumbnail") : "Dynamic Wide",
+            GridColumns:                api.memory.has("Number of columns") ? api.memory.get("Number of columns") : "3",
+            GameBackground:             api.memory.has("Game Background") ? api.memory.get("Game Background") : "Screenshot",
+            GameRandomBackground:       api.memory.has("Randomize Background") ? api.memory.get("Randomize Background") : "Yes",
+            VideoPreview:               api.memory.has("Video preview") ? api.memory.get("Video preview") : "Yes",
+            AllowThumbVideo:            api.memory.has("Allow video thumbnails") ? api.memory.get("Allow video thumbnails") : "Yes",
+            AllowThumbVideoAudio:       api.memory.has("Play video thumbnail audio") ? api.memory.get("Play video thumbnail audio") : "No",
+            HideLogo:                   api.memory.has("Hide logo when thumbnail video plays") ? api.memory.get("Hide logo when thumbnail video plays") : "No",
+            AnimateHighlight:           api.memory.has("Animate highlight") ? api.memory.get("Animate highlight") : "No",
+            AllowVideoPreviewAudio:     api.memory.has("Video preview audio") ? api.memory.get("Video preview audio") : "No",
+            ShowScanlines:              api.memory.has("Show scanlines") ? api.memory.get("Show scanlines") : "Yes",
+            DetailsDefault:             api.memory.has("Default to full details") ? api.memory.get("Default to full details") : "No"
         }
-      }
-
-      Image {
-        id: menuicon
-        source: "assets/images/menuicon.svg"
-        width: vpx(24)
-        height: vpx(24)
-        anchors { top: parent.top; topMargin: vpx(32); left: parent.left; leftMargin: vpx(32) }
-        visible: gamegrid.focus
-      }
-
-      Text {
-        id: collectiontitle
-
-        anchors {
-          top: parent.top; topMargin: vpx(35);
-          //horizontalCenter: menuicon.horizontalCenter
-          left: menuicon.right; leftMargin: vpx(35)
-        }
-
-        Behavior on opacity { NumberAnimation { duration: 100 } }
-
-        width: parent.width
-        //text: (api.filters.current.enabled) ? api.currentCollection.name + " | Favorites" : api.currentCollection.name
-        text: currentCollection.name
-        color: "white"
-        font.pixelSize: vpx(16)
-        font.family: globalFonts.sans
-        //font.capitalization: Font.AllUppercase
-        elide: Text.ElideRight
-        //opacity: 0.5
-
-        // DropShadow
-        layer.enabled: true
-        layer.effect: DropShadow {
-            horizontalOffset: 0
-            verticalOffset: 0
-            radius: 8.0
-            samples: 17
-            color: "#80000000"
-            transparentBorder: true
-        }
-      }
-
-      
-      // Game details
-      GameGridDetails {
-        id: content
-
-        gameData: currentGame
-
-        height: vpx(200)//vpx(280)
-        width: parent.width - vpx(182)
-        anchors {
-          top: menuicon.bottom;
-          topMargin: mainShowDetails ? vpx(-20) : vpx(-190)}
-
-        // Text doesn't look so good blurred so fade it out when blurring
-        opacity: mainShowDetails ? 1 : 0
-        Behavior on opacity { OpacityAnimator { duration: 100 } }
-      }
-
-
-      // Game grid
-      Item {
-        id: gridcontainer
-        clip: true
-
-        width: parent.width
-        //height: parent.height * 0.1
-
-        anchors {
-          top: content.bottom; //topMargin: vpx(75)
-          //top: parent.top;
-          bottom: parent.bottom;
-          left: parent.left; right: parent.right
-        }
-
-        GameGrid {
-          id: gamegrid
-
-          mainScreenDetails: mainShowDetails
-
-          focus: true
-          Behavior on opacity { OpacityAnimator { duration: 100 } }
-          gridWidth: parent.width - vpx(164)
-          height: parent.height
-
-          anchors {
-            top: parent.top; topMargin: vpx(10)
-            bottom: parent.bottom;
-            left: parent.left; right: parent.right
-          }
-
-          onLaunchRequested: launchGame()
-          onCollectionNext: nextCollection()
-          onCollectionPrev: prevCollection()
-          onMenuRequested: toggleMenu()
-          onDetailsRequested: toggleDetails()
-          onGameChanged: changeGameIndex(currentIdx)
-          onToggleFilter: toggleFilters()
-        }
-      }
-
-
-      GameDetails2 {
-        id: gamedetails
-
-        property bool active : false
-
-        anchors {
-          left: parent.left; right: parent.right
-          top: parent.top; bottom: parent.bottom
-        }
-        width: parent.width
-        height: parent.height
-
-        onDetailsCloseRequested: toggleDetails()
-        onLaunchRequested: launchGame()
-        onVideoPreview: toggleVideoAudio()
-
-      }
-      
     }
 
+    // Collections
+    property int currentCollectionIndex: 0
+    property int currentGameIndex: 0
+    property var currentCollection: api.collections.get(currentCollectionIndex)    
+    property var currentGame
 
-  }
+    // Stored variables for page navigation
+    property int storedHomePrimaryIndex: 0
+    property int storedHomeSecondaryIndex: 0
+    property int storedCollectionIndex: 0
+    property int storedCollectionGameIndex: 0
 
-  PlatformMenu {
-    id: platformmenu
-    collection: currentCollection
-    collectionIdx: collectionIndex
-    anchors {
-      left: parent.left; right: parent.right
-      top: parent.top; bottom: parent.bottom
+    // Reset the stored game index when changing collections
+    onCurrentCollectionIndexChanged: storedCollectionGameIndex = 0
+
+    // Filtering options
+    property bool showFavs: false
+    property var sortByFilter: ["title", "lastPlayed", "playCount"]
+    property int sortByIndex: 0
+    property var orderBy: Qt.AscendingOrder
+    property string searchTerm: ""
+    property bool steam: currentCollection.name === "Steam"
+    function steamExists() {
+        for (i = 0; i < api.collections.count; i++) {
+            if (api.collections.get(i).name === "Steam") {
+                return true;
+            }
+            return false;
+        }
     }
-    width: parent.width
-    height: parent.height
-    backgroundcontainer: everythingcontainer
-    onMenuCloseRequested: toggleMenu()
-    onSwitchCollection: jumpToCollection(collectionIdx)
-  }
 
-  // Switch collection overlay
-  GameGridSwitcher {
-    id: switchoverlay
-    collection: currentCollection
-    anchors.fill: parent
-    width: parent.width
-    height: parent.height
-  }
+    // Functions for switching currently active collection
+    function toggleFavs() {
+        showFavs = !showFavs;
+    }
 
-  // Empty area for swiping on touch
-  Item {
-    anchors { top: parent.top; left: parent.left; bottom: parent.bottom; }
-    width: vpx(75)
-    PegasusUtils.HorizontalSwipeArea {
+    function cycleSort() {
+        if (sortByIndex < sortByFilter.length - 1)
+            sortByIndex++;
+        else
+            sortByIndex = 0;
+    }
+
+    function toggleOrderBy() {
+        if (orderBy === Qt.AscendingOrder)
+            orderBy = Qt.DescendingOrder;
+        else
+            orderBy = Qt.AscendingOrder;
+    }
+
+    // Launch the current game
+    function launchGame(game) {
+        if (game !== null) {
+            if (game.collections.get(0).name === "Steam")
+                launchGameScreen();
+
+            saveCurrentState(game);
+            game.launch();
+        } else {
+            if (currentGame.collections.get(0).name === "Steam")
+                launchGameScreen();
+
+            saveCurrentState(currentGame);
+            currentGame.launch();
+        }
+    }
+
+    // Save current states for returning from game
+    function saveCurrentState(game) {
+        api.memory.set('savedState', root.state);
+        api.memory.set('savedCollection', currentCollectionIndex);
+        api.memory.set('lastState', JSON.stringify(lastState));
+        api.memory.set('lastGame', JSON.stringify(lastGame));
+        api.memory.set('storedHomePrimaryIndex', storedHomePrimaryIndex);
+        api.memory.set('storedHomeSecondaryIndex', storedHomeSecondaryIndex);
+        api.memory.set('storedCollectionIndex', currentCollectionIndex);
+        api.memory.set('storedCollectionGameIndex', storedCollectionGameIndex);
+
+        const savedGameIndex = api.allGames.toVarArray().findIndex(g => g === game);
+        api.memory.set('savedGame', savedGameIndex);
+
+        api.memory.set('To Game', 'True');
+    }
+
+    // Handle loading settings when returning from a game
+    property bool fromGame: api.memory.has('To Game');
+    function returnedFromGame() {
+        lastState                   = JSON.parse(api.memory.get('lastState'));
+        lastGame                    = JSON.parse(api.memory.get('lastGame'));
+        currentCollectionIndex      = api.memory.get('savedCollection');
+        storedHomePrimaryIndex      = api.memory.get('storedHomePrimaryIndex');
+        storedHomeSecondaryIndex    = api.memory.get('storedHomeSecondaryIndex');
+        currentCollectionIndex      = api.memory.get('storedCollectionIndex');
+        storedCollectionGameIndex   = api.memory.get('storedCollectionGameIndex');
+
+        currentGame                 = api.allGames.get(api.memory.get('savedGame'));
+        root.state                  = api.memory.get('savedState');
+
+        // Remove these from memory so as to not clog it up
+        api.memory.unset('savedState');
+        api.memory.unset('savedGame');
+        api.memory.unset('lastState');
+        api.memory.unset('lastGame');
+        api.memory.unset('storedHomePrimaryIndex');
+        api.memory.unset('storedHomeSecondaryIndex');
+        api.memory.unset('storedCollectionIndex');
+        api.memory.unset('storedCollectionGameIndex');
+
+        // Remove this one so we only have it when we come back from the game and not at Pegasus launch
+        api.memory.unset('To Game');
+    }
+
+    // Theme settings
+    property var theme: {
+        return {
+            main:           "#1d253d",
+            secondary:      "#202a44",
+            accent:         "#f00980",
+            highlight:      "#f00980",
+            text:           "#ececec",
+            button:         "#f00980",
+            gradientstart:  "#000d111d",
+            gradientend:    "#FF0d111d"
+        }
+    }
+
+    property real globalMargin: vpx(30)
+    property real helpMargin: buttonbar.height
+    property int transitionTime: 100
+
+    // State settings
+    states: [
+        State {
+            name: "softwarescreen";
+        },
+        State {
+            name: "softwaregridscreen";
+        },
+        State {
+            name: "showcasescreen";
+        },
+        State {
+            name: "gameviewscreen";
+        },
+        State {
+            name: "settingsscreen";
+        },
+        State {
+            name: "launchgamescreen";
+        }
+    ]
+
+    property var lastState: []
+    property var lastGame: []
+
+    // Screen switching functions
+    function softwareScreen() {
+        sfxAccept.play();
+        lastState.push(state);
+        searchTerm = "";
+        switch(settings.PlatformView) {
+            case "Grid":
+                root.state = "softwaregridscreen";
+                break;
+            default:
+                root.state = "softwarescreen";
+        }
+    }
+
+    function showcaseScreen() {
+        sfxAccept.play();
+        lastState.push(state);
+        root.state = "showcasescreen";
+    }
+
+    function gameDetails(game) {
+        sfxAccept.play();
+        // As long as there is a state history, save the last game
+        if (lastState.length != 0)
+            lastGame.push(currentGame);
+
+        // Push the new game
+        if (game !== null)
+            currentGame = game;
+
+        // Save the state before pushing the new one
+        lastState.push(state);
+        root.state = "gameviewscreen";
+    }
+
+    function settingsScreen() {
+        sfxAccept.play();
+        lastState.push(state);
+        root.state = "settingsscreen";
+    }
+
+    function launchGameScreen() {
+        sfxAccept.play();
+        lastState.push(state);
+        root.state = "launchgamescreen";
+    }
+
+    function previousScreen() {
+        sfxBack.play();
+        if (state == lastState[lastState.length-1])
+            popLastGame();
+
+        state = lastState[lastState.length - 1];
+        lastState.pop();
+    }
+
+    function popLastGame() {
+        if (lastGame.length) {
+            currentGame = lastGame[lastGame.length-1];
+            lastGame.pop();
+        }
+    }
+
+    // Set default state to the platform screen
+    Component.onCompleted: { 
+        root.state = "showcasescreen";
+
+        if (fromGame)
+            returnedFromGame();
+    }
+
+    // Background
+    Rectangle {
+    id: background
+        
         anchors.fill: parent
-        visible: gamegrid.focus
-        onSwipeRight: toggleMenu()
-        //onSwipeLeft: closeRequested()
-        onClicked: toggleMenu()
+        color: theme.main
     }
-  }
 
-  ControllerHelp {
-    id: controllerHelp
-    opacity: stateVideoPreview ? 0 : 1
-    width: parent.width
-    height: vpx(75)
-    anchors {
-      bottom: parent.bottom
+    Loader {
+    id: showcaseLoader
+
+        focus: (root.state === "showcasescreen")
+        active: opacity !== 0
+        opacity: focus ? 1 : 0
+        Behavior on opacity { PropertyAnimation { duration: transitionTime } }
+
+        anchors.fill: parent
+        sourceComponent: showcaseview
+        asynchronous: true
     }
-  }
 
+    Loader {
+    id: gridviewloader
 
-  ///////////////////
-  // SOUND EFFECTS //
-  ///////////////////
-  SoundEffect {
-      id: navSound
-      source: "assets/audio/tap-mellow.wav"
-      volume: 1.0
-  }
+        focus: (root.state === "softwaregridscreen")
+        active: opacity !== 0
+        opacity: focus ? 1 : 0
+        Behavior on opacity { PropertyAnimation { duration: transitionTime } }
 
-  SoundEffect {
-      id: menuIntroSound
-      source: "assets/audio/slide-scissors.wav"
-      volume: 1.0
-  }
+        anchors.fill: parent
+        sourceComponent: gridview
+        asynchronous: true
+    }
 
-  SoundEffect {
-      id: toggleSound
-      source: "assets/audio/tap-sizzle.wav"
-      volume: 1.0
-  }
+    Loader {
+    id: listviewloader
 
+        focus: (root.state === "softwarescreen")
+        active: opacity !== 0
+        opacity: focus ? 1 : 0
+        Behavior on opacity { PropertyAnimation { duration: transitionTime } }
+
+        anchors.fill: parent
+        sourceComponent: listview
+        asynchronous: true
+    }
+
+    Loader {
+    id: gameviewloader
+
+        focus: (root.state === "gameviewscreen")
+        active: opacity !== 0
+        onActiveChanged: if (!active) popLastGame();
+        opacity: focus ? 1 : 0
+        Behavior on opacity { PropertyAnimation { duration: transitionTime } }
+
+        anchors.fill: parent
+        sourceComponent: gameview
+        asynchronous: true
+    }
+
+    Loader {
+    id: launchgameloader
+
+        focus: (root.state === "launchgamescreen")
+        active: opacity !== 0
+        opacity: focus ? 1 : 0
+        Behavior on opacity { PropertyAnimation { duration: transitionTime } }
+
+        anchors.fill: parent
+        sourceComponent: launchgameview
+        asynchronous: true
+    }
+
+    Loader {
+    id: settingsloader
+
+        focus: (root.state === "settingsscreen")
+        active: opacity !== 0
+        opacity: focus ? 1 : 0
+        Behavior on opacity { PropertyAnimation { duration: transitionTime } }
+
+        anchors.fill: parent
+        sourceComponent: settingsview
+        asynchronous: true
+    }
+
+    Component {
+    id: showcaseview
+
+        ShowcaseViewMenu { focus: true }
+    }
+
+    Component {
+    id: gridview
+
+        GridViewMenu { focus: true }
+    }
+
+    Component {
+    id: listview
+
+        SoftwareListMenu { focus: true }
+    }
+
+    Component {
+    id: gameview
+
+        GameView {
+            focus: true
+            game: currentGame
+        }
+    }
+
+    Component {
+    id: launchgameview
+
+        LaunchGame { focus: true }
+    }
+
+    Component {
+    id: settingsview
+
+        SettingsScreen { focus: true }
+    }
+
+    
+    // Button help
+    property var currentHelpbarModel
+    ButtonHelpBar {
+    id: buttonbar
+
+        height: vpx(50)
+        anchors {
+            left: parent.left; right: parent.right; rightMargin: globalMargin
+            bottom: parent.bottom
+        }
+    }
+
+    ///////////////////
+    // SOUND EFFECTS //
+    ///////////////////
+    SoundEffect {
+        id: sfxNav
+        source: "assets/sfx/navigation.wav"
+        volume: 1.0
+    }
+
+    SoundEffect {
+        id: sfxBack
+        source: "assets/sfx/back.wav"
+        volume: 1.0
+    }
+
+    SoundEffect {
+        id: sfxAccept
+        source: "assets/sfx/accept.wav"
+    }
+
+    SoundEffect {
+        id: sfxToggle
+        source: "assets/sfx/toggle.wav"
+    }
+    
 }
+

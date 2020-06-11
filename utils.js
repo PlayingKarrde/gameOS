@@ -123,6 +123,9 @@ function processPlatformName(platform) {
     case "mattel intellivision":
       return "intellivision";
       break;
+    case "sammy atomiswave":
+      return "atomiswave";
+      break;
     case "sega master system":
       return "mastersystem";
       break;
@@ -199,7 +202,7 @@ function processPlatformName(platform) {
       return "wii";
       break;
     case "nintendo wii u":
-      return "wii u";
+      return "wiiu";
       break;
     case "nintendo 3ds":
       return "3ds";
@@ -218,6 +221,183 @@ function processPlatformName(platform) {
   }
 }
 
-/*function processButtonArt(buttonModel) {
-  return buttonModel;
-}*/
+function processButtonArt(button) {
+  var buttonModel;
+  switch (button) {
+    case "accept":
+      buttonModel = api.keys.accept;
+      break;
+    case "cancel":
+      buttonModel = api.keys.cancel;
+      break;
+    case "filters":
+      buttonModel = api.keys.filters;
+      break;
+    case "details":
+      buttonModel = api.keys.details;
+      break;
+    case "nextPage":
+      buttonModel = api.keys.nextPage;
+      break;
+    case "prevPage":
+      buttonModel = api.keys.prevPage;
+      break;
+    case "pageUp":
+      buttonModel = api.keys.pageUp;
+      break;
+      case "pageDown":
+        buttonModel = api.keys.pageDown;
+        break;
+    default:
+      buttonModel = api.keys.accept;
+  }
+
+  var i;
+  for (i = 0; buttonModel.length; i++) {
+    if (buttonModel[i].name().includes("Gamepad")) {
+      var buttonValue = buttonModel[i].key.toString(16)
+      return buttonValue.substring(buttonValue.length-1, buttonValue.length);
+    }
+  }
+}
+
+function steamAppID (gameData) {
+  var str = gameData.assets.boxFront.split("header");
+  return str[0];
+}
+
+function steamBoxArt(gameData) {
+  return steamAppID(gameData) + '/library_600x900_2x.jpg';
+}
+
+function steamLogo(gameData) {
+  return steamAppID(gameData) + "/logo.png"
+}
+
+function steamHero(gameData) {
+  return steamAppID(gameData) + "/library_hero.jpg"
+}
+
+// Just use boxFront?
+function steamHeader(gameData) {
+  return steamAppID(gameData) + "/header.jpg"
+}
+
+function boxArt(data) {
+  if (data != null) {
+    if (data.assets.boxFront.includes("/header.jpg")) 
+      return steamBoxArt(data);
+    else {
+      if (data.assets.boxFront != "")
+        return data.assets.boxFront;
+      else if (data.assets.poster != "")
+        return data.assets.poster;
+      else if (data.assets.banner != "")
+        return data.assets.banner;
+      else if (data.assets.tile != "")
+        return data.assets.tile;
+      else if (data.assets.cartridge != "")
+        return data.assets.cartridge;
+      else if (data.assets.logo != "")
+        return data.assets.logo;
+    }
+  }
+  return "";
+}
+
+function logo(data) {
+  if (data != null) {
+    if (data.assets.boxFront.includes("/header.jpg")) 
+      return steamLogo(data);
+    else {
+      if (data.assets.logo != "")
+        return data.assets.logo;
+    }
+  }
+  return "";
+}
+
+function fanArt(data) {
+  if (data != null) {
+    if (data.assets.boxFront.includes("/header.jpg")) 
+      return steamHero(data);
+    else {
+      if (data.assets.background != "")
+        return data.assets.background;
+      else if (data.assets.screenshots[0])
+        return data.assets.screenshots[0];
+    }
+  }
+  return "";
+}
+
+// Place Steam collections at the beginning of the list
+function reorderCollection(model) {
+  for(var i=0; i<model.count; i++) {
+    if (model.get(i).name == "Steam") {
+      model.move(i,0);
+      return model;
+    }
+  }
+  return model;
+}
+
+// Shuffle function
+function shuffle(model){
+  var currentIndex = model.count, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex)
+      currentIndex -= 1
+      // And swap it with the current element.
+      // the dictionaries maintain their reference so a copy should be made
+      // https://stackoverflow.com/a/36645492/6622587
+      temporaryValue = JSON.parse(JSON.stringify(model.get(currentIndex)))
+      model.set(currentIndex, model.get(randomIndex))
+      model.set(randomIndex, temporaryValue);
+  }
+  
+  return model;
+}
+
+function uniqueGameValues(fieldName) {
+  const set = new Set();
+  api.allGames.toVarArray().forEach(game => {
+      game[fieldName].forEach(v => set.add(v));
+  });
+  return [...set.values()].sort();
+}
+
+function uniqueValuesArray(fieldName) {
+  let arr = [];
+  var allGames = api.allGames.toVarArray();
+  for(var i=0;i<allGames.length;i++) {
+    arr.push(allGames[i][fieldName]);
+  }
+  return arr;
+}
+
+function shuffleArray(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
+function returnRandom(array) {
+  return array[Math.floor(Math.random() * array.length)];
+}
