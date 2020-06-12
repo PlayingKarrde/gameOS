@@ -68,6 +68,10 @@ id: root
             setting: "Screenshot,Fanart"
         }
         ListElement {
+            settingName: "Game Logo"
+            setting: "Show,Text only,Hide"
+        }
+        ListElement {
             settingName: "Default to full details"
             setting: "No,Yes"
         }

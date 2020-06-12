@@ -240,7 +240,7 @@ id: root
         opacity: (content.currentIndex !== 0 || detailsScreen.opacity !== 0) ? 0 : 1
         Behavior on opacity { NumberAnimation { duration: 200 } }
         z: (content.currentIndex == 0) ? 10 : -10
-
+        visible: settings.GameLogo === "Show"
     }
 
     DropShadow {
@@ -255,6 +255,7 @@ id: root
         source: logo
         opacity: (content.currentIndex !== 0 || detailsScreen.opacity !== 0) ? 0 : 0.4
         Behavior on opacity { NumberAnimation { duration: 200 } }
+        visible: settings.GameLogo === "Show"
     }
 
     // Platform title
@@ -279,7 +280,7 @@ id: root
         elide: Text.ElideRight
         wrapMode: Text.WordWrap
         lineHeight: 0.8
-        visible: logo.source == ""
+        visible: logo.source === "" || settings.GameLogo === "Text only"
         opacity: (content.currentIndex !== 0 || detailsScreen.opacity !== 0) ? 0 : 1
     }
 
