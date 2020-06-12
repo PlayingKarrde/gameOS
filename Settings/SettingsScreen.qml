@@ -27,6 +27,10 @@ id: root
             settingName: "Animate highlight"
             setting: "No,Yes"
         }
+        ListElement {
+            settingName: "Enable mouse hover"
+            setting: "No,Yes"
+        }
     }
 
     property var generalPage: {

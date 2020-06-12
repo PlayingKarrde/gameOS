@@ -278,7 +278,7 @@ id: root
                     // Mouse/touch functionality
                     MouseArea {
                         anchors.fill: parent
-                        hoverEnabled: true
+                        hoverEnabled: settings.MouseHover == "Yes"
                         onEntered: { sfxNav.play(); mainList.currentIndex = 0; }
                         onClicked: {
                             if (selected)
@@ -408,7 +408,7 @@ id: root
                 // Mouse/touch functionality
                 MouseArea {
                     anchors.fill: parent
-                    hoverEnabled: true
+                    hoverEnabled: settings.MouseHover == "Yes"
                     onEntered: { sfxNav.play(); mainList.currentIndex = platformlist.ObjectModel.index; platformlist.savedIndex = index; platformlist.currentIndex = index; }
                     onExited: {}
                     onClicked: {

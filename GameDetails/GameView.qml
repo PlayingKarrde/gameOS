@@ -389,7 +389,7 @@ id: root
             // Mouse/touch functionality
             MouseArea {
                 anchors.fill: parent
-                hoverEnabled: true
+                hoverEnabled: settings.MouseHover == "Yes"
                 onClicked: previousScreen();
             }
         }
@@ -419,7 +419,7 @@ id: root
             // Mouse/touch functionality
             MouseArea {
                 anchors.fill: parent
-                hoverEnabled: true
+                hoverEnabled: settings.MouseHover == "Yes"
                 onClicked: previousScreen();
             }
         }

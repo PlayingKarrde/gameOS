@@ -28,6 +28,7 @@ id: root
             AllowThumbVideo:            api.memory.has("Allow video thumbnails") ? api.memory.get("Allow video thumbnails") : "Yes",
             AllowThumbVideoAudio:       api.memory.has("Play video thumbnail audio") ? api.memory.get("Play video thumbnail audio") : "No",
             HideLogo:                   api.memory.has("Hide logo when thumbnail video plays") ? api.memory.get("Hide logo when thumbnail video plays") : "No",
+            MouseHover:                 api.memory.has("Enable mouse hover") ? api.memory.get("Enable mouse hover") : "No",
             AnimateHighlight:           api.memory.has("Animate highlight") ? api.memory.get("Animate highlight") : "No",
             AllowVideoPreviewAudio:     api.memory.has("Video preview audio") ? api.memory.get("Video preview audio") : "No",
             ShowScanlines:              api.memory.has("Show scanlines") ? api.memory.get("Show scanlines") : "Yes",

@@ -70,7 +70,7 @@ id: root
     // Mouse/touch functionality
     MouseArea {
         anchors.fill: parent
-        hoverEnabled: true
+        hoverEnabled: settings.MouseHover == "Yes"
         onEntered: { sfxNav.play(); highlighted(); }
         onExited: {}
         onClicked: activated();

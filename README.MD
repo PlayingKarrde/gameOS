@@ -27,6 +27,9 @@ Skraper will place these in your roms folder under another folder called media.
 If no media files are showing up, make sure that Skraper Assets is checked in the Additional Data Sources section of Pegasus settings. It may also be preferable to convert the created gamelist.xml (assuming EmulationStation was chosen for the game list in Skraper) to a metadata.txt file using the [Pegasus conversion tool](http://pegasus-frontend.org/tools/convert/)
 
 ## Version history
+v1.01
+- Added option to toggle mouse hover (off by default)
+
 v1.0
 - Complete overhaul of the theme, rewritten from the ground up
 - Focus on features and performance
