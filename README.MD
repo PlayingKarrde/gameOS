@@ -29,6 +29,7 @@ If no media files are showing up, make sure that Skraper Assets is checked in th
 ## Version history
 v1.01
 - Added option to toggle mouse hover (off by default)
+- Added option for blurring background in game view (off by default)
 
 v1.0
 - Complete overhaul of the theme, rewritten from the ground up

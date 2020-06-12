@@ -81,7 +81,11 @@ id: root
         }
         ListElement {
             settingName: "Randomize Background"
-            setting: "Yes,No"
+            setting: "No,Yes"
+        }
+        ListElement {
+            settingName: "Blur Background"
+            setting: "No,Yes"
         }
         ListElement {
             settingName: "Show scanlines"

@@ -19,6 +19,7 @@ id: root
     property bool iamsteam: game ? (collectionShortName == "steam") : false
     property bool canPlayVideo: settings.VideoPreview === "Yes"
     property real detailsOpacity: (settings.DetailsDefault === "Yes") ? 1 : 0
+    property bool blurBG: settings.GameBlurBackground === "Yes"
     property string publisherName: {
         if (game !== null && game.publisher !== null) {
             var str = game.publisher;
@@ -131,6 +132,8 @@ id: root
         interval: 1000
         onTriggered: {
             screenshot.opacity = 0;
+            if (blurBG)
+                bgBlur.opacity = 0;
         }
     }
 
@@ -198,6 +201,16 @@ id: root
         fillMode: Image.PreserveAspectCrop
         smooth: true
         Behavior on opacity { NumberAnimation { duration: 500 } }
+        visible: !blurBG
+    }
+
+    FastBlur {
+        anchors.fill: screenshot
+        source: screenshot
+        radius: 64
+        opacity: screenshot.opacity
+        Behavior on opacity { NumberAnimation { duration: 500 } }
+        visible: blurBG
     }
 
     // Scanlines
