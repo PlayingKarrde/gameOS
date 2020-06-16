@@ -140,6 +140,14 @@ id: root
             horizontalAlignment: Text.AlignHLeft
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
+
+            // Mouse/touch functionality
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    previousScreen();
+                }
+            }
         }
     }
 
@@ -181,6 +189,18 @@ id: root
                     height: parent.height
                     anchors {
                         left: parent.left; leftMargin: vpx(25)
+                    }
+                }
+
+                // Mouse/touch functionality
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: settings.MouseHover == "Yes"
+                    onEntered: { sfxNav.play(); highlighted(); }
+                    onClicked: {
+                        sfxNav.play();
+                        pagelist.currentIndex = index;
+                        settingsList.focus = true;
                     }
                 }
 
@@ -341,6 +361,20 @@ id: root
                         event.accepted = true;
                         sfxBack.play()
                         pagelist.focus = true;
+                    }
+                }
+
+                // Mouse/touch functionality
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: settings.MouseHover == "Yes"
+                    onEntered: { sfxNav.play(); highlighted(); }
+                    onClicked: {
+                        sfxToggle.play();
+                        if(selected)
+                            nextSetting();
+                        else
+                            settingsList.currentIndex = index;
                     }
                 }
             }

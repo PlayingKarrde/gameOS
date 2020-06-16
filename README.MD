@@ -29,6 +29,7 @@ If no media files are showing up, make sure that Skraper Assets is checked in th
 ## Version history
 v1.06
 - Adding option for viewing box art in the grid view instead of dynamic content
+- Adding mouse/touch support to settings
 
 v1.05
 - Added option to toggle mouse hover (off by default)
