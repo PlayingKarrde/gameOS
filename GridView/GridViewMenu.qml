@@ -121,6 +121,9 @@ id: root
                         else
                             gamegrid.currentIndex = index;
                     }
+                    onHighlighted: {
+                        gamegrid.currentIndex = index;
+                    }
                     Keys.onPressed: {
                         // Toggle favorite
                         if (api.keys.isDetails(event) && !event.isAutoRepeat) {

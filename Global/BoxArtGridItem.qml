@@ -34,6 +34,7 @@ id: root
     }
 
     property bool selected
+    Behavior on scale { NumberAnimation { duration: 100 } }
     property var gameData
     property int columns: 6
 
@@ -41,6 +42,7 @@ id: root
     z: selected ? 10 : 1
 
     signal activate()
+    signal highlighted()
                        
     Image {
     id: screenshot
@@ -91,8 +93,49 @@ id: root
 
         ItemBorder { }
     }
-    
+
+    Text {
+    id: platformname
+
+        text: modelData.title
+        anchors { fill: parent; margins: vpx(10) }
+        color: "white"
+        scale: selected ? 1.1 : 1
+        Behavior on opacity { NumberAnimation { duration: 100 } }
+        font.pixelSize: vpx(18)
+        font.family: subtitleFont.name
+        font.bold: true
+        style: Text.Outline; styleColor: theme.main
+        visible: screenshot.paintedWidth === 0
+        anchors.centerIn: parent
+        elide: Text.ElideRight
+        wrapMode: Text.WordWrap
+        lineHeight: 0.8
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+    }
+
+    // List specific input
+    Keys.onPressed: {
+        // Accept
+        if (api.keys.isAccept(event) && !event.isAutoRepeat) {
+            event.accepted = true;
+            activate();        
+        }
+    }
+
     // Mouse/touch functionality
+    MouseArea {
+        anchors.fill: parent
+        hoverEnabled: settings.MouseHover == "Yes"
+        onEntered: { sfxNav.play(); highlighted(); }
+        onClicked: {
+            sfxNav.play();
+            activate();
+        }
+    }
+    
+    /*// Mouse/touch functionality
     MouseArea {
         anchors.fill: parent
         hoverEnabled: true
@@ -108,5 +151,5 @@ id: root
                 currentGameIndex = index
             }
         }
-    }
+    }*/
 }
