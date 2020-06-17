@@ -7,7 +7,8 @@ id: root
 
     property var game
     property bool selected
-    property bool playVideo: (settings.AllowThumbVideo === "Yes")// && selected
+    property bool boxArt
+    property bool playVideo: (settings.AllowThumbVideo === "Yes") && !boxArt
 
     onGameChanged: {
         videoPreviewLoader.sourceComponent = undefined;

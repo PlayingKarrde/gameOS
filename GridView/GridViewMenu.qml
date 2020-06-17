@@ -175,6 +175,7 @@ id: root
                     height: gamegrid.cellHeight
                     game: list.currentGame(gamegrid.currentIndex)
                     selected: gamegrid.focus
+                    boxArt: showBoxes 
                 }
             }
 
