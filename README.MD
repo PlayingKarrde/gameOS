@@ -8,7 +8,7 @@ The goal of this theme is to create a modern game launcher that can fit in along
 
 ## Installation
 
-Simply download the theme and place it in your [Pegasus theme directory](http://pegasus-frontend.org/docs/user-guide/installing-themes/) under a folder called gameOS.
+[Download the latest version](https://github.com/PlayingKarrde/gameOS/releases/latest) and extract it in your [Pegasus theme directory](http://pegasus-frontend.org/docs/user-guide/installing-themes/) under a folder called gameOS.
 
 Windows users may need to install the [K-lite Codec Pack](https://www.codecguide.com/download_kl.htm) to get video playback working.
 
