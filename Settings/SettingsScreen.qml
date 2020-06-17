@@ -371,10 +371,12 @@ id: root
                     onEntered: { sfxNav.play(); highlighted(); }
                     onClicked: {
                         sfxToggle.play();
-                        if(selected)
+                        if(selected){ 
                             nextSetting();
-                        else
+                            saveSetting();
+                        } else {
                             settingsList.currentIndex = index;
+                        }
                     }
                 }
             }
