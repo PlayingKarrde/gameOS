@@ -28,6 +28,7 @@ If no media files are showing up, make sure that Skraper Assets is checked in th
 
 ## Version history
 v1.06
+- Adding GNU license
 - Adding option for viewing box art in the grid view instead of dynamic content
 - Adding mouse/touch support to settings
 
