@@ -391,6 +391,7 @@ id: root
                             nextSetting();
                             saveSetting();
                         } else {
+                            settingsList.focus = true;
                             settingsList.currentIndex = index;
                         }
                     }
