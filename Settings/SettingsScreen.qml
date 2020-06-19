@@ -212,7 +212,7 @@ id: root
                 MouseArea {
                     anchors.fill: parent
                     hoverEnabled: settings.MouseHover == "Yes"
-                    onEntered: { sfxNav.play(); highlighted(); }
+                    onEntered: { sfxNav.play(); }
                     onClicked: {
                         sfxNav.play();
                         pagelist.currentIndex = index;
@@ -384,7 +384,7 @@ id: root
                 MouseArea {
                     anchors.fill: parent
                     hoverEnabled: settings.MouseHover == "Yes"
-                    onEntered: { sfxNav.play(); highlighted(); }
+                    onEntered: { sfxNav.play(); }
                     onClicked: {
                         sfxToggle.play();
                         if(selected){ 
