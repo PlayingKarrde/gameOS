@@ -31,6 +31,7 @@ v1.06
 - Adding GNU license
 - Adding option for viewing box art in the grid view instead of dynamic content
 - Adding mouse/touch support to settings
+- Fixed settings button hover functionality
 
 v1.05
 - Added option to toggle mouse hover (off by default)

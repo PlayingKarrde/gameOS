@@ -196,8 +196,9 @@ id: root
             // Mouse/touch functionality
             MouseArea {
                 anchors.fill: parent
-                onEntered: {}
-                onExited: {}
+                hoverEnabled: settings.MouseHover == "Yes"
+                onEntered: settingsbutton.focus = true;
+                onExited: settingsbutton.focus = false;
                 onClicked: settingsScreen();
             }
         }
