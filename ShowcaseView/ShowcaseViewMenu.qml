@@ -413,7 +413,7 @@ id: root
                     font.family: subtitleFont.name
                     font.bold: true
                     style: Text.Outline; styleColor: theme.main
-                    visible: collectionlogo.source == ""
+                    visible: collectionlogo.status == Image.Error
                     anchors.centerIn: parent
                     elide: Text.ElideRight
                     wrapMode: Text.WordWrap
