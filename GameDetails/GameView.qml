@@ -444,7 +444,7 @@ id: root
             horizontalAlignment: Text.AlignHLeft
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
-            visible: platformlogo.source === ""
+            visible: platformlogo.status == Image.Error
 
             // Mouse/touch functionality
             MouseArea {

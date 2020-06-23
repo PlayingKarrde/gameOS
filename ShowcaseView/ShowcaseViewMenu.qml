@@ -406,14 +406,14 @@ id: root
 
                     text: modelData.name
                     anchors { fill: parent; margins: vpx(10) }
-                    color: "white"
+                    color: theme.text
                     opacity: selected ? 1 : 0.2
                     Behavior on opacity { NumberAnimation { duration: 100 } }
                     font.pixelSize: vpx(18)
                     font.family: subtitleFont.name
                     font.bold: true
                     style: Text.Outline; styleColor: theme.main
-                    visible: collectionlogo.source == ""
+                    visible: collectionlogo.status == Image.Error
                     anchors.centerIn: parent
                     elide: Text.ElideRight
                     wrapMode: Text.WordWrap
