@@ -530,8 +530,8 @@ id: root
 
             height: collection.height
 
-            itemWidth: collection.itemWidth //vpx(310)
-            itemHeight: collection.itemHeight //vpx(200)
+            itemWidth: collection.itemWidth
+            itemHeight: collection.itemHeight
 
             title: collection.title
             search: collection.search
@@ -558,8 +558,8 @@ id: root
 
             height: collection.height
 
-            itemWidth: collection.itemWidth //vpx(310)
-            itemHeight: collection.itemHeight //vpx(200)
+            itemWidth: collection.itemWidth
+            itemHeight: collection.itemHeight
 
             title: collection.title
             search: collection.search
@@ -586,8 +586,8 @@ id: root
 
             height: collection.height
 
-            itemWidth: collection.itemWidth //vpx(310)
-            itemHeight: collection.itemHeight //vpx(200)
+            itemWidth: collection.itemWidth
+            itemHeight: collection.itemHeight
 
             title: collection.title
             search: collection.search
@@ -614,8 +614,8 @@ id: root
 
             height: collection.height
 
-            itemWidth: collection.itemWidth //vpx(310)
-            itemHeight: collection.itemHeight //vpx(200)
+            itemWidth: collection.itemWidth
+            itemHeight: collection.itemHeight
 
             title: collection.title
             search: collection.search
@@ -642,8 +642,8 @@ id: root
 
             height: collection.height
 
-            itemWidth: collection.itemWidth //vpx(310)
-            itemHeight: collection.itemHeight //vpx(200)
+            itemWidth: collection.itemWidth
+            itemHeight: collection.itemHeight
 
             title: collection.title
             search: collection.search
