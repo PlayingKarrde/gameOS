@@ -556,14 +556,14 @@ id: root
         id: media
 
             width: root.width - vpx(70) - globalMargin
-            height: vpx(240)
+            height: ((root.width - globalMargin * 2) / 6.0) + vpx(60)
             title: "Media"
             model: game ? mediaArray() : []
             delegate: MediaItem {
             id: mediadelegate
 
-                width: vpx(310)
-                height: vpx(200)
+                width: (root.width - globalMargin * 2) / 6.0
+                height: width
                 selected: ListView.isCurrentItem && media.ListView.isCurrentItem
                 mediaItem: modelData
 
@@ -594,9 +594,9 @@ id: root
             property bool selected: ListView.isCurrentItem
             focus: selected
             width: root.width - vpx(70) - globalMargin
-            height: vpx(240)
-            itemWidth: vpx(310)
-            itemHeight: vpx(200)
+            height: itemHeight + vpx(60)
+            itemWidth: (root.width - globalMargin * 2) / 4.0
+            itemHeight: itemWidth * settings.WideRatio
 
             title: game ? "More games by " + game.publisher : ""
             search: publisherCollection
@@ -610,7 +610,9 @@ id: root
             property bool selected: ListView.isCurrentItem
             focus: selected
             width: root.width - vpx(70) - globalMargin
-            height: vpx(240)
+            height: itemHeight + vpx(60)
+            itemWidth: (root.width - globalMargin * 2) / 8.0
+            itemHeight: itemWidth / settings.TallRatio
 
             title: game ? "More " + game.genreList[0].toLowerCase() + " games" : ""
             search: genreCollection

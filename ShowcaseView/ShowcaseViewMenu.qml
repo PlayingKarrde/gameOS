@@ -50,19 +50,21 @@ id: root
             enabled: true,
         };
 
+        var width = root.width - globalMargin * 2;
+
         switch (collectionThumbnail) {
             case "Square":
-                collection.itemWidth = vpx(200);
+                collection.itemWidth = (width / 6.0);
                 collection.itemHeight = collection.itemWidth;
                 break;
             case "Tall":
-                collection.itemWidth = vpx(150);
-                collection.itemHeight = collection.itemWidth * 1.5;
+                collection.itemWidth = (width / 8.0);
+                collection.itemHeight = collection.itemWidth / settings.TallRatio;
                 break;
             case "Wide":
             default:
-                collection.itemWidth = vpx(310);
-                collection.itemHeight = vpx(200);
+                collection.itemWidth = (width / 4.0);
+                collection.itemHeight = collection.itemWidth * settings.WideRatio;
                 break;
             
         }
@@ -438,8 +440,8 @@ id: root
             model: Utils.reorderCollection(api.collections);
             delegate: Rectangle {
                 property bool selected: ListView.isCurrentItem && platformlist.focus
-                width: vpx(150)
-                height: vpx(100)
+                width: (root.width - globalMargin * 2) / 7.0
+                height: width * settings.WideRatio
                 color: selected ? theme.accent : theme.secondary
                 scale: selected ? 1.1 : 1
                 Behavior on scale { NumberAnimation { duration: 100 } }
