@@ -38,6 +38,14 @@ id: root
     id: gamesFiltered
 
         sourceModel: publisherGames
-        filters: IndexFilter { maximumIndex: max }
+        filters: IndexFilter { maximumIndex: max - 1 }
+    }
+
+    property var collection: {
+        return {
+            name:       "Top Games by " + publisher,
+            shortName:  "publisher",
+            games:      gamesFiltered
+        }
     }
 }

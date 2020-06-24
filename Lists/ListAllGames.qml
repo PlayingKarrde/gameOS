@@ -28,7 +28,7 @@ id: root
     id: gamesFiltered
 
         sourceModel: api.allGames
-        filters: IndexFilter { maximumIndex: max }
+        filters: IndexFilter { maximumIndex: max - 1 }
     }
 
     property var collection: {

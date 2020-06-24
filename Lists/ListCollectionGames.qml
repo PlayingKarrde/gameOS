@@ -32,7 +32,7 @@ id: root
         filters: [
             ValueFilter { roleName: "favorite"; value: true; enabled: showFavs },
             RegExpFilter { roleName: "title"; pattern: searchTerm; caseSensitivity: Qt.CaseInsensitive; enabled: searchTerm != "" },
-            IndexFilter { maximumIndex: max-1; enabled: max }
+            IndexFilter { maximumIndex: max - 1; enabled: max }
         ]
         sorters: [
             RoleSorter { roleName: sortByFilter[sortByIndex]; sortOrder: orderBy }
