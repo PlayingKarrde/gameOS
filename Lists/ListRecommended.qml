@@ -19,29 +19,36 @@ import SortFilterProxyModel 0.2
 
 Item {
 id: root
+    
+    readonly property var games: gamesFiltered
+    function currentGame(index) { return api.allGames.get(gamesFiltered.mapToSource(index)) }
+    property int max: gamesFiltered.count
 
-    readonly property alias games: gamesFiltered
-    function currentGame(index) { return api.allGames.get(mostPlayedGames.mapToSource(index)) }
-    property int max: mostPlayedGames.count
+    property var randomIndices: [];
 
-    SortFilterProxyModel {
-    id: mostPlayedGames
-
-        sourceModel: api.allGames
-        sorters: RoleSorter { roleName: "playCount"; sortOrder: Qt.DescendingOrder }
+    onGamesChanged: {
+        randomIndices = [];
+        for (var i = 0; i < max; ++i) {
+            var randomIndex = Math.floor(Math.random() * api.allGames.count);
+            randomIndices[randomIndex.toString()] = true;
+        }
     }
 
     SortFilterProxyModel {
     id: gamesFiltered
-
-        sourceModel: mostPlayedGames
-        filters: IndexFilter { maximumIndex: max - 1 }
+        sourceModel: api.allGames
+        sorters: RoleSorter { roleName: "rating"; sortOrder: Qt.DescendingOrder; }
+        filters: ExpressionFilter {
+            expression: {
+                return !!randomIndices[model.index.toString()];
+            }
+        }
     }
 
     property var collection: {
         return {
-            name:       "Most Played",
-            shortName:  "mostplayed",
+            name:       "Recommended",
+            shortName:  "recommended",
             games:      gamesFiltered
         }
     }

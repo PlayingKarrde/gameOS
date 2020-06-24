@@ -49,16 +49,15 @@ id: root
 
         sourceModel: api.allGames
         sorters: RoleSorter { roleName: "rating"; sortOrder: Qt.DescendingOrder; }
-        //filters: IndexFilter { maximumIndex: max }
     }
 
     SortFilterProxyModel {
     id: gamesWithLimit
 
         sourceModel: gamesFiltered
-        filters: IndexFilter { maximumIndex: max }
+        filters: IndexFilter { maximumIndex: max - 1 }
     }
-
+    
     property var collection: {
         return {
             name:       "All games",

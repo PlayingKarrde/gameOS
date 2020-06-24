@@ -37,12 +37,12 @@ id: root
     id: gamesFiltered
 
         sourceModel: genreGames
-        filters: IndexFilter { maximumIndex: max }
+        filters: IndexFilter { maximumIndex: max - 1 }
     }
 
     property var collection: {
         return {
-            name:       "Top " + genre + " games",
+            name:       "Top " + genre + " Games",
             shortName:  genre + "games",
             games:      gamesFiltered
         }
