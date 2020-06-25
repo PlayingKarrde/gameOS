@@ -30,7 +30,7 @@ id: root
 
     FontLoader { id: titleFont; source: "assets/fonts/SourceSansPro-Bold.ttf" }
     FontLoader { id: subtitleFont; source: "assets/fonts/OpenSans-Bold.ttf" }
-    FontLoader { id: bodyFont; source: "assets/fonts/OpenSans-SemiBold.ttf" }
+    FontLoader { id: bodyFont; source: "assets/fonts/OpenSans-Semibold.ttf" }
 
     // Load settings
     property var settings: {
