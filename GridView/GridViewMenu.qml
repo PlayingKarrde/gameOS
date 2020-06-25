@@ -85,11 +85,11 @@ id: root
             property real cellHeightRatio: fakebox.paintedHeight / fakebox.paintedWidth
             property real savedCellHeight: {
                 if (settings.GridThumbnail == "Tall") {
-                    return cellWidth * 1.5;
+                    return cellWidth / settings.TallRatio;
                 } else if (settings.GridThumbnail == "Square") {
                     return cellWidth;
                 } else {
-                    return cellWidth/1.5;
+                    return cellWidth * settings.WideRatio;
                 }
             }
             property var sourceThumbnail: showBoxes ? "BoxArtGridItem.qml" : "../Global/DynamicGridItem.qml"
