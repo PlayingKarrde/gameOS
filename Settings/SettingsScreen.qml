@@ -57,6 +57,62 @@ id: root
     }
 
     ListModel {
+    id: showcaseSettingsModel
+        ListElement {
+            settingName: "Number of games showcased"
+            setting: "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,1,2,3,4,5,6,7,8,9,10,11,12,13,14"
+        }
+        ListElement {
+            settingName: "Collection 1"
+            setting: "Recently Played,Most Played,Recommended,Top by Publisher,Top by Genre,None,Favorites"
+        }
+        ListElement {
+            settingName: "Collection 1 - Thumbnail"
+            setting: "Wide,Tall,Square"
+        }
+        ListElement {
+            settingName: "Collection 2"
+            setting: "Most Played,Recommended,Top by Publisher,Top by Genre,None,Favorites,Recently Played"
+        }
+        ListElement {
+            settingName: "Collection 2 - Thumbnail"
+            setting: "Tall,Square,Wide"
+        }
+        ListElement {
+            settingName: "Collection 3"
+            setting: "Top by Publisher,Top by Genre,None,Favorites,Recently Played,Most Played,Recommended"
+        }
+        ListElement {
+            settingName: "Collection 3 - Thumbnail"
+            setting: "Wide,Tall,Square"
+        }
+        ListElement {
+            settingName: "Collection 4"
+            setting: "Top by Genre,None,Favorites,Recently Played,Most Played,Recommended,Top by Publisher"
+        }
+        ListElement {
+            settingName: "Collection 4 - Thumbnail"
+            setting: "Tall,Square,Wide"
+        }
+        ListElement {
+            settingName: "Collection 5"
+            setting: "None,Favorites,Recently Played,Most Played,Recommended,Top by Publisher,Top by Genre"
+        }
+        ListElement {
+            settingName: "Collection 5 - Thumbnail"
+            setting: "Wide,Tall,Square"
+        }
+
+    }
+
+    property var showcasePage: {
+        return {
+            pageName: "Showcase view",
+            listmodel: showcaseSettingsModel
+        }
+    }
+
+    ListModel {
     id: gridSettingsModel
 
         ListElement {
@@ -120,7 +176,7 @@ id: root
         }
     }
 
-    property var settingsArr: [generalPage, gridPage, gamePage]
+    property var settingsArr: [generalPage, showcasePage, gridPage, gamePage]
 
     property real itemheight: vpx(50)
 

@@ -20,30 +20,35 @@ import SortFilterProxyModel 0.2
 Item {
 id: root
     
-    readonly property alias games: gamesFiltered
-    function currentGame(index) { return api.allGames.get(genreGames.mapToSource(index)) }
-    property int max: genreGames.count
-    property string genre: ""
+    readonly property var games: gamesFiltered
+    function currentGame(index) { return api.allGames.get(gamesFiltered.mapToSource(index)) }
+    property int max: gamesFiltered.count
 
-    SortFilterProxyModel {
-    id: genreGames
+    property var randomIndices: [];
 
-        sourceModel: api.allGames
-        filters: RegExpFilter { roleName: "genre"; pattern: genre; caseSensitivity: Qt.CaseInsensitive; }
-        sorters: RoleSorter { roleName: "rating"; sortOrder: Qt.DescendingOrder }
+    onGamesChanged: {
+        randomIndices = [];
+        for (var i = 0; i < max; ++i) {
+            var randomIndex = Math.floor(Math.random() * api.allGames.count);
+            randomIndices[randomIndex.toString()] = true;
+        }
     }
 
     SortFilterProxyModel {
     id: gamesFiltered
-
-        sourceModel: genreGames
-        filters: IndexFilter { maximumIndex: max - 1 }
+        sourceModel: api.allGames
+        sorters: RoleSorter { roleName: "rating"; sortOrder: Qt.DescendingOrder; }
+        filters: ExpressionFilter {
+            expression: {
+                return !!randomIndices[model.index.toString()];
+            }
+        }
     }
 
     property var collection: {
         return {
-            name:       "Top " + genre + " Games",
-            shortName:  genre + "games",
+            name:       "Recommended Games",
+            shortName:  "recommended",
             games:      gamesFiltered
         }
     }

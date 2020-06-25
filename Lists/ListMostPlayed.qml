@@ -35,12 +35,12 @@ id: root
     id: gamesFiltered
 
         sourceModel: mostPlayedGames
-        filters: IndexFilter { maximumIndex: max }
+        filters: IndexFilter { maximumIndex: max - 1 }
     }
 
     property var collection: {
         return {
-            name:       "Most played games",
+            name:       "Most Played Games",
             shortName:  "mostplayed",
             games:      gamesFiltered
         }

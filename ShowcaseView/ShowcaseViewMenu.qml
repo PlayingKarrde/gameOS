@@ -29,23 +29,84 @@ FocusScope {
 id: root
 
     // Pull in our custom lists and define
-    ListFavorites { id: listAllFavorites; max: 15 }
-    ListAllGames { id: listAllGames; max: 15 }
-    ListLastPlayed { id: listAllLastPlayed; max: 10 }
-    ListMostPlayed { id: listMostPlayed; max: 15 }
-    ListPublisher { id: listPublisher; max: 15 }
-    ListGenre { id: listGenre; max: 15 }
+    ListAllGames    { id: listNone;        max: 0 }
+    ListAllGames    { id: listAllGames;    max: settings.ShowcaseColumns }
+    ListFavorites   { id: listFavorites;   max: settings.ShowcaseColumns }
+    ListLastPlayed  { id: listLastPlayed;  max: settings.ShowcaseColumns }
+    ListMostPlayed  { id: listMostPlayed;  max: settings.ShowcaseColumns }
+    ListRecommended { id: listRecommended; max: settings.ShowcaseColumns }
+    ListPublisher   { id: listPublisher;   max: settings.ShowcaseColumns; publisher: randoPub }
+    ListGenre       { id: listGenre;       max: settings.ShowcaseColumns; genre: randoGenre }
 
-    property var featuredCollection: listAllFavorites
-    property alias collection1: listAllLastPlayed
-    property alias collection2: listMostPlayed
-    property alias collection3: listGenre
-    property alias collection4: listPublisher
+    property var featuredCollection: listFavorites
+    property var collection1: getCollection(settings.ShowcaseCollection1, settings.ShowcaseCollection1_Thumbnail)
+    property var collection2: getCollection(settings.ShowcaseCollection2, settings.ShowcaseCollection2_Thumbnail)
+    property var collection3: getCollection(settings.ShowcaseCollection3, settings.ShowcaseCollection3_Thumbnail)
+    property var collection4: getCollection(settings.ShowcaseCollection4, settings.ShowcaseCollection4_Thumbnail)
+    property var collection5: getCollection(settings.ShowcaseCollection5, settings.ShowcaseCollection5_Thumbnail)
 
-    property string randoPub: Utils.returnRandom(Utils.uniqueValuesArray('publisher'))
-    property string randoGenre: Utils.returnRandom(Utils.uniqueValuesArray('genreList'))[0].toLowerCase()
+    function getCollection(collectionName, collectionThumbnail) {
+        var collection = {
+            enabled: true,
+        };
 
-    property bool ftue: featuredCollection.collection.games.count == 0
+        switch (collectionThumbnail) {
+            case "Square":
+                collection.itemWidth = vpx(200);
+                collection.itemHeight = collection.itemWidth;
+                break;
+            case "Tall":
+                collection.itemWidth = vpx(150);
+                collection.itemHeight = collection.itemWidth * 1.5;
+                break;
+            case "Wide":
+            default:
+                collection.itemWidth = vpx(310);
+                collection.itemHeight = vpx(200);
+                break;
+            
+        }
+
+        collection.height = collection.itemHeight + vpx(40) + globalMargin
+
+        switch (collectionName) {
+            case "Favorites":
+                collection.search = listFavorites;
+                break;
+            case "Recently Played":
+                collection.search = listLastPlayed;
+                break;
+            case "Most Played":
+                collection.search = listMostPlayed;
+                break;
+            case "Recommended":
+                collection.search = listRecommended;
+                break;
+            case "Top by Publisher":
+                collection.search = listPublisher;
+                break;
+            case "Top by Genre":
+                collection.search = listGenre;
+                break;
+            case "None":
+                collection.enabled = false;
+                collection.height = 0;
+
+                collection.search = listNone;
+                break;
+            default:
+                collection.search = listAllGames;
+                break;
+        }
+
+        collection.title = collection.search.collection.name;
+        return collection;
+    }
+
+    property string randoPub: (Utils.returnRandom(Utils.uniqueValuesArray('publisher')) || '')
+    property string randoGenre: (Utils.returnRandom(Utils.uniqueValuesArray('genreList'))[0] || '').toLowerCase()
+
+    property bool ftue: featuredCollection.games.count == 0
 
     function storeIndices(secondary) {
         storedHomePrimaryIndex = mainList.currentIndex;
@@ -240,7 +301,7 @@ id: root
             currentIndex: (storedHomePrimaryIndex == 0) ? storedHomeSecondaryIndex : 0
             Component.onCompleted: positionViewAtIndex(currentIndex, ListView.Visible)
             
-            model: !ftue ? featuredCollection.collection.games : 0
+            model: !ftue ? featuredCollection.games : 0
             delegate: featuredDelegate
 
             Component {
@@ -348,7 +409,7 @@ id: root
             property int myIndex: ObjectModel.index
             focus: selected
             width: root.width
-            height: vpx(100)
+            height: vpx(100) + globalMargin * 2
             anchors {
                 left: parent.left; leftMargin: globalMargin
                 right: parent.right; rightMargin: globalMargin
@@ -384,6 +445,8 @@ id: root
                 Behavior on scale { NumberAnimation { duration: 100 } }
                 border.width: vpx(1)
                 border.color: "#19FFFFFF"
+
+                anchors.verticalCenter: parent.verticalCenter
 
                 Image {
                 id: collectionlogo
@@ -458,83 +521,142 @@ id: root
 
         HorizontalCollection {
         id: list1
-            
             property bool selected: ListView.isCurrentItem
+            property var currentList: list1
+            property var collection: collection1
+
+            enabled: collection.enabled
+            visible: collection.enabled
+
+            height: collection.height
+
+            itemWidth: collection.itemWidth
+            itemHeight: collection.itemHeight
+
+            title: collection.title
+            search: collection.search
+
             focus: selected
-            width: root.width - globalMargin*2
-            height: vpx(240)
-            itemWidth: vpx(310)
-            itemHeight: vpx(200)
+            width: root.width - globalMargin * 2
             x: globalMargin - vpx(8)
 
-            title: "Continue playing"
-            ListLastPlayed { id: lastPlayedCollection; max:15 }
-            search: lastPlayedCollection
-            savedIndex: (storedHomePrimaryIndex === list1.ObjectModel.index) ? storedHomeSecondaryIndex : 0
+            savedIndex: (storedHomePrimaryIndex === currentList.ObjectModel.index) ? storedHomeSecondaryIndex : 0
 
             onActivateSelected: storedHomeSecondaryIndex = currentIndex;
-            onActivate: { if (!selected) { mainList.currentIndex = list1.ObjectModel.index; } }
-            onListHighlighted: { sfxNav.play(); mainList.currentIndex = list1.ObjectModel.index; }
+            onActivate: { if (!selected) { mainList.currentIndex = currentList.ObjectModel.index; } }
+            onListHighlighted: { sfxNav.play(); mainList.currentIndex = currentList.ObjectModel.index; }
         }
 
         HorizontalCollection {
         id: list2
-            
             property bool selected: ListView.isCurrentItem
+            property var currentList: list2
+            property var collection: collection2
+
+            enabled: collection.enabled
+            visible: collection.enabled
+
+            height: collection.height
+
+            itemWidth: collection.itemWidth
+            itemHeight: collection.itemHeight
+
+            title: collection.title
+            search: collection.search
+
             focus: selected
-            width: root.width - globalMargin*2
-            height: vpx(270)
+            width: root.width - globalMargin * 2
             x: globalMargin - vpx(8)
 
-            title: "Most played games"
-            ListMostPlayed { id: mostPlayedCollection; max: 15 }
-            search: mostPlayedCollection
-            savedIndex: (storedHomePrimaryIndex === list2.ObjectModel.index) ? storedHomeSecondaryIndex : 0
-            
+            savedIndex: (storedHomePrimaryIndex === currentList.ObjectModel.index) ? storedHomeSecondaryIndex : 0
+
             onActivateSelected: storedHomeSecondaryIndex = currentIndex;
-            onActivate: { if (!selected) { mainList.currentIndex = list2.ObjectModel.index; } }
-            onListHighlighted: { sfxNav.play(); mainList.currentIndex = list2.ObjectModel.index; }
+            onActivate: { if (!selected) { mainList.currentIndex = currentList.ObjectModel.index; } }
+            onListHighlighted: { sfxNav.play(); mainList.currentIndex = currentList.ObjectModel.index; }
         }
 
         HorizontalCollection {
         id: list3
-            
             property bool selected: ListView.isCurrentItem
-            focus: selected
-            width: root.width - globalMargin*2
-            height: vpx(240)
-            itemWidth: vpx(310)
-            itemHeight: vpx(200)
-            x: globalMargin - vpx(5)
+            property var currentList: list3
+            property var collection: collection3
 
-            
-            ListPublisher { id: publisherCollection; max: 15; publisher: randoPub }
-            title: "Top games by " + randoPub
-            search: publisherCollection
-            
-            onActivate: { if (!selected) { mainList.currentIndex = list3.ObjectModel.index; } }
-            onListHighlighted: { sfxNav.play(); mainList.currentIndex = list3.ObjectModel.index; }
+            enabled: collection.enabled
+            visible: collection.enabled
+
+            height: collection.height
+
+            itemWidth: collection.itemWidth
+            itemHeight: collection.itemHeight
+
+            title: collection.title
+            search: collection.search
+
+            focus: selected
+            width: root.width - globalMargin * 2
+            x: globalMargin - vpx(8)
+
+            savedIndex: (storedHomePrimaryIndex === currentList.ObjectModel.index) ? storedHomeSecondaryIndex : 0
+
+            onActivateSelected: storedHomeSecondaryIndex = currentIndex;
+            onActivate: { if (!selected) { mainList.currentIndex = currentList.ObjectModel.index; } }
+            onListHighlighted: { sfxNav.play(); mainList.currentIndex = currentList.ObjectModel.index; }
         }
 
         HorizontalCollection {
         id: list4
-            
             property bool selected: ListView.isCurrentItem
+            property var currentList: list4
+            property var collection: collection4
+
+            enabled: collection.enabled
+            visible: collection.enabled
+
+            height: collection.height
+
+            itemWidth: collection.itemWidth
+            itemHeight: collection.itemHeight
+
+            title: collection.title
+            search: collection.search
+
             focus: selected
-            width: root.width - globalMargin*2
-            height: vpx(300)
+            width: root.width - globalMargin * 2
             x: globalMargin - vpx(8)
 
-            ListGenre { id: genreCollection; max: 15; genre: randoGenre }
-            title: "Top " + randoGenre + " games"
-            search: genreCollection
-            
-            onActivate: { if (!selected) { mainList.currentIndex = list4.ObjectModel.index; } }
-            onListHighlighted: { sfxNav.play(); mainList.currentIndex = list4.ObjectModel.index; }
+            savedIndex: (storedHomePrimaryIndex === currentList.ObjectModel.index) ? storedHomeSecondaryIndex : 0
 
-            Keys.onDownPressed: {
-                mainList.currentIndex = 0;
-            }
+            onActivateSelected: storedHomeSecondaryIndex = currentIndex;
+            onActivate: { if (!selected) { mainList.currentIndex = currentList.ObjectModel.index; } }
+            onListHighlighted: { sfxNav.play(); mainList.currentIndex = currentList.ObjectModel.index; }
+        }
+
+        HorizontalCollection {
+        id: list5
+            property bool selected: ListView.isCurrentItem
+            property var currentList: list5
+            property var collection: collection5
+
+            enabled: collection.enabled
+            visible: collection.enabled
+
+            height: collection.height
+
+            itemWidth: collection.itemWidth
+            itemHeight: collection.itemHeight
+
+            title: collection.title
+            search: collection.search
+
+            focus: selected
+            width: root.width - globalMargin * 2
+            x: globalMargin - vpx(8)
+
+            savedIndex: (storedHomePrimaryIndex === currentList.ObjectModel.index) ? storedHomeSecondaryIndex : 0
+
+            onActivateSelected: storedHomeSecondaryIndex = currentIndex;
+            onActivate: { if (!selected) { mainList.currentIndex = currentList.ObjectModel.index; } }
+            onListHighlighted: { sfxNav.play(); mainList.currentIndex = currentList.ObjectModel.index; }
         }
 
     }
@@ -544,7 +666,6 @@ id: root
 
         anchors.fill: parent
         model: mainModel
-        spacing: globalMargin
         focus: true
         highlightMoveDuration: 200
         highlightRangeMode: ListView.ApplyRange 
@@ -557,8 +678,18 @@ id: root
         cacheBuffer: 1000
         footer: Item { height: helpMargin }
 
-        Keys.onUpPressed: { sfxNav.play(); decrementCurrentIndex() }
-        Keys.onDownPressed: { sfxNav.play(); incrementCurrentIndex() }
+        Keys.onUpPressed: {
+            sfxNav.play();
+            do {
+                decrementCurrentIndex();
+            } while (!currentItem.enabled);
+        }
+        Keys.onDownPressed: {
+            sfxNav.play();
+            do {
+                incrementCurrentIndex();
+            } while (!currentItem.enabled);
+        }
     }
 
     // Global input handling for the screen
