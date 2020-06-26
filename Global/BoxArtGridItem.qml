@@ -77,7 +77,7 @@ id: root
             asynchronous: true
             source: boxArt(gameData)
             sourceSize { width: root.width; height: root.height }
-            fillMode: Image.Stretch
+            fillMode: Image.PreserveAspectFit
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
 
@@ -103,14 +103,15 @@ id: root
         }
 
         Rectangle {
-            id: regborder
+        id: regborder
 
-                anchors.fill: parent
-                color: "transparent"
-                border.width: vpx(1)
-                border.color: "white"
-                opacity: 0.1
-            }
+            anchors.fill: parent
+            color: "transparent"
+            border.width: vpx(1)
+            border.color: "white"
+            opacity: 0.1
+            visible: false
+        }
 
         Rectangle {
         id: overlay
@@ -120,6 +121,7 @@ id: root
             anchors.centerIn: screenshot
             color: screenshot.source == "" ? theme.secondary : "black"
             opacity: screenshot.source == "" ? 1 : selected ? 0.0 : 0.2
+            visible: false
         }
 
         
