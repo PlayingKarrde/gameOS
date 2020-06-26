@@ -189,7 +189,7 @@ id: root
         font.family: subtitleFont.name
         font.bold: true
         style: Text.Outline; styleColor: theme.main
-        visible: favelogo.source == ""
+        visible: favelogo.status === Image.Null || favelogo.status === Image.Error
         anchors.centerIn: parent
         elide: Text.ElideRight
         wrapMode: Text.WordWrap
