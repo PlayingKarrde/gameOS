@@ -1,5 +1,5 @@
 // gameOS theme
-// Copyright (C) 2018-2020 Seth Powell 
+// Copyright (C) 2018-2020 Seth Powell
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -31,8 +31,56 @@ id: root
         gameDetails(list.currentGame(gamegrid.currentIndex));
     }
 
+    function nextChar(c) {
+        var charCode = c.charCodeAt(0) + 1;
+
+        // Handle non-alpha characters
+        if (charCode < 97) {
+            return 'a';
+        }
+
+        // Handle wrap-around
+        if (charCode > 122) {
+            return '';
+        }
+
+        return String.fromCharCode(charCode);
+    }
+
+    function navigateToNextLetter(/* TODO: Add direction variable */) {
+        if (sortByFilter[sortByIndex].toLowerCase() != "title") {
+            return;
+        }
+
+        var currentIndex = gamegrid.currentIndex;
+        if (currentIndex == -1) {
+            gamegrid.currentIndex = 0;
+        }
+        else {
+            // TODO: Cache this list so that we don't have to sort every time a user wants to navigate.
+            // NOTE: This isn't a great way to do this because of the sort proxy, but it's significantly faster than the alternative.
+            var games = list.collection.games.toVarArray().sort((a, b) => a.title.localeCompare(b.title.toLowerCase()));
+
+            var currentGame = games[currentIndex];
+            var currentLetter = currentGame.title.toLowerCase().charAt(0);
+
+            var nextIndex = currentIndex;
+            var nextLetter = currentLetter;
+
+            do {
+                nextLetter = nextChar(nextLetter);
+                nextIndex =  games.findIndex(g => g.title.toLowerCase().localeCompare(nextLetter) >= 0);
+            } while(nextIndex === -1)
+
+            gamegrid.currentIndex = nextIndex;
+        }
+
+        gamegrid.focus = true;
+        sfxToggle.play();
+    }
+
     ListCollectionGames { id: list; }
-    
+
     // Load settings
     property bool showBoxes: settings.GridThumbnail === "Box Art"
     property int numColumns: settings.GridColumns ? settings.GridColumns : 6
@@ -40,7 +88,7 @@ id: root
 
     GridSpacer {
     id: fakebox
-        
+
         width: vpx(100); height: vpx(100)
         games: list.games
     }
@@ -59,7 +107,7 @@ id: root
 
         HeaderBar {
         id: headercontainer
-            
+
             anchors.fill: parent
         }
         Keys.onDownPressed: {
@@ -71,17 +119,17 @@ id: root
 
     Item {
     id: gridContainer
-        
+
         anchors {
             top: header.bottom; topMargin: globalMargin
             left: parent.left; leftMargin: globalMargin
             right: parent.right; rightMargin: globalMargin
             bottom: parent.bottom; bottomMargin: globalMargin
-        }        
-        
+        }
+
         GridView {
         id: gamegrid
-            
+
             // Figuring out the aspect ratio for box art
             property real cellHeightRatio: fakebox.paintedHeight / fakebox.paintedWidth
             property real savedCellHeight: {
@@ -103,7 +151,7 @@ id: root
             populate: Transition {
                 NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 400 }
             }
-                        
+
             anchors {
                 top: parent.top; left: parent.left; right: parent.right;
                 bottom: parent.bottom; bottomMargin: helpMargin + vpx(40)
@@ -112,7 +160,7 @@ id: root
             cellHeight: ((showBoxes) ? cellWidth * cellHeightRatio : savedCellHeight) + titleMargin
             preferredHighlightBegin: vpx(0)
             preferredHighlightEnd: gamegrid.height - helpMargin - vpx(40)
-            highlightRangeMode: GridView.ApplyRange  
+            highlightRangeMode: GridView.ApplyRange
             highlightMoveDuration: 200
             highlight: highlightcomponent
             keyNavigationWraps: false
@@ -124,11 +172,11 @@ id: root
 
             Component {
             id: boxartdelegate
-                
+
                 BoxArtGridItem {
                     selected: GridView.isCurrentItem && root.focus
                     gameData: modelData
-                    
+
                     width:      GridView.view.cellWidth
                     height:     GridView.view.cellHeight - titleMargin
                     
@@ -145,7 +193,7 @@ id: root
                         // Toggle favorite
                         if (api.keys.isDetails(event) && !event.isAutoRepeat) {
                             event.accepted = true;
-                            sfxToggle.play();   
+                            sfxToggle.play();
                             modelData.favorite = !modelData.favorite;
                         }
                     }
@@ -160,7 +208,7 @@ id: root
                 id: dynamicdelegatecontainer
 
                     selected: GridView.isCurrentItem && root.focus
-                    
+
                     width:      GridView.view.cellWidth
                     height:     GridView.view.cellHeight - titleMargin
                     
@@ -177,7 +225,7 @@ id: root
                         // Toggle favorite
                         if (api.keys.isDetails(event) && !event.isAutoRepeat) {
                             event.accepted = true;
-                            sfxToggle.play();   
+                            sfxToggle.play();
                             modelData.favorite = !modelData.favorite;
                         }
                     }
@@ -192,16 +240,16 @@ id: root
                     height: gamegrid.cellHeight
                     game: list.currentGame(gamegrid.currentIndex)
                     selected: gamegrid.focus
-                    boxArt: showBoxes 
+                    boxArt: showBoxes
                 }
             }
 
             // Manually set the navigation this way so audio can play without performance hits
-            Keys.onUpPressed: { 
+            Keys.onUpPressed: {
                 sfxNav.play();
                 if (currentIndex < numColumns) {
                     headercontainer.focus = true;
-                    gamegrid.currentIndex = -1; 
+                    gamegrid.currentIndex = -1;
                 } else {
                     moveCurrentIndexUp();
                 }
@@ -210,7 +258,7 @@ id: root
             Keys.onLeftPressed:     { sfxNav.play(); moveCurrentIndexLeft() }
             Keys.onRightPressed:    { sfxNav.play(); moveCurrentIndexRight() }
         }
-        
+
     }
 
     Keys.onPressed: {
@@ -223,8 +271,9 @@ id: root
                 gamegrid.currentIndex = 0;
                 gamegrid.focus = true;
             }
-            
+            return;
         }
+
         // Back
         if (api.keys.isCancel(event) && !event.isAutoRepeat) {
             event.accepted = true;
@@ -233,16 +282,27 @@ id: root
             } else {
                 gamegrid.focus = true;
             }
+            return;
         }
+
         // Details
         if (api.keys.isFilters(event) && !event.isAutoRepeat) {
             event.accepted = true;
             sfxToggle.play();
             cycleSort();
+            return;
         }
+
+        // Scroll Down
+        if (api.keys.isPageDown(event) && !event.isAutoRepeat) {
+            event.accepted = true;
+            navigateToNextLetter();
+            return;
+        }
+
         // Next collection
         if (api.keys.isNextPage(event) && !event.isAutoRepeat) {
-            event.accepted = true; 
+            event.accepted = true;
             if (currentCollectionIndex < api.collections.count-1)
                 currentCollectionIndex++;
             else
@@ -250,10 +310,12 @@ id: root
 
             gamegrid.currentIndex = 0;
             sfxToggle.play();
+            return;
         }
+
         // Previous collection
         if (api.keys.isPrevPage(event) && !event.isAutoRepeat) {
-            event.accepted = true; 
+            event.accepted = true;
             if (currentCollectionIndex > 0)
                 currentCollectionIndex--;
             else
@@ -261,6 +323,7 @@ id: root
 
             gamegrid.currentIndex = 0;
             sfxToggle.play();
+            return;
         }
     }
 
@@ -285,12 +348,11 @@ id: root
             button: "accept"
         }
     }
-    
-    onFocusChanged: { 
+
+    onFocusChanged: {
         if (focus) {
-            currentHelpbarModel = gridviewHelpModel; 
+            currentHelpbarModel = gridviewHelpModel;
             gamegrid.focus = true;
         }
     }
-
 }
