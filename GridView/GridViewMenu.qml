@@ -36,6 +36,7 @@ id: root
     // Load settings
     property bool showBoxes: settings.GridThumbnail === "Box Art"
     property int numColumns: settings.GridColumns ? settings.GridColumns : 6
+    property int titleMargin: settings.AlwaysShowTitles === "Yes" ? vpx(30) : 0
 
     GridSpacer {
     id: fakebox
@@ -108,7 +109,7 @@ id: root
                 bottom: parent.bottom; bottomMargin: helpMargin + vpx(40)
             }
             cellWidth: width / numColumns
-            cellHeight: (showBoxes) ? cellWidth * cellHeightRatio : savedCellHeight
+            cellHeight: ((showBoxes) ? cellWidth * cellHeightRatio : savedCellHeight) + titleMargin
             preferredHighlightBegin: vpx(0)
             preferredHighlightEnd: gamegrid.height - helpMargin - vpx(40)
             highlightRangeMode: GridView.ApplyRange  
@@ -129,7 +130,7 @@ id: root
                     gameData: modelData
                     
                     width:      GridView.view.cellWidth
-                    height:     GridView.view.cellHeight
+                    height:     GridView.view.cellHeight - titleMargin
                     
                     onActivate: {
                         if (selected)
@@ -161,7 +162,7 @@ id: root
                     selected: GridView.isCurrentItem && root.focus
                     
                     width:      GridView.view.cellWidth
-                    height:     GridView.view.cellHeight
+                    height:     GridView.view.cellHeight - titleMargin
                     
                     onActivated: {
                         if (selected)
