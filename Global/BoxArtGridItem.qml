@@ -14,7 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import QtQuick 2.0
+import QtQuick 2.8
+import QtGraphicalEffects 1.12
 
 Item {
 id: root
@@ -59,47 +60,76 @@ id: root
 
     signal activate()
     signal highlighted()
-                       
-    Image {
-    id: screenshot
-   
+
+    Item 
+    {
+    id: container
+
         anchors.fill: parent
         anchors.margins: vpx(6)
+        Behavior on opacity { NumberAnimation { duration: 200 } }
+                       
+        Image {
+        id: screenshot
+            anchors.fill: parent
+            anchors.margins: vpx(2)
 
-        asynchronous: true
-        source: boxArt(gameData)
-        sourceSize { width: 1920/columns; height: 1920/columns }
-        fillMode: Image.PreserveAspectFit
-        smooth: true
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
+            asynchronous: true
+            source: boxArt(gameData)
+            sourceSize { width: root.width; height: root.height }
+            fillMode: Image.PreserveAspectFit
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
 
-        Rectangle {
-        id: favicon
+            Rectangle {
+            id: favicon
 
-            anchors { 
-                right: parent.right; rightMargin: vpx(7); 
-                top: parent.top; topMargin: vpx(7) 
-            }
-            width: vpx(20)
-            height: width
-            radius: width/2
-            color: theme.accent
-            visible: gameData.favorite
-            Image {
-                source: "../assets/images/favicon.svg"
-                asynchronous: true
-                anchors.fill: parent
-                anchors.margins: vpx(4)            
+                anchors { 
+                    right: parent.right; rightMargin: vpx(7); 
+                    top: parent.top; topMargin: vpx(7) 
+                }
+                width: vpx(20)
+                height: width
+                radius: width/2
+                color: theme.accent
+                visible: gameData.favorite
+                Image {
+                    source: "../assets/images/favicon.svg"
+                    asynchronous: true
+                    anchors.fill: parent
+                    anchors.margins: vpx(4)            
+                }
             }
         }
+
+        Rectangle {
+        id: regborder
+
+            anchors.fill: parent
+            color: "transparent"
+            border.width: vpx(1)
+            border.color: "white"
+            opacity: 0.1
+            visible: false
+        }
+
+        Rectangle {
+        id: overlay
+        
+            width: screenshot.paintedWidth
+            height: screenshot.paintedHeight
+            anchors.centerIn: screenshot
+            color: screenshot.source == "" ? theme.secondary : "black"
+            opacity: screenshot.source == "" ? 1 : selected ? 0.0 : 0.2
+            visible: false
+        }
+
+        
     }
 
     Loader {
         active: selected
-        width: screenshot.paintedWidth + vpx(4)
-        height: screenshot.paintedHeight + vpx(4)
-        anchors.centerIn: screenshot
+        anchors.fill: container
         sourceComponent: border
         asynchronous: true
     }
@@ -108,6 +138,30 @@ id: root
     id: border
 
         ItemBorder { }
+    }
+
+    Text {
+    id: title
+
+        text: modelData ? modelData.title : ''
+        color: theme.text
+        font {
+            family: subtitleFont.name
+            pixelSize: vpx(12)
+            bold: true
+        }
+
+        elide: Text.ElideRight
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+
+        anchors {
+            top: container.bottom; topMargin: vpx(8)
+            left: parent.left; right: parent.right
+        }
+
+        opacity: 0.5
+        visible: settings.AlwaysShowTitles === "Yes" && !selected
     }
 
     Text {
@@ -129,6 +183,31 @@ id: root
         lineHeight: 0.8
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
+    }
+
+    Loader {
+    id: spinnerloader
+
+        anchors.centerIn: parent
+        active: screenshot.status === Image.Loading
+        sourceComponent: loaderspinner
+    }
+
+    Component {
+    id: loaderspinner
+    
+        Image {
+            source: "../assets/images/loading.png"
+            width: vpx(50)
+            height: vpx(50)
+            sourceSize { width: vpx(50); height: vpx(50) }
+            RotationAnimator on rotation {
+                loops: Animator.Infinite;
+                from: 0;
+                to: 360;
+                duration: 500
+            }
+        }
     }
 
     // List specific input

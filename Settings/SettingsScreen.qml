@@ -47,6 +47,10 @@ id: root
             settingName: "Enable mouse hover"
             setting: "No,Yes"
         }
+        ListElement {
+            settingName: "Always show titles"
+            setting: "No,Yes"
+        }
     }
 
     property var generalPage: {

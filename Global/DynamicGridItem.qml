@@ -153,6 +153,31 @@ id: root
     }
 
     Text {
+    id: title
+
+        text: modelData ? modelData.title : ''
+        color: theme.text
+        font {
+            family: subtitleFont.name
+            pixelSize: vpx(12)
+            bold: true
+        }
+
+        elide: Text.ElideRight
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+
+        anchors {
+            top: container.bottom; topMargin: vpx(8)
+        }
+
+        width: parent.width
+
+        opacity: 0.2
+        visible: settings.AlwaysShowTitles === "Yes" && !selected
+    }
+
+    Text {
     id: platformname
 
         text: modelData.title
@@ -172,8 +197,6 @@ id: root
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
     }
-
-    
 
     Rectangle {
     id: favicon
@@ -210,8 +233,7 @@ id: root
             source: "../assets/images/loading.png"
             width: vpx(50)
             height: vpx(50)
-            smooth: true
-            asynchronous: true
+            sourceSize { width: vpx(50); height: vpx(50) }
             RotationAnimator on rotation {
                 loops: Animator.Infinite;
                 from: 0;
@@ -220,7 +242,6 @@ id: root
             }
         }
     }
-    
     
     // List specific input
     Keys.onPressed: {
