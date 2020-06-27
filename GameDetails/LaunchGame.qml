@@ -67,6 +67,15 @@ id: root
     
     onFocusChanged: { if (focus) currentHelpbarModel = launchGameHelpModel; }
 
+    // Input handling
+    Keys.onPressed: {
+        // Back
+        if (api.keys.isCancel(event) && !event.isAutoRepeat) {
+            event.accepted = true;
+            previousScreen();
+        }
+    }
+
     // Mouse/touch functionality
     MouseArea {
         anchors.fill: parent
