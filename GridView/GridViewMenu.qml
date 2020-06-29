@@ -159,7 +159,8 @@ id: root
             renderType: Text.NativeRendering
             font.hintingPreference: Font.PreferNoHinting
             font.family: titleFont.name
-            font.pixelSize: vpx(400)
+            font.capitalization: Font.AllUppercase
+            font.pixelSize: vpx(200)
             color: "white"
             anchors.centerIn: parent
         }
