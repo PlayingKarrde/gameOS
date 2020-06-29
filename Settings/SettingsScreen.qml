@@ -51,6 +51,10 @@ id: root
             settingName: "Always show titles"
             setting: "No,Yes"
         }
+        ListElement {
+            settingName: "Hide button help"
+            setting: "No,Yes"
+        }
     }
 
     property var generalPage: {

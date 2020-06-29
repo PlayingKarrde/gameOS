@@ -30,6 +30,8 @@ If no media files are showing up, make sure that Skraper Assets is checked in th
 v1.07
 - Added home settings (by @waldnercharles)
 - Added advanced settings to adjust item ratios (by @waldnercharles)
+- Added alphabet paging in platform view (by @waldnercharles)
+- Added option to hide button help (defaults to on)
 - Fixed issue with font named incorrectly
 - Renamed settings sections
 
