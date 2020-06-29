@@ -23,7 +23,6 @@ import "../utils.js" as Utils
 
 FocusScope {
 id: root
-
     // While not necessary to do it here, this means we don't need to change it in both
     // touch and gamepad functions each time
     function gameActivated() {
@@ -31,25 +30,42 @@ id: root
         gameDetails(list.currentGame(gamegrid.currentIndex));
     }
 
-    function nextChar(c) {
-        var charCode = c.charCodeAt(0) + 1;
+    property var sortedGames;
+    property bool isLeftTriggerPressed: false;
+    property bool isRightTriggerPressed: false;
 
-        // Handle non-alpha characters
-        if (charCode < 97) {
-            return 'a';
-        }
+    function nextChar(c, modifier) {
+        const firstAlpha = 97;
+        const lastAlpha = 122;
 
-        // Handle wrap-around
-        if (charCode > 122) {
-            return '';
+        var charCode = c.charCodeAt(0) + modifier;
+
+        if (modifier > 0) { // Scroll down
+            if (charCode < firstAlpha || isNaN(charCode)) {
+                return 'a';
+            }
+            if (charCode > lastAlpha) {
+                return '';
+            }
+        } else { // Scroll up
+            if (charCode == firstAlpha - 1) {
+                return '';
+            }
+            if (charCode < firstAlpha || charCode > lastAlpha || isNaN(charCode)) {
+                return 'z';
+            }
         }
 
         return String.fromCharCode(charCode);
     }
 
-    function navigateToNextLetter(/* TODO: Add direction variable */) {
+    function navigateToNextLetter(modifier) {
+        if (isRightTriggerPressed || isLeftTriggerPressed) {
+            return false;
+        }
+
         if (sortByFilter[sortByIndex].toLowerCase() != "title") {
-            return;
+            return false;
         }
 
         var currentIndex = gamegrid.currentIndex;
@@ -57,26 +73,63 @@ id: root
             gamegrid.currentIndex = 0;
         }
         else {
-            // TODO: Cache this list so that we don't have to sort every time a user wants to navigate.
-            // NOTE: This isn't a great way to do this because of the sort proxy, but it's significantly faster than the alternative.
-            var games = list.collection.games.toVarArray().sort((a, b) => a.title.localeCompare(b.title.toLowerCase()));
+            // NOTE: We should be using the scroll proxy here, but this is significantly faster.
+            if (sortedGames == null) {
+                sortedGames = list.collection.games.toVarArray().map(g => g.title.toLowerCase()).sort((a, b) => a.localeCompare(b));
+            }
 
-            var currentGame = games[currentIndex];
-            var currentLetter = currentGame.title.toLowerCase().charAt(0);
+            var currentGameTitle = sortedGames[currentIndex];
+            var currentLetter = currentGameTitle.toLowerCase().charAt(0);
+
+            const firstAlpha = 97;
+            const lastAlpha = 122;
+
+            if (currentLetter.charCodeAt(0) < firstAlpha || currentLetter.charCodeAt(0) > lastAlpha) {
+                currentLetter = '';
+            }
 
             var nextIndex = currentIndex;
             var nextLetter = currentLetter;
 
             do {
-                nextLetter = nextChar(nextLetter);
-                nextIndex =  games.findIndex(g => g.title.toLowerCase().localeCompare(nextLetter) >= 0);
+                do {
+                    nextLetter = nextChar(nextLetter, modifier);
+
+                    if (currentLetter == nextLetter) {
+                        break;
+                    }
+
+                    if (nextLetter == '') {
+                        if (sortedGames.some(g => g.toLowerCase().charCodeAt(0) < firstAlpha || g.toLowerCase().charCodeAt(0) > lastAlpha)) {
+                            break;
+                        }
+                    }
+                    else if (sortedGames.some(g => g.charAt(0) == nextLetter)) {
+                        break;
+                    }
+                } while (true)
+
+                nextIndex = sortedGames.findIndex(g => g.toLowerCase().localeCompare(nextLetter) >= 0);
             } while(nextIndex === -1)
 
             gamegrid.currentIndex = nextIndex;
+
+            nextLetter = sortedGames[nextIndex].toLowerCase().charAt(0);
+            var nextLetterCharCode = nextLetter.charCodeAt(0);
+            if (nextLetterCharCode < firstAlpha || nextLetterCharCode > lastAlpha) {
+                nextLetter = '#';
+            }
+
+            navigationLetterOpacityAnimator.running = false
+            navigationLetter.text = nextLetter.toUpperCase();
+            navigationOverlay.opacity = 0.8;
+            navigationLetterOpacityAnimator.running = true
         }
 
         gamegrid.focus = true;
         sfxToggle.play();
+
+        return true;
     }
 
     ListCollectionGames { id: list; }
@@ -91,6 +144,37 @@ id: root
 
         width: vpx(100); height: vpx(100)
         games: list.games
+    }
+
+    Rectangle {
+    id: navigationOverlay
+        anchors.fill: parent;
+        color: theme.main
+        opacity: 0
+        z: 10
+
+        Text {
+        id: navigationLetter
+            antialiasing: true
+            renderType: Text.NativeRendering
+            font.hintingPreference: Font.PreferNoHinting
+            font.family: titleFont.name
+            font.pixelSize: vpx(400)
+            color: "white"
+            anchors.centerIn: parent
+        }
+
+        SequentialAnimation {
+        id: navigationLetterOpacityAnimator
+            PauseAnimation { duration: 500 }
+            OpacityAnimator {
+
+                target: navigationOverlay
+                from: navigationOverlay.opacity
+                to: 0;
+                duration: 500
+            }
+        }
     }
 
     Rectangle {
@@ -261,6 +345,22 @@ id: root
 
     }
 
+    Keys.onReleased: {
+        // Scroll Down
+        if (api.keys.isPageDown(event) && !event.isAutoRepeat) {
+            event.accepted = true;
+            isRightTriggerPressed = false;
+            return;
+        }
+
+        // Scroll Up
+        if (api.keys.isPageUp(event) && !event.isAutoRepeat) {
+            event.accepted = true;
+            isLeftTriggerPressed = false;
+            return;
+        }
+    }
+
     Keys.onPressed: {
         // Accept
         if (api.keys.isAccept(event) && !event.isAutoRepeat) {
@@ -296,7 +396,14 @@ id: root
         // Scroll Down
         if (api.keys.isPageDown(event) && !event.isAutoRepeat) {
             event.accepted = true;
-            navigateToNextLetter();
+            isRightTriggerPressed = navigateToNextLetter(+1) ? true : isRightTriggerPressed;
+            return;
+        }
+
+        // Scroll Up
+        if (api.keys.isPageUp(event) && !event.isAutoRepeat) {
+            event.accepted = true;
+            isLeftTriggerPressed = navigateToNextLetter(-1) ? true : isLeftTriggerPressed;
             return;
         }
 
@@ -310,6 +417,9 @@ id: root
 
             gamegrid.currentIndex = 0;
             sfxToggle.play();
+
+            // Reset our cached sorted games
+            sortedGames = null;
             return;
         }
 
@@ -323,6 +433,9 @@ id: root
 
             gamegrid.currentIndex = 0;
             sfxToggle.play();
+
+            // Reset our cached sorted games
+            sortedGames = null;
             return;
         }
     }
