@@ -457,7 +457,7 @@ id: root
                     anchors.centerIn: parent
                     anchors.margins: vpx(15)
                     source: "../assets/images/logospng/" + Utils.processPlatformName(modelData.shortName) + ".png"
-                    sourceSize { width: 128; height: 64 }
+                    sourceSize { width: 256; height: 128 }
                     fillMode: Image.PreserveAspectFit
                     asynchronous: true
                     smooth: true
