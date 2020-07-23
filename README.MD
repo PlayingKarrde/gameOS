@@ -12,6 +12,8 @@ The goal of this theme is to create a modern game launcher that can fit in along
 
 Windows users may need to install the [K-lite Codec Pack](https://www.codecguide.com/download_kl.htm) to get video playback working.
 
+IMPORTANT: You need to have the latest version of Pegasus installed (not the current Stable release) otherwise you will get an error regarding Qt.Modules.
+
 ## Metadata
 
 It is recommended to use [Skraper.net](http://www.skraper.net/) to acquire media assets for this theme. These are the minimum requirements for media scraping, although adding more could be useful for other themes or the future:
