@@ -31,6 +31,7 @@ If no media files are showing up, make sure that Skraper Assets is checked in th
 ## Version history
 v1.09
 - Added ability to sort by rating
+- Reverting change from 1.08 that causes bug where video will play even when not on the screen. Further investigation required.
 
 v1.08
 - Significant performance increase in navigating pages

@@ -305,72 +305,123 @@ id: root
         color: theme.main
     }
 
-    ShowcaseViewMenu {
+    Loader  {
     id: showcaseLoader
 
         focus: (root.state === "showcasescreen")
-        visible: opacity !== 0
+        active: opacity !== 0
         opacity: focus ? 1 : 0
         Behavior on opacity { PropertyAnimation { duration: transitionTime } }
 
         anchors.fill: parent
+        sourceComponent: showcaseview
+        asynchronous: true
     }
 
-    GridViewMenu {
+    Loader  {
     id: gridviewloader
 
         focus: (root.state === "softwaregridscreen")
-        visible: opacity !== 0
+        active: opacity !== 0
         opacity: focus ? 1 : 0
         Behavior on opacity { PropertyAnimation { duration: transitionTime } }
 
         anchors.fill: parent
+        sourceComponent: gridview
+        asynchronous: true
     }
 
-    SoftwareListMenu {
+    Loader  {
     id: listviewloader
 
         focus: (root.state === "softwarescreen")
-        visible: opacity !== 0
+        active: opacity !== 0
         opacity: focus ? 1 : 0
         Behavior on opacity { PropertyAnimation { duration: transitionTime } }
 
         anchors.fill: parent
+        sourceComponent: listview
+        asynchronous: true
     }
 
-    GameView {
+    Loader  {
     id: gameviewloader
 
         focus: (root.state === "gameviewscreen")
-        visible: opacity !== 0
-        onVisibleChanged: if (!active) popLastGame();
+        active: opacity !== 0
+        onActiveChanged: if (!active) popLastGame();
         opacity: focus ? 1 : 0
         Behavior on opacity { PropertyAnimation { duration: transitionTime } }
 
         anchors.fill: parent
-        game: currentGame
+        sourceComponent: gameview
+        asynchronous: true
+        //game: currentGame
     }
 
-    LaunchGame {
+    Loader  {
     id: launchgameloader
 
         focus: (root.state === "launchgamescreen")
-        visible: opacity !== 0
+        active: opacity !== 0
         opacity: focus ? 1 : 0
         Behavior on opacity { PropertyAnimation { duration: transitionTime } }
 
         anchors.fill: parent
+        sourceComponent: launchgameview
+        asynchronous: true
     }
 
-    SettingsScreen {
+    Loader  {
     id: settingsloader
 
         focus: (root.state === "settingsscreen")
-        visible: opacity !== 0
+        active: opacity !== 0
         opacity: focus ? 1 : 0
         Behavior on opacity { PropertyAnimation { duration: transitionTime } }
 
         anchors.fill: parent
+        sourceComponent: settingsview
+        asynchronous: true
+    }
+
+    Component {
+    id: showcaseview
+
+        ShowcaseViewMenu { focus: true }
+    }
+
+    Component {
+    id: gridview
+
+        GridViewMenu { focus: true }
+    }
+
+    Component {
+    id: listview
+
+        SoftwareListMenu { focus: true }
+    }
+
+    Component {
+    id: gameview
+
+        GameView {
+            focus: true
+            game: currentGame
+        }
+    }
+
+    Component {
+    id: launchgameview
+
+        LaunchGame { focus: true }
+    }
+
+    Component {
+    id: settingsview
+
+        SettingsScreen { focus: true }
     }
 
     
