@@ -200,6 +200,7 @@ id: root
             source: "../assets/images/loading.png"
             width: vpx(50)
             height: vpx(50)
+            asynchronous: true
             sourceSize { width: vpx(50); height: vpx(50) }
             RotationAnimator on rotation {
                 loops: Animator.Infinite;

@@ -29,6 +29,10 @@ Skraper will place these in your roms folder under another folder called media.
 If no media files are showing up, make sure that Skraper Assets is checked in the Additional Data Sources section of Pegasus settings. It may also be preferable to convert the created gamelist.xml (assuming EmulationStation was chosen for the game list in Skraper) to a metadata.txt file using the [Pegasus conversion tool](http://pegasus-frontend.org/tools/convert/)
 
 ## Version history
+v1.10
+- New return from game design
+- Made return from game screen appear for all collections to cover certain Windows cases
+
 v1.09
 - Added ability to sort by rating
 - Reverting change from 1.08 that causes bug where video will play even when not on the screen. Further investigation required.

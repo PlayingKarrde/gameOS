@@ -37,6 +37,7 @@ id: root
         anchors.fill: parent
         source: "../assets/images/gradient.png"
         visible: selected
+        asynchronous: true
 
         Rectangle {
         id: titlecontainer
@@ -74,6 +75,7 @@ id: root
         anchors.margins: vpx(4)
         source: isVideo ? "" : mediaItem
         fillMode: Image.PreserveAspectCrop
+        asynchronous: true
 
         Rectangle {
         id: videopreview
@@ -90,6 +92,7 @@ id: root
             source: "../assets/images/gradient.png"
             fillMode: Image.PreserveAspectCrop
             visible: false
+            asynchronous: true
         }
 
         Image {
@@ -102,6 +105,7 @@ id: root
             smooth: true
             fillMode: Image.PreserveAspectFit
             visible: false
+            asynchronous: true
         }
 
         OpacityMask {

@@ -37,6 +37,6 @@ id: root
     sourceSize { width: 50; height: 50 }
     fillMode: Image.PreserveAspectFit
     source: fakesource ? fakesource : ""
-    asynchronous: false
+    asynchronous: true
     visible: false
 }

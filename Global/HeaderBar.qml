@@ -141,6 +141,7 @@ id: root
                     }
                     source: "../assets/images/searchicon.svg"
                     opacity: searchbar.selected && !searchActive ? 1 : searchActive ? 0.8 : 0.5
+                    asynchronous: true
                 }
 
                 TextInput {

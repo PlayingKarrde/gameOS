@@ -124,13 +124,13 @@ id: root
     // Launch the current game
     function launchGame(game) {
         if (game !== null) {
-            if (game.collections.get(0).name === "Steam")
+            //if (game.collections.get(0).name === "Steam")
                 launchGameScreen();
 
             saveCurrentState(game);
             game.launch();
         } else {
-            if (currentGame.collections.get(0).name === "Steam")
+            //if (currentGame.collections.get(0).name === "Steam")
                 launchGameScreen();
 
             saveCurrentState(currentGame);

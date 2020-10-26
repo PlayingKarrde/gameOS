@@ -53,6 +53,7 @@ id: root
         border { left: vpx(5); right: vpx(5); top: vpx(5); bottom: vpx(5);}
         smooth: false
         visible: false
+        asynchronous: true
     }
 
     OpacityMask {
