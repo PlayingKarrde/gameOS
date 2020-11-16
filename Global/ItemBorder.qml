@@ -24,8 +24,8 @@ id: root
     id: border
 
         anchors.fill: parent
-        source: "../assets/images/gradient.png"
-        asynchronous: true
+        source: "../assets/images/" + settings.ColorLayout + ".png"
+		asynchronous: true
         visible: false
         
         // Highlight animation (ColorOverlay causes graphical glitches on W10)

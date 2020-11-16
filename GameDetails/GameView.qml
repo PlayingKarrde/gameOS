@@ -390,7 +390,7 @@ id: root
         id: logobg
 
             anchors.fill: platformlogo
-            source: "../assets/images/gradient.png"
+            source: "../assets/images/blank.png"
             asynchronous: true
             visible: false
         }

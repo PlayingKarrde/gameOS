@@ -55,10 +55,6 @@ id: root
             settingName: "Hide button help"
             setting: "No,Yes"
         }
-        ListElement {
-            settingName: "Color Layout"
-            setting: "Dark Green,Light Green,Turquoise,Dark Red,Light Red,Dark Pink,Light Pink,Dark Blue,Light Blue,Orange,Yellow,Magenta,Purple,Dark Gray,Light Gray,Steel,Stone,Dark Brown,Light Brown"
-        }
     }
 
     property var generalPage: {

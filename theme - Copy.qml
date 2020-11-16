@@ -47,7 +47,6 @@ id: root
             AllowThumbVideoAudio:          api.memory.has("Play video thumbnail audio") ? api.memory.get("Play video thumbnail audio") : "No",
             HideLogo:                      api.memory.has("Hide logo when thumbnail video plays") ? api.memory.get("Hide logo when thumbnail video plays") : "No",
             HideButtonHelp:                api.memory.has("Hide button help") ? api.memory.get("Hide button help") : "No",
-            ColorLayout:                   api.memory.has("Color Layout") ? api.memory.get("Color Layout") : "Dark Green",
             MouseHover:                    api.memory.has("Enable mouse hover") ? api.memory.get("Enable mouse hover") : "No",
             AlwaysShowTitles:              api.memory.has("Always show titles") ? api.memory.get("Always show titles") : "No",
             AnimateHighlight:              api.memory.has("Animate highlight") ? api.memory.get("Animate highlight") : "No",
@@ -185,216 +184,17 @@ id: root
     }
 
     // Theme settings
-	    property var theme: {
-        if (settings.ColorLayout === "Dark Green")
-		return {
-            main:           "#1f1f1f",
-            secondary:      "#303030",
-            accent:         "#288928",
-            highlight:      "#288928",
-            text:           "#ffffff",
-            button:         "#288928",
-            gradientstart:  "#001f1f1f",
-            gradientend:    "#FF1f1f1f"
-        };
-		if (settings.ColorLayout === "Light Green")
-		return {
-            main:           "#1f1f1f",
-            secondary:      "#303030",
-            accent:         "#65b032",
-            highlight:      "#65b032",
-            text:           "#ffffff",
-            button:         "#65b032",
-            gradientstart:  "#001f1f1f",
-            gradientend:    "#FF1f1f1f"
-        };
-		if (settings.ColorLayout === "Turquoise")
-		return {
-            main:           "#1f1f1f",
-            secondary:      "#303030",
-            accent:         "#288e80",
-            highlight:      "#288e80",
-            text:           "#ffffff",
-            button:         "#288e80",
-            gradientstart:  "#001f1f1f",
-            gradientend:    "#FF1f1f1f"
-        };
-		if (settings.ColorLayout === "Dark Red")
-		return {
-            main:           "#1f1f1f",
-            secondary:      "#303030",
-            accent:         "#ab283b",
-            highlight:      "#ab283b",
-            text:           "#ffffff",
-            button:         "#ab283b",
-            gradientstart:  "#001f1f1f",
-            gradientend:    "#FF1f1f1f"
-        };
-		if (settings.ColorLayout === "Light Red")
-		return {
-            main:           "#1f1f1f",
-            secondary:      "#303030",
-            accent:         "#e52939",
-            highlight:      "#e52939",
-            text:           "#ffffff",
-            button:         "#e52939",
-            gradientstart:  "#001f1f1f",
-            gradientend:    "#FF1f1f1f"
-        };
-		if (settings.ColorLayout === "Dark Pink")
-		return {
-            main:           "#1f1f1f",
-            secondary:      "#303030",
-            accent:         "#c52884",
-            highlight:      "#c52884",
-            text:           "#ffffff",
-            button:         "#c52884",
-            gradientstart:  "#001f1f1f",
-            gradientend:    "#FF1f1f1f"
-        };
-		if (settings.ColorLayout === "Light Pink")
-		return {
-            main:           "#1f1f1f",
-            secondary:      "#303030",
-            accent:         "#ee6694",
-            highlight:      "#ee6694",
-            text:           "#ffffff",
-            button:         "#ee6694",
-            gradientstart:  "#001f1f1f",
-            gradientend:    "#FF1f1f1f"
-        };
-		if (settings.ColorLayout === "Dark Blue")
-		return {
-            main:           "#1f1f1f",
-            secondary:      "#303030",
-            accent:         "#30519c",
-            highlight:      "#30519c",
-            text:           "#ffffff",
-            button:         "#30519c",
-            gradientstart:  "#001f1f1f",
-            gradientend:    "#FF1f1f1f"
-        };
-		if (settings.ColorLayout === "Light Blue")
-		return {
-            main:           "#1f1f1f",
-            secondary:      "#303030",
-            accent:         "#288dcf",
-            highlight:      "#288dcf",
-            text:           "#ffffff",
-            button:         "#288dcf",
-            gradientstart:  "#001f1f1f",
-            gradientend:    "#FF1f1f1f"
-        };
-		if (settings.ColorLayout === "Orange")
-		return {
-            main:           "#1f1f1f",
-            secondary:      "#303030",
-            accent:         "#ed5b28",
-            highlight:      "#ed5b28",
-            text:           "#ffffff",
-            button:         "#ed5b28",
-            gradientstart:  "#001f1f1f",
-            gradientend:    "#FF1f1f1f"
-        };
-		if (settings.ColorLayout === "Yellow")
-		return {
-            main:           "#1f1f1f",
-            secondary:      "#303030",
-            accent:         "#ed9728",
-            highlight:      "#ed9728",
-            text:           "#ffffff",
-            button:         "#ed9728",
-            gradientstart:  "#001f1f1f",
-            gradientend:    "#FF1f1f1f"
-        };
-		if (settings.ColorLayout === "Magenta")
-		return {
-            main:           "#1f1f1f",
-            secondary:      "#303030",
-            accent:         "#b857c6",
-            highlight:      "#b857c6",
-            text:           "#ffffff",
-            button:         "#b857c6",
-            gradientstart:  "#001f1f1f",
-            gradientend:    "#FF1f1f1f"
-        };
-		if (settings.ColorLayout === "Purple")
-		return {
-            main:           "#1f1f1f",
-            secondary:      "#303030",
-            accent:         "#825fb1",
-            highlight:      "#825fb1",
-            text:           "#ffffff",
-            button:         "#825fb1",
-            gradientstart:  "#001f1f1f",
-            gradientend:    "#FF1f1f1f"
-        };
-		if (settings.ColorLayout === "Dark Gray")
-		return {
-            main:           "#1f1f1f",
-            secondary:      "#303030",
-            accent:         "#5e5c5d",
-            highlight:      "#5e5c5d",
-            text:           "#ffffff",
-            button:         "#5e5c5d",
-            gradientstart:  "#001f1f1f",
-            gradientend:    "#FF1f1f1f"
-        };
-		if (settings.ColorLayout === "Light Gray")
-		return {
-            main:           "#1f1f1f",
-            secondary:      "#303030",
-            accent:         "#818181",
-            highlight:      "#818181",
-            text:           "#ffffff",
-            button:         "#818181",
-            gradientstart:  "#001f1f1f",
-            gradientend:    "#FF1f1f1f"
-        };
-		if (settings.ColorLayout === "Steel")
-		return {
-            main:           "#1f1f1f",
-            secondary:      "#303030",
-            accent:         "#768294",
-            highlight:      "#768294",
-            text:           "#ffffff",
-            button:         "#768294",
-            gradientstart:  "#001f1f1f",
-            gradientend:    "#FF1f1f1f"
-        };
-		if (settings.ColorLayout === "Stone")
-		return {
-            main:           "#1f1f1f",
-            secondary:      "#303030",
-            accent:         "#658780",
-            highlight:      "#658780",
-            text:           "#ffffff",
-            button:         "#658780",
-            gradientstart:  "#001f1f1f",
-            gradientend:    "#FF1f1f1f"
-        };
-		if (settings.ColorLayout === "Dark Brown")
-		return {
-            main:           "#1f1f1f",
-            secondary:      "#303030",
-            accent:         "#806044",
-            highlight:      "#806044",
-            text:           "#ffffff",
-            button:         "#806044",
-            gradientstart:  "#001f1f1f",
-            gradientend:    "#FF1f1f1f"
-        };
-		if (settings.ColorLayout === "Light Brown")
-		return {
-            main:           "#1f1f1f",
-            secondary:      "#303030",
-            accent:         "#7e715c",
-            highlight:      "#7e715c",
-            text:           "#ffffff",
-            button:         "#7e715c",
-            gradientstart:  "#001f1f1f",
-            gradientend:    "#FF1f1f1f"
-        };
+    property var theme: {
+        return {
+            main:           "#1d253d",
+            secondary:      "#202a44",
+            accent:         "#f00980",
+            highlight:      "#f00980",
+            text:           "#ececec",
+            button:         "#f00980",
+            gradientstart:  "#000d111d",
+            gradientend:    "#FF0d111d"
+        }
     }
 
     property real globalMargin: vpx(30)

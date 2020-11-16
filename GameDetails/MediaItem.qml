@@ -35,7 +35,7 @@ id: root
     id: border
 
         anchors.fill: parent
-        source: "../assets/images/gradient.png"
+        source: "../assets/images/" + settings.ColorLayout + ".png"
         visible: selected
         asynchronous: true
 
@@ -89,7 +89,7 @@ id: root
         id: iconFill
 
             anchors.fill: parent
-            source: "../assets/images/gradient.png"
+            source: "../assets/images/" + settings.ColorLayout + ".png"
             fillMode: Image.PreserveAspectCrop
             visible: false
             asynchronous: true

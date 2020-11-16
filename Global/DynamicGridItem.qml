@@ -94,7 +94,7 @@ id: root
             anchors.margins: vpx(2)
             source: modelData ? modelData.assets.screenshots[0] || modelData.assets.background || "" : ""
             fillMode: Image.PreserveAspectCrop
-            sourceSize { width: 256; height: 256 }
+            sourceSize { width: 512; height: 512 }
             smooth: false
             asynchronous: true
             Behavior on opacity { NumberAnimation { duration: 200 } }
