@@ -1,10 +1,10 @@
 # XboxOS v1
 
-![gameOS Pegasus theme 1](https://imgur.com/vRP7zLO)
-![gameOS Pegasus theme 2](https://imgur.com/1mOLv3x)
-![gameOS Pegasus theme 3](https://imgur.com/ps1xI9b)
-![gameOS Pegasus theme 4](https://imgur.com/FzaxxUk)
-![gameOS Pegasus theme 5](https://imgur.com/Acp5N9N)
+![gameOS Pegasus theme 1](https://imgur.com/RGXLfmm)
+![gameOS Pegasus theme 2](https://imgur.com/19DZEJ1)
+![gameOS Pegasus theme 3](https://imgur.com/x5ATDSx)
+![gameOS Pegasus theme 4](https://imgur.com/q9qtciB)
+![gameOS Pegasus theme 5](https://imgur.com/15RY5Tv)
 ![gameOS Pegasus theme 6](https://news.xbox.com/en-us/wp-content/uploads/sites/2/2020/08/Xbox-Visual-Refesh-Style-Guide.jpg?w=1200)
 
 
