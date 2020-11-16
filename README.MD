@@ -1,10 +1,16 @@
 # XboxOS v1
 
-![gameOS Pegasus theme](https://i.imgur.com/J4Jh4rq.jpg)
+![gameOS Pegasus theme](https://imgur.com/vRP7zLO)
+![gameOS Pegasus theme](https://imgur.com/1mOLv3x)
+![gameOS Pegasus theme](https://imgur.com/ps1xI9b)
+![gameOS Pegasus theme](https://imgur.com/FzaxxUk)
+![gameOS Pegasus theme](https://imgur.com/Acp5N9N)
+![gameOS Pegasus theme](https://news.xbox.com/en-us/wp-content/uploads/sites/2/2020/08/Xbox-Visual-Refesh-Style-Guide.jpg?w=1200)
+
 
 ## XboxOS theme for Pegasus Frontend
 
-IMPORTANT: This is a fork of [gameOS](https://github.com/PlayingKarrde/gameOS/releases/latest) by the original and true UI God: Seth Powell.The goal of this theme is to create a modern game launcher that can fit in alongside other tvOS-like apps and is reminiscent of the Xbox UI design language, with added customization. XboxOS is a theme for [Pegasus Frontend](http://pegasus-frontend.org/).
+IMPORTANT: This is a fork of [gameOS](https://github.com/PlayingKarrde/gameOS/releases/latest) by the original and true UI God: Seth Powell. The goal of this theme is to create a modern game launcher that can fit in alongside other tvOS-like apps and is reminiscent of the Xbox UI design language, with added color customization. XboxOS is a theme for [Pegasus Frontend](http://pegasus-frontend.org/).
 
 ## Installation
 
