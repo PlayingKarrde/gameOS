@@ -4,7 +4,7 @@
 
 ## XboxOS theme for Pegasus Frontend
 
-IMPORTANT: This is a fork of [gameOS] (https://github.com/PlayingKarrde/gameOS/releases/latest) by the original and true UI God: Seth Powell.The goal of this theme is to create a modern game launcher that can fit in alongside other tvOS-like apps and is reminiscent of the Xbox UI design language, with added customization. XboxOS is a theme for [Pegasus Frontend](http://pegasus-frontend.org/).
+IMPORTANT: This is a fork of [gameOS](https://github.com/PlayingKarrde/gameOS/releases/latest) by the original and true UI God: Seth Powell.The goal of this theme is to create a modern game launcher that can fit in alongside other tvOS-like apps and is reminiscent of the Xbox UI design language, with added customization. XboxOS is a theme for [Pegasus Frontend](http://pegasus-frontend.org/).
 
 ## Installation
 
