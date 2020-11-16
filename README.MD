@@ -39,6 +39,8 @@ If no media files are showing up, make sure that Skraper Assets is checked in th
 - Rounded corners to tiles
 - Change fonts to Segoe UI
 - Put Game Title inside the tiles
+- Change buttons to rectangles with rounded corners
+- Item selected effect to glow
 
 ## Version history
 v0.1
