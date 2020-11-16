@@ -132,7 +132,7 @@ id: root
     Timer {
     id: videoDelay
 
-        interval: 1000
+        interval: 2500
         onTriggered: {
             if (game && game.assets.videos.length && canPlayVideo) {
                 videoPreviewLoader.sourceComponent = videoPreviewWrapper;

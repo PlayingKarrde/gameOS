@@ -228,13 +228,19 @@ id: root
         Rectangle {
         id: settingsbutton
 
-            width: height
+            width: vpx(30)
             height: vpx(40)
-            anchors { right: parent.right; rightMargin: globalMargin }
-            color: focus ? theme.accent : "white"
+            anchors { 
+			verticalCenter: parent.verticalCenter
+			right: sysTime.left; rightMargin: vpx(10)
+			}
+            color: focus ? theme.accent : "transparent"
             radius: height/2
             opacity: focus ? 1 : 0.2
-            anchors.verticalCenter: parent.verticalCenter
+            anchors {
+			verticalCenter: parent.verticalCenter
+			right: settingsButton.left; rightMargin: vpx(50)
+			}
             onFocusChanged: {
                 sfxNav.play()
                 if (focus)
@@ -270,12 +276,39 @@ id: root
         id: settingsicon
 
             width: height
-            height: vpx(24)
+            height: vpx(20)
             anchors.centerIn: settingsbutton
             smooth: true
             asynchronous: true
             source: "../assets/images/settingsicon.svg"
             opacity: root.focus ? 0.8 : 0.5
+        }
+		
+       Text {
+        id: sysTime
+
+            function set() {
+                sysTime.text = Qt.formatTime(new Date(), "hh:mm AP")
+            }
+
+            Timer {
+                id: textTimer
+                interval: 60000 // Run the timer every minute
+                repeat: true
+                running: true
+                triggeredOnStart: true
+                onTriggered: sysTime.set()
+            }
+
+            anchors {
+                top: parent.top; bottom: parent.bottom
+                right: parent.right; rightMargin: vpx(25)
+            }
+            color: "white"
+            font.pixelSize: vpx(18)
+            font.family: subtitleFont.name
+            horizontalAlignment: Text.Right
+            verticalAlignment: Text.AlignVCenter
         }
     }
 
@@ -442,8 +475,9 @@ id: root
                 property bool selected: ListView.isCurrentItem && platformlist.focus
                 width: (root.width - globalMargin * 2) / 7.0
                 height: width * settings.WideRatio
+				radius: vpx(4)
                 color: selected ? theme.accent : theme.secondary
-                scale: selected ? 1.1 : 1
+                scale: selected ? 1.05 : 1
                 Behavior on scale { NumberAnimation { duration: 100 } }
                 border.width: vpx(1)
                 border.color: "#19FFFFFF"
@@ -462,7 +496,7 @@ id: root
                     asynchronous: true
                     smooth: true
                     opacity: selected ? 1 : 0.2
-                    scale: selected ? 1.1 : 1
+                    scale: selected ? 1.00 : 1
                     Behavior on scale { NumberAnimation { duration: 100 } }
                 }
 
