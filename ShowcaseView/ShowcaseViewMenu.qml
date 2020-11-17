@@ -229,7 +229,7 @@ id: root
         id: settingsbutton
 
             width: vpx(30)
-            height: vpx(40)
+            height: vpx(30)
             anchors { 
 			verticalCenter: parent.verticalCenter
 			right: sysTime.left; rightMargin: vpx(10)
