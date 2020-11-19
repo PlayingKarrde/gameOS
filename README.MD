@@ -1,10 +1,10 @@
-# XboxOS v1
+# XboxOS
 
-![gameOS Pegasus theme 1](https://i.imgur.com/RGXLfmm.jpg)
+![gameOS Pegasus theme 1](https://i.imgur.com/Cb31gtf.png)
 ![gameOS Pegasus theme 2](https://i.imgur.com/19DZEJ1.jpg)
 ![gameOS Pegasus theme 3](https://i.imgur.com/x5ATDSx.png)
-![gameOS Pegasus theme 4](https://i.imgur.com/q9qtciB.png)
-![gameOS Pegasus theme 5](https://i.imgur.com/15RY5Tv.png)
+![gameOS Pegasus theme 4](https://i.imgur.com/KLz2mUE.png)
+![gameOS Pegasus theme 5](https://i.imgur.com/pRa3o3I.png)
 ![gameOS Pegasus theme 6](https://news.xbox.com/en-us/wp-content/uploads/sites/2/2020/08/Xbox-Visual-Refesh-Style-Guide.jpg?w=1200)
 
 
@@ -43,5 +43,11 @@ If no media files are showing up, make sure that Skraper Assets is checked in th
 - Item selected effect to glow
 
 ## Version history
+v0.3
+- User selectable background and accent colors
+
+v0.2
+- Added clock to Home
+
 v0.1
 - Initial release
