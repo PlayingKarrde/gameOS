@@ -43,11 +43,11 @@ If no media files are showing up, make sure that Skraper Assets is checked in th
 - Change button promts as used on the original dashboard
 
 ## Version history
-v0.3
+v1.3
 - User selectable background and accent colors
 
-v0.2
+v1.2
 - Added clock to Home
 
-v0.1
+v1.0
 - Initial release
