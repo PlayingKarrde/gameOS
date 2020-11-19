@@ -402,7 +402,7 @@ id: root
     id: background
         
         anchors.fill: parent
-        Image { source: "assets/images/backgrounds/halo.jpg"; fillMode: Image.PreserveAspectFit; anchors.fill: parent;  opacity: 0.3 }
+        // Image { source: "assets/images/backgrounds/halo.jpg"; fillMode: Image.PreserveAspectFit; anchors.fill: parent;  opacity: 0.3 }
         color: theme.main
     }
 
