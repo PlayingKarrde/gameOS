@@ -1,4 +1,4 @@
-# XboxOS
+# XboxOS (a fork of gameOS)
 
 ![gameOS Pegasus theme 1](https://i.imgur.com/Cb31gtf.png)
 ![gameOS Pegasus theme 2](https://i.imgur.com/19DZEJ1.jpg)
