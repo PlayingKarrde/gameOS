@@ -59,6 +59,10 @@ id: root
             settingName: "Color Layout"
             setting: "Dark Green,Light Green,Turquoise,Dark Red,Light Red,Dark Pink,Light Pink,Dark Blue,Light Blue,Orange,Yellow,Magenta,Purple,Dark Gray,Light Gray,Steel,Stone,Dark Brown,Light Brown"
         }
+		ListElement {
+		settingName: "Color Background"
+		setting: "Black,Gray,Blue,Green,Red"
+        }
     }
 
     property var generalPage: {
