@@ -28,9 +28,9 @@ import "Settings"
 FocusScope {
 id: root
 
-    FontLoader { id: titleFont; source: "assets/fonts/SourceSansPro-Bold.ttf" }
-    FontLoader { id: subtitleFont; source: "assets/fonts/OpenSans-Bold.ttf" }
-    FontLoader { id: bodyFont; source: "assets/fonts/OpenSans-Semibold.ttf" }
+    FontLoader { id: titleFont; source:      "assets/fonts/SegoeProDisplay-Bold.ttf" }
+    FontLoader { id: subtitleFont; source:   "assets/fonts/SegoeProDisplay-Bold.ttf" }
+    FontLoader { id: bodyFont; source:       "assets/fonts/SegoeProDisplay-Semibold.ttf" }
 
     // Load settings
     property var settings: {
