@@ -94,7 +94,7 @@ id: root
             anchors.margins: vpx(2)
             source: modelData ? modelData.assets.screenshots[0] || modelData.assets.background || "" : ""
             fillMode: Image.PreserveAspectCrop
-            sourceSize { width: 256; height: 256 }
+            sourceSize: Qt.size(screenshot.width, screenshot.height)
             smooth: false
             asynchronous: true
             Behavior on opacity { NumberAnimation { duration: 200 } }
@@ -108,7 +108,7 @@ id: root
             anchors.margins: root.width/10
             property var logoImage: (gameData && gameData.collections.get(0).shortName === "retropie") ? gameData.assets.boxFront : (gameData.collections.get(0).shortName === "steam") ? logo(gameData) : gameData.assets.logo
             source: modelData ? logoImage || "" : ""
-            sourceSize { width: 200; height: 150 }
+            sourceSize: Qt.size(favelogo.width, favelogo.height)
             fillMode: Image.PreserveAspectFit
             asynchronous: true
             smooth: true
@@ -234,7 +234,7 @@ id: root
             width: vpx(50)
             height: vpx(50)
             asynchronous: true
-            sourceSize { width: vpx(50); height: vpx(50) }
+            sourceSize: Qt.size(width, height)
             RotationAnimator on rotation {
                 loops: Animator.Infinite;
                 from: 0;
