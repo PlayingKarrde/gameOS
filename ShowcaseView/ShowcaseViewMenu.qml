@@ -183,7 +183,7 @@ id: root
             width: vpx(350)
             anchors { left: parent.left; leftMargin: globalMargin }
             source: "../assets/images/gameOS-logo.png"
-            sourceSize: Qt.size(ftueLogo.width, ftueLogo.height)
+            sourceSize: Qt.size(parent.width, parent.height)
             fillMode: Image.PreserveAspectFit
             smooth: true
             asynchronous: true
@@ -217,7 +217,7 @@ id: root
             width: vpx(150)
             anchors { left: parent.left; leftMargin: globalMargin }
             source: "../assets/images/gameOS-logo.png"
-            sourceSize: Qt.size(logo.width, logo.height)
+            sourceSize: Qt.size(parent.width, parent.height)
             fillMode: Image.PreserveAspectFit
             smooth: true
             asynchronous: true
@@ -309,14 +309,14 @@ id: root
             Component {
             id: featuredDelegate
 
-                Image {
+                AnimatedImage {
                 id: background
 
                     property bool selected: ListView.isCurrentItem && featuredlist.focus
                     width: featuredlist.width
                     height: featuredlist.height
                     source: Utils.fanArt(modelData);
-                    sourceSize { width: featuredlist.width; height: featuredlist.height }
+                    //sourceSize { width: featuredlist.width; height: featuredlist.height }
                     fillMode: Image.PreserveAspectCrop
                     asynchronous: true
                         
@@ -333,7 +333,7 @@ id: root
                         Behavior on opacity { PropertyAnimation { duration: 150; easing.type: Easing.OutQuart; easing.amplitude: 2.0; easing.period: 1.5 } }
                     }
 
-                    Image {
+                    AnimatedImage {
                     id: specialLogo
 
                         width: parent.height - vpx(20)
@@ -341,7 +341,7 @@ id: root
                         source: Utils.logo(modelData)
                         fillMode: Image.PreserveAspectFit
                         asynchronous: true
-                        sourceSize: Qt.size(specialLogo.width, specialLogo.height)
+                        //sourceSize: Qt.size(specialLogo.width, specialLogo.height)
                         anchors.horizontalCenter: parent.horizontalCenter
                         anchors.verticalCenter: parent.verticalCenter
                         opacity: featuredlist.focus ? 1 : 0.5
@@ -420,7 +420,7 @@ id: root
             orientation: ListView.Horizontal
             preferredHighlightBegin: vpx(0)
             preferredHighlightEnd: parent.width - vpx(60)
-            highlightRangeMode: ListView.StrictlyEnforceRange
+            highlightRangeMode: ListView.ApplyRange
             snapMode: ListView.SnapOneItem
             highlightMoveDuration: 100
             keyNavigationWraps: true

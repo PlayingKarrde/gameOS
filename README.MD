@@ -32,6 +32,7 @@ If no media files are showing up, make sure that Skraper Assets is checked in th
 v1.11
 - Added correct support for multi resolution images
 - Added Epic logo
+- Fixed highlight range mode for platform bar
 
 v1.10
 - New return from game design
