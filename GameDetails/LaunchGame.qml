@@ -23,6 +23,7 @@ FocusScope {
 id: root
 
     property var game: currentGame
+    focus: true
 
     // Background
     Image {
@@ -145,7 +146,14 @@ id: root
 
     // Input handling
     Keys.onPressed: {
-        previousScreen();
+
+        // Back
+        if (api.keys.isCancel(event) && !event.isAutoRepeat) {
+            event.accepted = true;
+            previousScreen();
+        } else {
+            previousScreen();
+        }
     }
 
     // Mouse/touch functionality
