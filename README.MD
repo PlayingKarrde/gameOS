@@ -33,6 +33,7 @@ v1.11
 - Added correct support for multi resolution images
 - Added Epic logo
 - Fixed highlight range mode for platform bar
+- Fixed issue where back button would bring up the menu on launch game screen
 
 v1.10
 - New return from game design
