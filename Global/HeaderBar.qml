@@ -56,7 +56,7 @@ id: root
             }
             fillMode: Image.PreserveAspectFit
             source: "../assets/images/logospng/" + Utils.processPlatformName(currentCollection.shortName) + ".png"
-            sourceSize { width: 256; height: 256 }
+            sourceSize: Qt.size(parent.width, parent.height)
             smooth: true
             visible: false
             asynchronous: true           
