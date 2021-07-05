@@ -47,6 +47,7 @@ id: root
             AllowThumbVideoAudio:          api.memory.has("Play video thumbnail audio") ? api.memory.get("Play video thumbnail audio") : "No",
             HideLogo:                      api.memory.has("Hide logo when thumbnail video plays") ? api.memory.get("Hide logo when thumbnail video plays") : "No",
             HideButtonHelp:                api.memory.has("Hide button help") ? api.memory.get("Hide button help") : "No",
+            PlaySoundEffects:              api.memory.has("Play sound effects") ? api.memory.get("Play sound effects") : "No",
             MouseHover:                    api.memory.has("Enable mouse hover") ? api.memory.get("Enable mouse hover") : "No",
             AlwaysShowTitles:              api.memory.has("Always show titles") ? api.memory.get("Always show titles") : "No",
             AnimateHighlight:              api.memory.has("Animate highlight") ? api.memory.get("Animate highlight") : "No",
@@ -444,23 +445,23 @@ id: root
     SoundEffect {
         id: sfxNav
         source: "assets/sfx/navigation.wav"
-        volume: 1.0
+        volume: (settings.PlaySoundEffects === "Yes") ? 1.0 : 0
     }
 
     SoundEffect {
         id: sfxBack
         source: "assets/sfx/back.wav"
-        volume: 1.0
+        volume: (settings.PlaySoundEffects === "Yes") ? 1.0 : 0
     }
 
     SoundEffect {
         id: sfxAccept
-        source: "assets/sfx/accept.wav"
+        volume: (settings.PlaySoundEffects === "Yes") ? 1.0 : 0
     }
 
     SoundEffect {
         id: sfxToggle
-        source: "assets/sfx/toggle.wav"
+        volume: (settings.PlaySoundEffects === "Yes") ? 1.0 : 0
     }
     
 }

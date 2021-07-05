@@ -55,6 +55,10 @@ id: root
             settingName: "Hide button help"
             setting: "No,Yes"
         }
+        ListElement {
+            settingName: "Play sound effects"
+            setting: "Yes,No"
+        }
     }
 
     property var generalPage: {
