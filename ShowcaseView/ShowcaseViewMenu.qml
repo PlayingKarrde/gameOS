@@ -497,7 +497,12 @@ id: root
                     font.family: subtitleFont.name
                     font.bold: true
                     style: Text.Outline; styleColor: theme.main
-                    visible: collectionlogo.status == Image.Error
+
+					// show text when there's no PNG or SVG
+					visible: {
+						if (collectionlogo.status == Image.Error && collectionlogosvg.status == Image.Error) return true;
+						else return false;
+					}
                     anchors.centerIn: parent
                     elide: Text.ElideRight
                     wrapMode: Text.WordWrap
