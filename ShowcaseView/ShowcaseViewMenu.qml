@@ -450,13 +450,31 @@ id: root
 
                 anchors.verticalCenter: parent.verticalCenter
 
+				property var platformFilename: Utils.processPlatformName(modelData.shortName)
+
+                Image {
+                id: collectionlogosvg
+
+                    anchors.fill: parent
+                    anchors.centerIn: parent
+                    anchors.margins: vpx(15)
+                    source: "../assets/images/logossvg/" + platformFilename + ".svg"
+                    sourceSize: Qt.size(collectionlogosvg.width, collectionlogosvg.height)
+                    fillMode: Image.PreserveAspectFit
+                    asynchronous: true
+                    smooth: true
+                    opacity: selected ? 1 : 0.2
+                    scale: selected ? 1.1 : 1
+                    Behavior on scale { NumberAnimation { duration: 100 } }
+                }
+
                 Image {
                 id: collectionlogo
 
                     anchors.fill: parent
                     anchors.centerIn: parent
                     anchors.margins: vpx(15)
-                    source: "../assets/images/logospng/" + Utils.processPlatformName(modelData.shortName) + ".png"
+                    source: "../assets/images/logospng/" + platformFilename + ".png"
                     sourceSize: Qt.size(collectionlogo.width, collectionlogo.height)
                     fillMode: Image.PreserveAspectFit
                     asynchronous: true
@@ -464,6 +482,7 @@ id: root
                     opacity: selected ? 1 : 0.2
                     scale: selected ? 1.1 : 1
                     Behavior on scale { NumberAnimation { duration: 100 } }
+                    visible: collectionlogosvg.status == Image.Error
                 }
 
                 Text {
