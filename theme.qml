@@ -88,7 +88,7 @@ id: root
 
     // Filtering options
     property bool showFavs: false
-    property var sortByFilter: ["sort_title", "lastPlayed", "playCount", "rating"]
+    property var sortByFilter: ["sortBy", "lastPlayed", "playCount", "rating"]
     property int sortByIndex: 0
     property var orderBy: Qt.AscendingOrder
     property string searchTerm: ""
