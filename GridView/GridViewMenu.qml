@@ -64,7 +64,7 @@ id: root
             return false;
         }
 
-        if (sortByFilter[sortByIndex].toLowerCase() != "title") {
+        if (sortByFilter[sortByIndex].toLowerCase() != "sort_title") {
             return false;
         }
 

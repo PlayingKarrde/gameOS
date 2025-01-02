@@ -250,7 +250,7 @@ id: root
                 Text {
                 id: ordertitle
                     
-                    text: "By " + sortByFilter[sortByIndex]
+                    text: "By " + sortByDisplay[sortByIndex]
                                     
                     color: theme.text
                     font.family: subtitleFont.name
